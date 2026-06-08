@@ -345,8 +345,6 @@
   <div class="sec-wrap mt2" id="app">
     <div class="tabs">
       <button class="tab-btn active" onclick="switchTab('cl')" id="tab-cl"><i class="ti ti-file-text"></i> Cover letter</button>
-      <button class="tab-btn" onclick="switchTab('rs')" id="tab-rs"><i class="ti ti-user"></i> Resume summary <i class="ti ti-lock" style="font-size:13px;color:var(--blue)"></i></button>
-      <button class="tab-btn" onclick="switchTab('ra')" id="tab-ra"><i class="ti ti-file-analytics"></i> Resume analyser <i class="ti ti-lock" style="font-size:13px;color:var(--blue)"></i></button>
     </div>
     <div class="app-card">
 
@@ -399,11 +397,11 @@
               <div class="li-wrap"><i class="ti ti-lock"></i></div>
               <h3>Your full letter is ready!</h3>
               <p>Upgrade to Pro to read the complete letter, edit every word, download as PDF, and apply to unlimited jobs.</p>
-              <button class="ul-btn" onclick="showUpgrade()"><i class="ti ti-star"></i> Unlock full letter — $4.99/month</button>
+              <button class="ul-btn" onclick="showUpgrade()"><i class="ti ti-star"></i> Get 30 letters — $5 one time</button>
               <div class="lk-note"><i class="ti ti-shield-check"></i> Cancel anytime. Instant access. No hidden fees.</div>
               <div class="pay-trust">
                 <div class="pay-badge"><i class="ti ti-shield-check"></i> Secure SSL</div>
-                <div class="pay-badge"><i class="ti ti-shield-check"></i> Lemon Squeezy</div>
+                <div class="pay-badge"><i class="ti ti-shield-check"></i> GUMROAD</div>
                 <div class="pay-badge"><i class="ti ti-credit-card"></i> Card / PayPal</div>
               </div>
             </div>
@@ -416,62 +414,7 @@
           </div>
         </div>
         <div style="margin-top:1.5rem"><div class="ad"><span>Advertisement — LinkedIn Premium: Get noticed by top recruiters. First month free.</span><span class="ad-tag">Ad</span></div></div>
-        <div class="tip" style="margin-top:1rem"><i class="ti ti-bulb"></i><span>Pro users get unlimited letters, full editing, PDF download, resume summary, resume analyser, and priority AI — all for just $4.99/month.</span></div>
-      </div>
-
-      <!-- RESUME SUMMARY TAB (Pro — text-input based, no PDF upload) -->
-      <div class="tab-sec" id="sec-rs">
-        <div style="background:linear-gradient(135deg,var(--blue-light),#F0F7FF);border:1px solid rgba(26,86,219,.15);border-radius:var(--r-lg);padding:1rem 1.2rem;margin-bottom:1.5rem;font-size:13px;color:var(--blue-dark);display:flex;align-items:flex-start;gap:10px">
-          <i class="ti ti-star" style="font-size:16px;flex-shrink:0;margin-top:1px"></i>
-          <div><strong>Pro feature:</strong> Resume Summary is available on the Pro plan ($4.99/month). Upgrade to unlock this and all other Pro features.</div>
-        </div>
-        <div class="rs-form" id="rs-form-fields" style="opacity:.5;pointer-events:none">
-          <div class="field">
-            <label for="rs-name">Your full name</label>
-            <input type="text" id="rs-name" placeholder="e.g. Ahmed Khan" autocomplete="off"/>
-          </div>
-          <div class="field">
-            <label for="rs-role">Target role / field</label>
-            <input type="text" id="rs-role" placeholder="e.g. Software Engineer, Marketing, Finance"/>
-          </div>
-          <div class="field">
-            <label for="rs-exp">Work experience &amp; education <span style="font-weight:400;text-transform:none;letter-spacing:0">(brief summary)</span></label>
-            <textarea id="rs-exp" style="min-height:90px" placeholder="e.g. Final year CS student at FAST NUCES. Internship at XYZ as a Python developer. Strong in data analysis and machine learning."></textarea>
-          </div>
-          <div class="field">
-            <label for="rs-skills">Your top skills</label>
-            <input type="text" id="rs-skills" placeholder="e.g. Python, SQL, communication, project management"/>
-          </div>
-          <div class="field">
-            <label for="rs-achieve">Any key achievement</label>
-            <input type="text" id="rs-achieve" placeholder="e.g. Built a web app with 500 users, GPA 3.8, won coding competition"/>
-          </div>
-          <button class="gen-btn" id="rs-btn" onclick="generateResumeSummary()"><i class="ti ti-wand"></i> Generate my resume summary — Pro</button>
-        </div>
-        <div style="text-align:center;margin-top:1.5rem">
-          <button class="ul-btn" onclick="showUpgrade()"><i class="ti ti-star"></i> Upgrade to Pro to use this feature</button>
-          <div class="lk-note" style="justify-content:center;margin-top:10px"><i class="ti ti-shield-check"></i> Cancel anytime.</div>
-        </div>
-        <div class="rs-out" id="rs-out">
-          <div class="out-head">
-            <div class="out-title"><i class="ti ti-circle-check"></i> Your resume summary is ready</div>
-            <div class="out-actions">
-              <button class="act-btn" onclick="copyResumeSummary()"><i class="ti ti-copy"></i> Copy</button>
-            </div>
-          </div>
-          <div class="rs-body" id="rs-body"></div>
-        </div>
-      </div>
-
-      <!-- RESUME ANALYSER TAB -->
-      <div class="tab-sec" id="sec-ra">
-        <div class="lk-sec">
-          <div class="li-wrap"><i class="ti ti-lock"></i></div>
-          <h3>Resume analyser is a Pro feature</h3>
-          <p>Paste your resume text and our AI will score it, identify weaknesses, and give specific improvements to make it stronger for ATS systems.</p>
-          <button class="ul-btn" onclick="showUpgrade()"><i class="ti ti-star"></i> Upgrade to Pro — $4.99/month</button>
-          <div class="lk-note" style="justify-content:center;margin-top:10px"><i class="ti ti-shield-check"></i> Cancel anytime.</div>
-        </div>
+        <div class="tip" style="margin-top:1rem"><i class="ti ti-bulb"></i><span>Get 30 cover letters for just $5 — one time payment, no subscription. Full editing and download included.</span></div>
       </div>
 
     </div>
@@ -522,24 +465,20 @@
             <div class="pf no"><i class="ti ti-x"></i> Download PDF</div>
             <div class="pf no"><i class="ti ti-x"></i> Edit letter</div>
             <div class="pf no"><i class="ti ti-x"></i> Copy letter</div>
-            <div class="pf no"><i class="ti ti-x"></i> Resume summary</div>
-            <div class="pf no"><i class="ti ti-x"></i> Resume analyser</div>
           </div>
           <button class="pr-btn fr" onclick="document.getElementById('app').scrollIntoView({behavior:'smooth'})">Try for free</button>
         </div>
         <div class="pr-card pro">
           <div class="pr-pop">Most popular</div>
           <div class="pr-name">Pro</div>
-          <div class="pr-price">$4.99 <span>/ month</span></div>
-          <div class="pr-note">Cancel anytime. Instant access.</div>
+          <div class="pr-price">$5 <span>/ 30 letters</span></div>
+          <div class="pr-note">One-time payment. No subscription.</div>
           <div class="pr-feats">
             <div class="pf"><i class="ti ti-check"></i> Unlimited cover letters</div>
             <div class="pf"><i class="ti ti-check"></i> Full letter — no blur</div>
             <div class="pf"><i class="ti ti-check"></i> Download as PDF and TXT</div>
             <div class="pf"><i class="ti ti-check"></i> Edit letter inside the app</div>
             <div class="pf"><i class="ti ti-check"></i> One-click copy</div>
-            <div class="pf"><i class="ti ti-check"></i> Resume summary generator</div>
-            <div class="pf"><i class="ti ti-check"></i> Resume analyser and scorer</div>
             <div class="pf"><i class="ti ti-check"></i> Priority AI generation</div>
           </div>
           <button class="pr-btn pd" onclick="showUpgrade()">Get Pro now →</button>
@@ -553,7 +492,7 @@
           <span style="font-size:12px;padding:4px 12px;background:var(--bg);border:1px solid var(--border-2);border-radius:20px;color:var(--text-3);font-weight:600"><i class="ti ti-brand-paypal" style="font-size:13px;margin-right:4px"></i>PayPal</span>
           <span style="font-size:12px;padding:4px 12px;background:var(--bg);border:1px solid var(--border-2);border-radius:20px;color:var(--text-3);font-weight:600"><i class="ti ti-shield-check" style="font-size:13px;margin-right:4px;color:var(--green)"></i>SSL Secured</span>
         </div>
-        <div style="font-size:11px;color:var(--text-4);margin-top:8px">Payments processed securely by Lemon Squeezy. Works from Pakistan, India, and worldwide.</div>
+        <div style="font-size:11px;color:var(--text-4);margin-top:8px">Payments processed securely by GUMROAD. Works from Pakistan, India, and worldwide.</div>
       </div>
     </div>
   </div>
@@ -650,7 +589,7 @@
         <h3>2. How we use information</h3><p>We use anonymous usage data to improve our service. This contains no personally identifiable information. We use Google Analytics to understand how users interact with our platform.</p>
         <h3>3. Cookies</h3><p>We use essential cookies to ensure the website functions correctly. We also use advertising cookies for Google AdSense. You may disable cookies in your browser settings.</p>
         <h3>4. Third party services</h3><p>We use third-party AI services to generate cover letters. Your prompt data is sent solely for generating your letter and is not stored or used for training.</p>
-        <h3>5. Payments</h3><p>Payment processing is handled entirely by Lemon Squeezy. We do not store or access your payment card details.</p>
+        <h3>5. Payments</h3><p>Payment processing is handled entirely by GUMROAD. We do not store or access your payment card details.</p>
         <h3>6. Your rights</h3><p>Since we do not store personal data, there is nothing to delete or export. For concerns, contact support@hirereadyai.com.</p>
         <h3>7. Contact</h3><p>For privacy questions, email support@hirereadyai.com. We respond within 24 hours.</p>
       </div>
@@ -668,7 +607,7 @@
         <h3>1. Acceptance of terms</h3><p>By using HireReady AI you agree to these terms. If you do not agree, please do not use our service.</p>
         <h3>2. Use of service</h3><p>HireReady AI is provided for personal use to help individuals create cover letters and resume content. You may not resell or redistribute outputs without written permission.</p>
         <h3>3. AI-generated content</h3><p>Cover letters are created by artificial intelligence. You are responsible for reviewing content before submitting to employers. We do not guarantee employment outcomes.</p>
-        <h3>4. Subscriptions and payments</h3><p>Pro subscriptions are billed monthly at $4.99. You may cancel at any time. No refunds for partial months. Payments processed by Lemon Squeezy.</p>
+        <h3>4. Subscriptions and payments</h3><p>Pro subscriptions are billed monthly at $4.99. You may cancel at any time. No refunds for partial months. Payments processed by GUMROAD.</p>
         <h3>5. Limitation of liability</h3><p>HireReady AI is provided as-is without warranties. We are not liable for any employment decisions made based on our content.</p>
         <h3>6. Changes to terms</h3><p>We may update these terms from time to time. Continued use constitutes acceptance of new terms.</p>
         <h3>7. Contact</h3><p>For questions, contact support@hirereadyai.com.</p>
@@ -714,25 +653,23 @@
     <p>Everything you need to land your dream job. One simple price. Cancel anytime.</p>
     <div class="m-feats">
       <div class="mf"><i class="ti ti-check"></i> Unlimited cover letters</div>
-      <div class="mf"><i class="ti ti-check"></i> Resume summary generator</div>
-      <div class="mf"><i class="ti ti-check"></i> Resume analyser and scorer</div>
       <div class="mf"><i class="ti ti-check"></i> Edit your letter inside the app</div>
       <div class="mf"><i class="ti ti-check"></i> Download as PDF and TXT</div>
       <div class="mf"><i class="ti ti-check"></i> One-click copy</div>
       <div class="mf"><i class="ti ti-check"></i> Priority AI — faster generation</div>
     </div>
-    <div class="m-price">$4.99 <span>/ month</span></div>
-    <div class="m-pn">Cancel anytime. Instant access. No hidden fees.</div>
-    <!-- ✅ REPLACE THE onclick BELOW WITH YOUR ACTUAL LEMON SQUEEZY LINK -->
+    <div class="m-price">$5 <span>/ 30 letters</span></div>
+    <div class="m-pn">One-time payment. No subscription. No hidden fees.</div>
+    <!-- ✅ REPLACE THE onclick BELOW WITH YOUR ACTUAL GUMROAD LINK -->
     <!-- Example: onclick="window.open('https://your-store.lemonsqueezy.com/checkout/buy/YOUR-PRODUCT-ID')" -->
-    <button class="m-cta" onclick="window.open('https://your-store.lemonsqueezy.com/checkout/buy/YOUR-PRODUCT-ID')">Continue to secure payment →</button>
+    <button class="m-cta" onclick="window.open('YOUR_GUMROAD_LINK')">Continue to secure payment →</button>
     <div class="m-pay-row">
       <div class="m-pay-item"><i class="ti ti-credit-card" style="font-size:12px;margin-right:3px"></i>Visa</div>
       <div class="m-pay-item">Mastercard</div>
       <div class="m-pay-item"><i class="ti ti-brand-paypal" style="font-size:12px;margin-right:3px"></i>PayPal</div>
       <div class="m-pay-item"><i class="ti ti-shield-check" style="font-size:12px;margin-right:3px;color:var(--green)"></i>SSL Secured</div>
     </div>
-    <div style="font-size:11px;color:var(--text-4);margin-top:6px;margin-bottom:10px">Works from Pakistan, India &amp; worldwide · Powered by Lemon Squeezy</div>
+    <div style="font-size:11px;color:var(--text-4);margin-top:6px;margin-bottom:10px">Works from Pakistan, India &amp; worldwide · Powered by GUMROAD</div>
     <button class="m-skip" onclick="closeUpgrade()">Maybe later</button>
   </div>
 </div>
