@@ -454,36 +454,61 @@
       <div class="sec-kicker">Simple pricing</div>
       <div class="sec-title">Start free. Upgrade when ready.</div>
       <div class="sec-sub">No complicated tiers. Just free and Pro. Cancel anytime.</div>
-      <div class="pr-grid">
-        <div class="pr-card">
-          <div class="pr-name">Free</div>
-          <div class="pr-price">$0 <span>forever</span></div>
-          <div class="pr-note">No credit card needed</div>
-          <div class="pr-feats">
-            <div class="pf"><i class="ti ti-check"></i> 1 cover letter per day</div>
-            <div class="pf"><i class="ti ti-check"></i> Preview first half of letter</div>
-            <div class="pf no"><i class="ti ti-x"></i> Download PDF</div>
-            <div class="pf no"><i class="ti ti-x"></i> Edit letter</div>
-            <div class="pf no"><i class="ti ti-x"></i> Copy letter</div>
-          </div>
-          <button class="pr-btn fr" onclick="document.getElementById('app').scrollIntoView({behavior:'smooth'})">Try for free</button>
-        </div>
-        <div class="pr-card pro">
-          <div class="pr-pop">Most popular</div>
-          <div class="pr-name">Pro</div>
-          <div class="pr-price">$5 <span>/ 30 letters</span></div>
-          <div class="pr-note">One-time payment. No subscription.</div>
-          <div class="pr-feats">
-            <div class="pf"><i class="ti ti-check"></i> 30 cover letters</div>
-            <div class="pf"><i class="ti ti-check"></i> Full letter — no blur</div>
-            <div class="pf"><i class="ti ti-check"></i> Download as PDF and TXT</div>
-            <div class="pf"><i class="ti ti-check"></i> Edit letter inside the app</div>
-            <div class="pf"><i class="ti ti-check"></i> One-click copy</div>
-            <div class="pf"><i class="ti ti-check"></i> Priority AI generation</div>
-          </div>
-          <button class="pr-btn pd" onclick="showUpgrade()">Get Pro now →</button>
-        </div>
-      </div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:1.5rem">
+
+  <!-- STARTER -->
+  <div class="pr-card">
+    <div class="pr-name">Starter</div>
+    <div class="pr-price">$5 <span>one-time</span></div>
+    <div class="pr-note">Perfect for one job search</div>
+    <div class="pr-feats">
+      <div class="pf"><i class="ti ti-check"></i> 30 cover letters</div>
+      <div class="pf"><i class="ti ti-check"></i> Full letter — no blur</div>
+      <div class="pf"><i class="ti ti-check"></i> Edit inside the app</div>
+      <div class="pf"><i class="ti ti-check"></i> Download as TXT</div>
+      <div class="pf"><i class="ti ti-check"></i> One-click copy</div>
+      <div class="pf no"><i class="ti ti-x"></i> PDF download</div>
+      <div class="pf no"><i class="ti ti-x"></i> Priority AI</div>
+    </div>
+    <button class="pr-btn pd" onclick="window.open('YOUR_GUMROAD_STARTER_LINK')">Get Starter — $5</button>
+  </div>
+
+  <!-- POPULAR -->
+  <div class="pr-card pro">
+    <div class="pr-pop">Most popular</div>
+    <div class="pr-name">Popular</div>
+    <div class="pr-price">$12 <span>one-time</span></div>
+    <div class="pr-note">Best value for active job seekers</div>
+    <div class="pr-feats">
+      <div class="pf"><i class="ti ti-check"></i> 100 cover letters</div>
+      <div class="pf"><i class="ti ti-check"></i> Full letter — no blur</div>
+      <div class="pf"><i class="ti ti-check"></i> Edit inside the app</div>
+      <div class="pf"><i class="ti ti-check"></i> Download as TXT</div>
+      <div class="pf"><i class="ti ti-check"></i> One-click copy</div>
+      <div class="pf"><i class="ti ti-check"></i> PDF download</div>
+      <div class="pf no"><i class="ti ti-x"></i> Priority AI</div>
+    </div>
+    <button class="pr-btn pd" onclick="window.open('YOUR_GUMROAD_POPULAR_LINK')">Get Popular — $12</button>
+  </div>
+
+  <!-- PRO -->
+  <div class="pr-card">
+    <div class="pr-name">Pro</div>
+    <div class="pr-price">$20 <span>one-time</span></div>
+    <div class="pr-note">For power users and recruiters</div>
+    <div class="pr-feats">
+      <div class="pf"><i class="ti ti-check"></i> 200 cover letters</div>
+      <div class="pf"><i class="ti ti-check"></i> Full letter — no blur</div>
+      <div class="pf"><i class="ti ti-check"></i> Edit inside the app</div>
+      <div class="pf"><i class="ti ti-check"></i> Download as TXT</div>
+      <div class="pf"><i class="ti ti-check"></i> One-click copy</div>
+      <div class="pf"><i class="ti ti-check"></i> PDF download</div>
+      <div class="pf"><i class="ti ti-check"></i> Priority AI generation</div>
+    </div>
+    <button class="pr-btn pd" onclick="window.open('YOUR_GUMROAD_PRO_LINK')">Get Pro — $20</button>
+  </div>
+
+</div>
       <!-- Payment methods note -->
       <div style="text-align:center;margin-top:1.5rem;padding:1rem;background:var(--bg-2);border-radius:var(--r-lg);border:1px solid var(--border)">
         <div style="font-size:12px;font-weight:600;color:var(--text-3);margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px">Accepted payments</div>
@@ -657,11 +682,18 @@
       <div class="mf"><i class="ti ti-check"></i> One-click copy</div>
       <div class="mf"><i class="ti ti-check"></i> Priority AI — faster generation</div>
     </div>
-    <div class="m-price">$5 <span>/ 30 letters</span></div>
-    <div class="m-pn">One-time payment. No subscription. No hidden fees.</div>
-    <!-- ✅ REPLACE THE onclick BELOW WITH YOUR ACTUAL GUMROAD LINK -->
-    <!-- Example: onclick="window.open('https://your-store.lemonsqueezy.com/checkout/buy/YOUR-PRODUCT-ID')" -->
-    <button class="m-cta" onclick="window.open('YOUR_GUMROAD_LINK')">Continue to secure payment →</button>
+<div style="display:flex;flex-direction:column;gap:10px;margin-bottom:1.5rem">
+  <button class="m-cta" style="background:#4B5563" onclick="window.open('YOUR_GUMROAD_STARTER_LINK')">
+    Starter — $5 for 30 letters
+  </button>
+  <button class="m-cta" onclick="window.open('YOUR_GUMROAD_POPULAR_LINK')">
+    Popular — $12 for 100 letters ⭐
+  </button>
+  <button class="m-cta" style="background:#065F46" onclick="window.open('YOUR_GUMROAD_PRO_LINK')">
+    Pro — $20 for 200 letters
+  </button>
+</div>
+<div class="m-pn">One-time payment. No subscription. No hidden fees.</div>
     <div class="m-pay-row">
       <div class="m-pay-item"><i class="ti ti-credit-card" style="font-size:12px;margin-right:3px"></i>Visa</div>
       <div class="m-pay-item">Mastercard</div>
