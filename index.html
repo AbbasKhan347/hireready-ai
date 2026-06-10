@@ -294,6 +294,30 @@
 </head>
 <body>
 
+
+  <!-- CREDIT BAR -->
+<div id="credit-bar" style="display:none;background:#1A56DB;color:#fff;text-align:center;padding:10px;font-size:13px;font-weight:600">
+  <span id="credit-display">30 credits remaining</span> — 
+  <a href="#pricing" style="color:#fff;text-decoration:underline" onclick="showPage('home')">Buy more</a>
+</div>
+
+<!-- UNLOCK BOX -->
+<div id="unlock-box" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:999;align-items:center;justify-content:center;padding:1.5rem">
+  <div style="background:#fff;border-radius:14px;padding:2.5rem 2rem;max-width:400px;width:100%;text-align:center">
+    <i class="ti ti-key" style="font-size:40px;color:#1A56DB;display:block;margin-bottom:12px"></i>
+    <h2 style="font-size:20px;font-weight:700;margin-bottom:8px">Activate your plan</h2>
+    <p style="font-size:14px;color:#6B7280;margin-bottom:1.5rem;line-height:1.7">Enter the email you used to purchase on Gumroad to activate your credits.</p>
+    <input type="email" id="unlock-email" placeholder="Your purchase email" style="width:100%;padding:11px 14px;font-size:14px;border:1.5px solid rgba(0,0,0,0.14);border-radius:8px;margin-bottom:12px;font-family:Inter,sans-serif"/>
+    <select id="unlock-plan" style="width:100%;padding:11px 14px;font-size:14px;border:1.5px solid rgba(0,0,0,0.14);border-radius:8px;margin-bottom:16px;font-family:Inter,sans-serif">
+      <option value="30">Starter — 30 letters</option>
+      <option value="100">Popular — 100 letters</option>
+      <option value="200">Pro — 200 letters</option>
+    </select>
+    <button onclick="activatePlan()" style="width:100%;padding:14px;font-size:15px;font-weight:700;background:#1A56DB;color:#fff;border:none;border-radius:8px;cursor:pointer;font-family:Inter,sans-serif;margin-bottom:10px">Activate my plan</button>
+    <button onclick="document.getElementById('unlock-box').style.display='none'" style="font-size:13px;color:#9CA3AF;background:none;border:none;cursor:pointer;font-family:Inter,sans-serif">Maybe later</button>
+  </div>
+</div>
+  
 <nav>
   <div class="logo" onclick="showPage('home')"><i class="ti ti-briefcase"></i>Hire<span>Ready</span> AI</div>
   <div class="nav-links">
@@ -304,7 +328,8 @@
     <a onclick="showPage('contact')">Contact</a>
   </div>
   <div class="nav-right">
-    <button class="btn-out" onclick="showUpgrade()">Upgrade to Pro</button>
+    <button class="btn-out" onclick="showUnlockBox()" style="margin-right:8px">Activate plan</button>
+    <button class="btn-out" onclick="showUpgrade()">Buy credits</button>
   </div>
 </nav>
 
@@ -763,8 +788,15 @@
   }
 
   /* ──────────── COVER LETTER GENERATION ──────────── */
-  async function generateCoverLetter() {
-    if (usedFree) { showUpgrade(); return; }
+async function generateCoverLetter(){
+  if(usedFree){showUpgrade();return;}
+  let credits = parseInt(localStorage.getItem('hr_credits') || '0');
+  let plan = localStorage.getItem('hr_plan') || 'free';
+  if(plan === 'paid' && credits <= 0){
+    showUpgrade();
+    alert('You have used all your credits! Please purchase a new plan.');
+    return;
+  }
 
     const name    = document.getElementById('cl-name').value.trim() || 'the applicant';
     const job     = document.getElementById('cl-job').value.trim();
@@ -823,9 +855,19 @@ Write only the cover letter.`;
       document.getElementById('cl-body').textContent = lines.slice(0, cut).join('\n');
       document.getElementById('cl-blur').textContent = lines.slice(cut).join('\n');
       document.getElementById('cl-lock').classList.add('show');
-      usedFree = true;
-      btn.innerHTML = '<i class="ti ti-lock"></i> Free letter used — upgrade for unlimited';
-      btn.style.background = '#4B5563';
+let currentPlan = localStorage.getItem('hr_plan') || 'free';
+if(currentPlan === 'free'){
+  usedFree=true;
+  btn.innerHTML='<i class="ti ti-lock"></i> Free letter used — upgrade for unlimited';
+  btn.style.background='#4B5563';
+} else {
+  let currentCredits = parseInt(localStorage.getItem('hr_credits') || '0');
+  currentCredits = currentCredits - 1;
+  localStorage.setItem('hr_credits', currentCredits);
+  updateCreditDisplay();
+  btn.disabled = false;
+  btn.innerHTML='<i class="ti ti-wand"></i> Generate cover letter';
+}
     } catch (e) {
       document.getElementById('cl-body').innerHTML = '<div style="padding:1rem;color:#991B1B;font-size:14px">Something went wrong: ' + (e.message || 'Please try again.') + '</div>';
       btn.disabled = false;
@@ -903,6 +945,53 @@ Rules:
     if (!text) return;
     navigator.clipboard.writeText(text).then(() => showToast('Copied to clipboard!'));
   }
+
+function showUnlockBox(){
+  document.getElementById('unlock-box').style.display='flex';
+}
+
+function activatePlan(){
+  const email = document.getElementById('unlock-email').value.trim();
+  const credits = parseInt(document.getElementById('unlock-plan').value);
+  if(!email){ alert('Please enter your purchase email.'); return; }
+  localStorage.setItem('hr_credits', credits);
+  localStorage.setItem('hr_plan', 'paid');
+  localStorage.setItem('hr_email', email);
+  document.getElementById('unlock-box').style.display='none';
+  updateCreditDisplay();
+  usedFree = false;
+  const btn = document.getElementById('cl-btn');
+  btn.disabled = false;
+  btn.style.background = '#1A56DB';
+  btn.innerHTML = '<i class="ti ti-wand"></i> Generate my cover letter';
+  alert('Plan activated! You have ' + credits + ' cover letters ready.');
+}
+
+function updateCreditDisplay(){
+  const credits = parseInt(localStorage.getItem('hr_credits') || '0');
+  const plan = localStorage.getItem('hr_plan') || 'free';
+  if(plan === 'paid'){
+    document.getElementById('credit-bar').style.display='block';
+    document.getElementById('credit-display').textContent = credits + ' credits remaining';
+    if(credits <= 5){
+      document.getElementById('credit-bar').style.background='#DC2626';
+      document.getElementById('credit-display').textContent = '⚠️ Only ' + credits + ' credits left!';
+    }
+  }
+}
+
+window.addEventListener('load', function(){
+  updateCreditDisplay();
+  const plan = localStorage.getItem('hr_plan') || 'free';
+  if(plan === 'paid'){
+    usedFree = false;
+    const btn = document.getElementById('cl-btn');
+    btn.disabled = false;
+    btn.style.background = '#1A56DB';
+    btn.innerHTML = '<i class="ti ti-wand"></i> Generate my cover letter';
+  }
+});
+  
 </script>
 </body>
 </html>
