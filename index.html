@@ -306,13 +306,8 @@
   <div style="background:#fff;border-radius:14px;padding:2.5rem 2rem;max-width:400px;width:100%;text-align:center">
     <i class="ti ti-key" style="font-size:40px;color:#1A56DB;display:block;margin-bottom:12px"></i>
     <h2 style="font-size:20px;font-weight:700;margin-bottom:8px">Activate your plan</h2>
-    <p style="font-size:14px;color:#6B7280;margin-bottom:1.5rem;line-height:1.7">Enter the email you used to purchase on Gumroad to activate your credits.</p>
-    <input type="email" id="unlock-email" placeholder="Your purchase email" style="width:100%;padding:11px 14px;font-size:14px;border:1.5px solid rgba(0,0,0,0.14);border-radius:8px;margin-bottom:12px;font-family:Inter,sans-serif"/>
-    <select id="unlock-plan" style="width:100%;padding:11px 14px;font-size:14px;border:1.5px solid rgba(0,0,0,0.14);border-radius:8px;margin-bottom:16px;font-family:Inter,sans-serif">
-      <option value="30">Starter — 30 letters</option>
-      <option value="100">Popular — 100 letters</option>
-      <option value="200">Pro — 200 letters</option>
-    </select>
+<p style="font-size:14px;color:#6B7280;margin-bottom:1.5rem;line-height:1.7">Enter the secret access code we sent to your email after purchase.</p>
+<input type="text" id="unlock-code" placeholder="Enter your code e.g. HR-S-2847" style="width:100%;padding:11px 14px;font-size:14px;border:1.5px solid rgba(0,0,0,0.14);border-radius:8px;margin-bottom:12px;font-family:Inter,sans-serif;text-transform:uppercase;letter-spacing:2px"/>
     <button onclick="activatePlan()" style="width:100%;padding:14px;font-size:15px;font-weight:700;background:#1A56DB;color:#fff;border:none;border-radius:8px;cursor:pointer;font-family:Inter,sans-serif;margin-bottom:10px">Activate my plan</button>
     <button onclick="document.getElementById('unlock-box').style.display='none'" style="font-size:13px;color:#9CA3AF;background:none;border:none;cursor:pointer;font-family:Inter,sans-serif">Maybe later</button>
   </div>
