@@ -308,8 +308,10 @@
     <h2 style="font-size:20px;font-weight:700;margin-bottom:8px">Activate your plan</h2>
 <p style="font-size:14px;color:#6B7280;margin-bottom:1.5rem;line-height:1.7">Enter the secret access code we sent to your email after purchase.</p>
 <input type="text" id="unlock-code" placeholder="Enter your code e.g. HR-S-2847" style="width:100%;padding:11px 14px;font-size:14px;border:1.5px solid rgba(0,0,0,0.14);border-radius:8px;margin-bottom:12px;font-family:Inter,sans-serif;text-transform:uppercase;letter-spacing:2px"/>
-    <button onclick="activatePlan()" style="width:100%;padding:14px;font-size:15px;font-weight:700;background:#1A56DB;color:#fff;border:none;border-radius:8px;cursor:pointer;font-family:Inter,sans-serif;margin-bottom:10px">Activate my plan</button>
-    <button onclick="document.getElementById('unlock-box').style.display='none'" style="font-size:13px;color:#9CA3AF;background:none;border:none;cursor:pointer;font-family:Inter,sans-serif">Maybe later</button>
+<button onclick="activatePlan()" style="width:100%;padding:14px;font-size:15px;font-weight:700;background:#1A56DB;color:#fff;border:none;border-radius:8px;cursor:pointer;font-family:Inter,sans-serif;margin-bottom:10px">
+  <i class="ti ti-key"></i> Activate my plan
+</button>
+<p style="font-size:12px;color:#9CA3AF;margin-top:8px">Code sent to your email after purchase. Check spam folder too.</p>    <button onclick="document.getElementById('unlock-box').style.display='none'" style="font-size:13px;color:#9CA3AF;background:none;border:none;cursor:pointer;font-family:Inter,sans-serif">Maybe later</button>
   </div>
 </div>
   
@@ -945,21 +947,86 @@ function showUnlockBox(){
   document.getElementById('unlock-box').style.display='flex';
 }
 
+// SECRET CODES — Add your codes here
+const validCodes = {
+  // STARTER CODES — 30 letters each
+  'HR-S-2847': 30,
+  'HR-S-3921': 30,
+  'HR-S-4856': 30,
+  'HR-S-5173': 30,
+  'HR-S-6284': 30,
+  'HR-S-7391': 30,
+  'HR-S-8462': 30,
+  'HR-S-9173': 30,
+  'HR-S-1047': 30,
+  'HR-S-2398': 30,
+
+  // POPULAR CODES — 100 letters each
+  'HR-P-1847': 100,
+  'HR-P-2953': 100,
+  'HR-P-3764': 100,
+  'HR-P-4821': 100,
+  'HR-P-5937': 100,
+  'HR-P-6148': 100,
+  'HR-P-7253': 100,
+  'HR-P-8364': 100,
+  'HR-P-9471': 100,
+  'HR-P-1582': 100,
+
+  // PRO CODES — 200 letters each
+  'HR-PRO-1847': 200,
+  'HR-PRO-2953': 200,
+  'HR-PRO-3764': 200,
+  'HR-PRO-4821': 200,
+  'HR-PRO-5937': 200,
+  'HR-PRO-6148': 200,
+  'HR-PRO-7253': 200,
+  'HR-PRO-8364': 200,
+  'HR-PRO-9471': 200,
+  'HR-PRO-1582': 200,
+};
+
+// USED CODES — prevents reuse
+const usedCodes = JSON.parse(localStorage.getItem('hr_used_codes') || '[]');
+
 function activatePlan(){
-  const email = document.getElementById('unlock-email').value.trim();
-  const credits = parseInt(document.getElementById('unlock-plan').value);
-  if(!email){ alert('Please enter your purchase email.'); return; }
+  const code = document.getElementById('unlock-code').value.trim().toUpperCase();
+
+  if(!code){
+    alert('Please enter your access code.');
+    return;
+  }
+
+  // Check if code was already used on this device
+  if(usedCodes.includes(code)){
+    alert('This code has already been used on this device.');
+    return;
+  }
+
+  // Check if code is valid
+  if(!validCodes[code]){
+    alert('Invalid code. Please check your email and try again.\n\nNeed help? Contact support@hirereadyai.com');
+    return;
+  }
+
+  // Activate the plan
+  const credits = validCodes[code];
+  usedCodes.push(code);
+  localStorage.setItem('hr_used_codes', JSON.stringify(usedCodes));
   localStorage.setItem('hr_credits', credits);
   localStorage.setItem('hr_plan', 'paid');
-  localStorage.setItem('hr_email', email);
+  localStorage.setItem('hr_code', code);
+
   document.getElementById('unlock-box').style.display='none';
   updateCreditDisplay();
+
   usedFree = false;
   const btn = document.getElementById('cl-btn');
   btn.disabled = false;
   btn.style.background = '#1A56DB';
   btn.innerHTML = '<i class="ti ti-wand"></i> Generate my cover letter';
-  alert('Plan activated! You have ' + credits + ' cover letters ready.');
+
+  alert('✅ Plan activated! You have ' + credits + ' cover letters ready. Good luck with your job search!');
 }
 
 function updateCreditDisplay(){
