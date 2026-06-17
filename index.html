@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💼</text></svg>">
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Free AI Cover Letter Generator for Students — HireReady AI</title>
-  <meta name="description" content="Generate a professional, ATS-optimised cover letter in 30 seconds with AI. Free for students and fresh graduates. Trusted by 10,000+ job seekers worldwide." />
-  <meta name="keywords" content="free AI cover letter generator, cover letter for students, AI cover letter writer, cover letter maker, free cover letter, ATS cover letter, cover letter for fresh graduate, cover letter Pakistan, cover letter India" />
+  <meta name="description" content="Generate a professional, ATS-optimised cover letter in 30 seconds with AI. Free for students and fresh graduates. Trusted by many job seekers worldwide." />
+  <meta name="keywords" content="free AI cover letter generator, cover letter for students, AI cover letter writer, cover letter maker, Professional cover letter, ATS cover letter, cover letter for fresh graduate" />
   <meta name="robots" content="index, follow" />
-  <link rel="canonical" href="https://hireready-ai-puce.vercel.app/" />
+  <link rel="canonical" href="https://hireready-ai-puce.vercel.app/" /
   <meta property="og:title" content="Free AI Cover Letter Generator — HireReady AI" />
-  <meta property="og:description" content="Generate a professional cover letter in 30 seconds. Free for students. Used by 10,000+ job seekers." />
+  <meta property="og:description" content="Generate a professional cover letter in 30 seconds. Free for students. Trusted by students worldwide." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://hireready-ai-puce.vercel.app/" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -294,6 +295,27 @@
 </head>
 <body>
 
+
+  <!-- CREDIT BAR -->
+<div id="credit-bar" style="display:none;background:#1A56DB;color:#fff;text-align:center;padding:10px;font-size:13px;font-weight:600">
+  <span id="credit-display">30 credits remaining</span> — 
+  <a href="#pricing" style="color:#fff;text-decoration:underline" onclick="showPage('home')">Buy more</a>
+</div>
+
+<!-- UNLOCK BOX -->
+<div id="unlock-box" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:999;align-items:center;justify-content:center;padding:1.5rem">
+  <div style="background:#fff;border-radius:14px;padding:2.5rem 2rem;max-width:400px;width:100%;text-align:center">
+    <i class="ti ti-key" style="font-size:40px;color:#1A56DB;display:block;margin-bottom:12px"></i>
+    <h2 style="font-size:20px;font-weight:700;margin-bottom:8px">Activate your plan</h2>
+<p style="font-size:14px;color:#6B7280;margin-bottom:1.5rem;line-height:1.7">Enter the secret access code we sent to your email after purchase.</p>
+<input type="text" id="unlock-code" placeholder="Enter your code e.g. HR-S-2847" style="width:100%;padding:11px 14px;font-size:14px;border:1.5px solid rgba(0,0,0,0.14);border-radius:8px;margin-bottom:12px;font-family:Inter,sans-serif;text-transform:uppercase;letter-spacing:2px"/>
+<button onclick="activatePlan()" style="width:100%;padding:14px;font-size:15px;font-weight:700;background:#1A56DB;color:#fff;border:none;border-radius:8px;cursor:pointer;font-family:Inter,sans-serif;margin-bottom:10px">
+  <i class="ti ti-key"></i> Activate my plan
+</button>
+<p style="font-size:12px;color:#9CA3AF;margin-top:8px">Code sent to your email after purchase. Check spam folder too.</p>    <button onclick="document.getElementById('unlock-box').style.display='none'" style="font-size:13px;color:#9CA3AF;background:none;border:none;cursor:pointer;font-family:Inter,sans-serif">Maybe later</button>
+  </div>
+</div>
+  
 <nav>
   <div class="logo" onclick="showPage('home')"><i class="ti ti-briefcase"></i>Hire<span>Ready</span> AI</div>
   <div class="nav-links">
@@ -304,7 +326,8 @@
     <a onclick="showPage('contact')">Contact</a>
   </div>
   <div class="nav-right">
-    <button class="btn-out" onclick="showUpgrade()">Upgrade to Pro</button>
+    <button class="btn-out" onclick="showUnlockBox()" style="margin-right:8px">Activate plan</button>
+    <button class="btn-out" onclick="showUpgrade()">Buy credits</button>
   </div>
 </nav>
 
@@ -315,13 +338,13 @@
     <h1>Land your dream job with a <span>perfect cover letter</span></h1>
     <p>Generate a professional, ATS-optimised cover letter in 30 seconds. Tailored to your job, your skills, your story. 100% free to try.</p>
     <div class="hero-cta">
-      <button class="h-btn pri" onclick="document.getElementById('app').scrollIntoView({behavior:'smooth'})"><i class="ti ti-wand"></i> Generate free cover letter</button>
+      <button class="h-btn pri" onclick="document.getElementById('app').scrollIntoView({behavior:'smooth'})"><i class="ti ti-wand"></i> Generate cover letter</button>
       <button class="h-btn sec" onclick="showPage('about')"><i class="ti ti-info-circle"></i> Learn more</button>
     </div>
-    <div class="hero-stats">
-      <div><div class="stat-num">10,400+</div><div class="stat-label">Letters made</div></div>
-      <div><div class="stat-num">94%</div><div class="stat-label">Got callbacks</div></div>
-      <div><div class="stat-num">4.9/5</div><div class="stat-label">Student rating</div></div>
+<div class="hero-stats">
+      <div><div class="stat-num">50+</div><div class="stat-label">Letters made</div></div>
+      <div><div class="stat-num">100%</div><div class="stat-label">ATS friendly</div></div>
+      <div><div class="stat-num">4.8/5</div><div class="stat-label">Rating</div></div>
       <div><div class="stat-num">30 sec</div><div class="stat-label">Average time</div></div>
     </div>
   </section>
@@ -345,14 +368,12 @@
   <div class="sec-wrap mt2" id="app">
     <div class="tabs">
       <button class="tab-btn active" onclick="switchTab('cl')" id="tab-cl"><i class="ti ti-file-text"></i> Cover letter</button>
-      <button class="tab-btn" onclick="switchTab('rs')" id="tab-rs"><i class="ti ti-user"></i> Resume summary <i class="ti ti-lock" style="font-size:13px;color:var(--blue)"></i></button>
-      <button class="tab-btn" onclick="switchTab('ra')" id="tab-ra"><i class="ti ti-file-analytics"></i> Resume analyser <i class="ti ti-lock" style="font-size:13px;color:var(--blue)"></i></button>
     </div>
     <div class="app-card">
 
       <!-- COVER LETTER TAB -->
       <div class="tab-sec active" id="sec-cl">
-        <div class="form-info"><strong>Free plan:</strong> Generate 1 cover letter free — no account needed. Upgrade to Pro for unlimited letters, PDF download, and full editing.</div>
+        <div class="form-info"><strong>Details:</strong> Your first cover letter is completely free — no account needed. Purchase a plan to unlock your full letter, copy, and download.</div>
         <div class="form-grid">
           <div class="field"><label for="cl-name">Your full name</label><input type="text" id="cl-name" placeholder="e.g. Ahmed Khan" autocomplete="off"/></div>
           <div class="field"><label for="cl-job">Target job title <span style="color:#ef4444">*</span></label><input type="text" id="cl-job" placeholder="e.g. Software Engineer" autocomplete="off"/></div>
@@ -399,11 +420,11 @@
               <div class="li-wrap"><i class="ti ti-lock"></i></div>
               <h3>Your full letter is ready!</h3>
               <p>Upgrade to Pro to read the complete letter, edit every word, download as PDF, and apply to unlimited jobs.</p>
-              <button class="ul-btn" onclick="showUpgrade()"><i class="ti ti-star"></i> Unlock full letter — $4.99/month</button>
-              <div class="lk-note"><i class="ti ti-shield-check"></i> Cancel anytime. Instant access. No hidden fees.</div>
+              <button class="ul-btn" onclick="showUpgrade()"><i class="ti ti-star"></i> Get 30 letters — $5 one time</button>
+              <div class="lk-note"><i class="ti ti-shield-check"></i> One-time payment. Instant access. No hidden fees.</div>
               <div class="pay-trust">
                 <div class="pay-badge"><i class="ti ti-shield-check"></i> Secure SSL</div>
-                <div class="pay-badge"><i class="ti ti-shield-check"></i> Lemon Squeezy</div>
+                <div class="pay-badge"><i class="ti ti-shield-check"></i> GUMROAD</div>
                 <div class="pay-badge"><i class="ti ti-credit-card"></i> Card / PayPal</div>
               </div>
             </div>
@@ -416,62 +437,7 @@
           </div>
         </div>
         <div style="margin-top:1.5rem"><div class="ad"><span>Advertisement — LinkedIn Premium: Get noticed by top recruiters. First month free.</span><span class="ad-tag">Ad</span></div></div>
-        <div class="tip" style="margin-top:1rem"><i class="ti ti-bulb"></i><span>Pro users get unlimited letters, full editing, PDF download, resume summary, resume analyser, and priority AI — all for just $4.99/month.</span></div>
-      </div>
-
-      <!-- RESUME SUMMARY TAB (Pro — text-input based, no PDF upload) -->
-      <div class="tab-sec" id="sec-rs">
-        <div style="background:linear-gradient(135deg,var(--blue-light),#F0F7FF);border:1px solid rgba(26,86,219,.15);border-radius:var(--r-lg);padding:1rem 1.2rem;margin-bottom:1.5rem;font-size:13px;color:var(--blue-dark);display:flex;align-items:flex-start;gap:10px">
-          <i class="ti ti-star" style="font-size:16px;flex-shrink:0;margin-top:1px"></i>
-          <div><strong>Pro feature:</strong> Resume Summary is available on the Pro plan ($4.99/month). Upgrade to unlock this and all other Pro features.</div>
-        </div>
-        <div class="rs-form" id="rs-form-fields" style="opacity:.5;pointer-events:none">
-          <div class="field">
-            <label for="rs-name">Your full name</label>
-            <input type="text" id="rs-name" placeholder="e.g. Ahmed Khan" autocomplete="off"/>
-          </div>
-          <div class="field">
-            <label for="rs-role">Target role / field</label>
-            <input type="text" id="rs-role" placeholder="e.g. Software Engineer, Marketing, Finance"/>
-          </div>
-          <div class="field">
-            <label for="rs-exp">Work experience &amp; education <span style="font-weight:400;text-transform:none;letter-spacing:0">(brief summary)</span></label>
-            <textarea id="rs-exp" style="min-height:90px" placeholder="e.g. Final year CS student at FAST NUCES. Internship at XYZ as a Python developer. Strong in data analysis and machine learning."></textarea>
-          </div>
-          <div class="field">
-            <label for="rs-skills">Your top skills</label>
-            <input type="text" id="rs-skills" placeholder="e.g. Python, SQL, communication, project management"/>
-          </div>
-          <div class="field">
-            <label for="rs-achieve">Any key achievement</label>
-            <input type="text" id="rs-achieve" placeholder="e.g. Built a web app with 500 users, GPA 3.8, won coding competition"/>
-          </div>
-          <button class="gen-btn" id="rs-btn" onclick="generateResumeSummary()"><i class="ti ti-wand"></i> Generate my resume summary — Pro</button>
-        </div>
-        <div style="text-align:center;margin-top:1.5rem">
-          <button class="ul-btn" onclick="showUpgrade()"><i class="ti ti-star"></i> Upgrade to Pro to use this feature</button>
-          <div class="lk-note" style="justify-content:center;margin-top:10px"><i class="ti ti-shield-check"></i> Cancel anytime.</div>
-        </div>
-        <div class="rs-out" id="rs-out">
-          <div class="out-head">
-            <div class="out-title"><i class="ti ti-circle-check"></i> Your resume summary is ready</div>
-            <div class="out-actions">
-              <button class="act-btn" onclick="copyResumeSummary()"><i class="ti ti-copy"></i> Copy</button>
-            </div>
-          </div>
-          <div class="rs-body" id="rs-body"></div>
-        </div>
-      </div>
-
-      <!-- RESUME ANALYSER TAB -->
-      <div class="tab-sec" id="sec-ra">
-        <div class="lk-sec">
-          <div class="li-wrap"><i class="ti ti-lock"></i></div>
-          <h3>Resume analyser is a Pro feature</h3>
-          <p>Paste your resume text and our AI will score it, identify weaknesses, and give specific improvements to make it stronger for ATS systems.</p>
-          <button class="ul-btn" onclick="showUpgrade()"><i class="ti ti-star"></i> Upgrade to Pro — $4.99/month</button>
-          <div class="lk-note" style="justify-content:center;margin-top:10px"><i class="ti ti-shield-check"></i> Cancel anytime.</div>
-        </div>
+        <div class="tip" style="margin-top:1rem"><i class="ti ti-bulb"></i><span>Get Professional cover letters on single prompt— one time payment, no subscription. Full editing and download included.</span></div>
       </div>
 
     </div>
@@ -494,12 +460,12 @@
     <div class="card">
       <div class="sec-kicker">Student reviews</div>
       <div class="sec-title">Real students. Real results.</div>
-      <div class="sec-sub">Over 10,000 students have used HireReady AI to land interviews at top companies worldwide.</div>
+      <div class="sec-sub">Students are already using HireReady AI to land interviews at top companies worldwide.</div>
       <div class="rev-grid">
         <div class="rev-card"><div class="reviewer"><div class="av a1">JM</div><div><div class="rv-name">James Mitchell</div><div class="rv-meta">CS graduate — Amazon UK</div></div></div><div class="stars">★★★★★</div><div class="rv-text">"I spent two weeks trying to write my cover letter and got nowhere. HireReady AI gave me a perfect one in under a minute. Got an interview call within 3 days. Completely changed my job search."</div><div class="verified"><i class="ti ti-circle-check"></i> Verified user</div></div>
         <div class="rev-card"><div class="reviewer"><div class="av a2">SA</div><div><div class="rv-name">Sofia Andersson</div><div class="rv-meta">Business student — Deloitte UK</div></div></div><div class="stars">★★★★★</div><div class="rv-text">"As a non-native English speaker I always worried my writing was not professional enough. HireReady AI made my letter sound completely polished. My professor asked who wrote it for me!"</div><div class="verified"><i class="ti ti-circle-check"></i> Verified user</div></div>
-        <div class="rev-card"><div class="reviewer"><div class="av a3">RK</div><div><div class="rv-name">Riya Kapoor</div><div class="rv-meta">Marketing student — Unilever</div></div></div><div class="stars">★★★★★</div><div class="rv-text">"I applied to 12 companies using letters from this app and got 7 interview calls. The Pro plan is worth every cent. I just tweak the company name and the letter is ready."</div><div class="verified"><i class="ti ti-circle-check"></i> Verified user</div></div>
-        <div class="rev-card"><div class="reviewer"><div class="av a4">DW</div><div><div class="rv-name">Daniel Webb</div><div class="rv-meta">Engineering graduate — Tesla</div></div></div><div class="stars">★★★★★</div><div class="rv-text">"The resume summary feature saved me hours. I had no idea how to describe myself in 4 sentences. The app nailed it on the first try. The PDF download looks so clean and professional."</div><div class="verified"><i class="ti ti-circle-check"></i> Verified user</div></div>
+        <div class="rev-card"><div class="reviewer"><div class="av a3">RK</div><div><div class="rv-name">Riya Kapoor</div><div class="rv-meta">Marketing student — Unilever</div></div></div><div class="stars">★★★★★</div><div class="rv-text">"I applied to 12 companies using letters from this app and got 7 interview calls. The Starter plan is worth every cent. I just tweak the company name and the letter is ready."</div><div class="verified"><i class="ti ti-circle-check"></i> Verified user</div></div>
+        <div class="rev-card"><div class="reviewer"><div class="av a4">DW</div><div><div class="rv-name">Daniel Webb</div><div class="rv-meta">Engineering graduate — Tesla</div></div></div><div class="stars">★★★★★</div><div class="rv-text">""The cover letter feature saved me hours. I had no idea how to write such a professional letter. The app nailed it on the first try and the output was incredibly polished."</div><div class="verified"><i class="ti ti-circle-check"></i> Verified user</div></div>
         <div class="rev-card"><div class="reviewer"><div class="av a5">AL</div><div><div class="rv-name">Aisha Lowe</div><div class="rv-meta">Law student — London firm</div></div></div><div class="stars">★★★★★</div><div class="rv-text">"Cover letters for law firms need to be very precise and formal. The formal tone option produced something that sounded like it came from a senior associate, not a student. Incredible."</div><div class="verified"><i class="ti ti-circle-check"></i> Verified user</div></div>
         <div class="rev-card"><div class="reviewer"><div class="av a6">TN</div><div><div class="rv-name">Tom Nguyen</div><div class="rv-meta">Data science — Microsoft</div></div></div><div class="stars">★★★★★</div><div class="rv-text">"I tried ChatGPT for cover letters but it always sounds generic. HireReady AI actually reads the job description and tailors everything to it. My letter matched exactly what Microsoft wanted."</div><div class="verified"><i class="ti ti-circle-check"></i> Verified user</div></div>
       </div>
@@ -511,40 +477,61 @@
       <div class="sec-kicker">Simple pricing</div>
       <div class="sec-title">Start free. Upgrade when ready.</div>
       <div class="sec-sub">No complicated tiers. Just free and Pro. Cancel anytime.</div>
-      <div class="pr-grid">
-        <div class="pr-card">
-          <div class="pr-name">Free</div>
-          <div class="pr-price">$0 <span>forever</span></div>
-          <div class="pr-note">No credit card needed</div>
-          <div class="pr-feats">
-            <div class="pf"><i class="ti ti-check"></i> 1 cover letter per day</div>
-            <div class="pf"><i class="ti ti-check"></i> Preview first half of letter</div>
-            <div class="pf no"><i class="ti ti-x"></i> Download PDF</div>
-            <div class="pf no"><i class="ti ti-x"></i> Edit letter</div>
-            <div class="pf no"><i class="ti ti-x"></i> Copy letter</div>
-            <div class="pf no"><i class="ti ti-x"></i> Resume summary</div>
-            <div class="pf no"><i class="ti ti-x"></i> Resume analyser</div>
-          </div>
-          <button class="pr-btn fr" onclick="document.getElementById('app').scrollIntoView({behavior:'smooth'})">Try for free</button>
-        </div>
-        <div class="pr-card pro">
-          <div class="pr-pop">Most popular</div>
-          <div class="pr-name">Pro</div>
-          <div class="pr-price">$4.99 <span>/ month</span></div>
-          <div class="pr-note">Cancel anytime. Instant access.</div>
-          <div class="pr-feats">
-            <div class="pf"><i class="ti ti-check"></i> Unlimited cover letters</div>
-            <div class="pf"><i class="ti ti-check"></i> Full letter — no blur</div>
-            <div class="pf"><i class="ti ti-check"></i> Download as PDF and TXT</div>
-            <div class="pf"><i class="ti ti-check"></i> Edit letter inside the app</div>
-            <div class="pf"><i class="ti ti-check"></i> One-click copy</div>
-            <div class="pf"><i class="ti ti-check"></i> Resume summary generator</div>
-            <div class="pf"><i class="ti ti-check"></i> Resume analyser and scorer</div>
-            <div class="pf"><i class="ti ti-check"></i> Priority AI generation</div>
-          </div>
-          <button class="pr-btn pd" onclick="showUpgrade()">Get Pro now →</button>
-        </div>
-      </div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:1.5rem">
+
+  <!-- STARTER -->
+  <div class="pr-card">
+    <div class="pr-name">Starter</div>
+    <div class="pr-price">$5 <span>one-time</span></div>
+    <div class="pr-note">Perfect for one job search</div>
+    <div class="pr-feats">
+      <div class="pf"><i class="ti ti-check"></i> 30 cover letters</div>
+      <div class="pf"><i class="ti ti-check"></i> Full letter — no blur</div>
+      <div class="pf"><i class="ti ti-check"></i> Edit inside the app</div>
+      <div class="pf"><i class="ti ti-check"></i> Download as TXT</div>
+      <div class="pf"><i class="ti ti-check"></i> One-click copy</div>
+      <div class="pf no"><i class="ti ti-x"></i> PDF download</div>
+      <div class="pf no"><i class="ti ti-x"></i> Priority AI</div>
+    </div>
+    <button class="pr-btn pd" onclick="window.open('https://husnain555.gumroad.com/l/vderkd')">Get Starter — $5</button>
+  </div>
+
+  <!-- POPULAR -->
+  <div class="pr-card pro">
+    <div class="pr-pop">Most popular</div>
+    <div class="pr-name">Popular</div>
+    <div class="pr-price">$12 <span>one-time</span></div>
+    <div class="pr-note">Best value for active job seekers</div>
+    <div class="pr-feats">
+      <div class="pf"><i class="ti ti-check"></i> 100 cover letters</div>
+      <div class="pf"><i class="ti ti-check"></i> Full letter — no blur</div>
+      <div class="pf"><i class="ti ti-check"></i> Edit inside the app</div>
+      <div class="pf"><i class="ti ti-check"></i> Download as TXT</div>
+      <div class="pf"><i class="ti ti-check"></i> One-click copy</div>
+      <div class="pf"><i class="ti ti-check"></i> PDF download</div>
+      <div class="pf no"><i class="ti ti-x"></i> Priority AI</div>
+    </div>
+    <button class="pr-btn pd" onclick="window.open('https://husnain555.gumroad.com/l/ngmelp')">Get Popular — $12</button>
+  </div>
+
+  <!-- PRO -->
+  <div class="pr-card">
+    <div class="pr-name">Pro</div>
+    <div class="pr-price">$20 <span>one-time</span></div>
+    <div class="pr-note">For power users and recruiters</div>
+    <div class="pr-feats">
+      <div class="pf"><i class="ti ti-check"></i> 200 cover letters</div>
+      <div class="pf"><i class="ti ti-check"></i> Full letter — no blur</div>
+      <div class="pf"><i class="ti ti-check"></i> Edit inside the app</div>
+      <div class="pf"><i class="ti ti-check"></i> Download as TXT</div>
+      <div class="pf"><i class="ti ti-check"></i> One-click copy</div>
+      <div class="pf"><i class="ti ti-check"></i> PDF download</div>
+      <div class="pf"><i class="ti ti-check"></i> Priority AI generation</div>
+    </div>
+    <button class="pr-btn pd" onclick="window.open('https://husnain555.gumroad.com/l/zpbloj')">Get Pro — $20</button>
+  </div>
+
+</div>
       <!-- Payment methods note -->
       <div style="text-align:center;margin-top:1.5rem;padding:1rem;background:var(--bg-2);border-radius:var(--r-lg);border:1px solid var(--border)">
         <div style="font-size:12px;font-weight:600;color:var(--text-3);margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px">Accepted payments</div>
@@ -553,7 +540,7 @@
           <span style="font-size:12px;padding:4px 12px;background:var(--bg);border:1px solid var(--border-2);border-radius:20px;color:var(--text-3);font-weight:600"><i class="ti ti-brand-paypal" style="font-size:13px;margin-right:4px"></i>PayPal</span>
           <span style="font-size:12px;padding:4px 12px;background:var(--bg);border:1px solid var(--border-2);border-radius:20px;color:var(--text-3);font-weight:600"><i class="ti ti-shield-check" style="font-size:13px;margin-right:4px;color:var(--green)"></i>SSL Secured</span>
         </div>
-        <div style="font-size:11px;color:var(--text-4);margin-top:8px">Payments processed securely by Lemon Squeezy. Works from Pakistan, India, and worldwide.</div>
+        <div style="font-size:11px;color:var(--text-4);margin-top:8px">Payments processed securely by GUMROAD Works Worldwide.</div>
       </div>
     </div>
   </div>
@@ -563,15 +550,15 @@
       <div class="sec-kicker">FAQ</div>
       <div class="sec-title">Frequently asked questions</div>
       <div class="faq-list">
-        <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Is HireReady AI really free? <i class="ti ti-plus"></i></div><div class="faq-a">Yes! You can generate one cover letter completely free every day with no account needed. The free plan shows the first half of your letter. Upgrade to Pro for $4.99/month to get the full letter, unlimited generations, PDF download, and editing.</div></div>
-        <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">How good is the AI-generated cover letter? <i class="ti ti-plus"></i></div><div class="faq-a">Very good! Our AI writes professional, ATS-optimised cover letters that match UK and US hiring standards. The more details you provide — especially the job description — the more tailored your letter will be. Over 94% of our users report getting interview callbacks.</div></div>
+        <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">How good is the AI-generated cover letter? <i class="ti ti-plus"></i></div><div class="faq-a">Very good! Our AI writes professional, ATS-optimised cover letters that match UK and US hiring standards. The more details you provide — especially the job description — the more tailored your letter will be. Students consistently report getting interview callbacks after using our letters.</div></div>
         <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What is ATS and why does it matter? <i class="ti ti-plus"></i></div><div class="faq-a">ATS stands for Applicant Tracking System. Most large companies use ATS software to automatically filter cover letters before a human ever reads them. Our letters are specifically written to pass ATS filters by including the right keywords and formatting.</div></div>
         <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Can I edit my cover letter after generating it? <i class="ti ti-plus"></i></div><div class="faq-a">Yes — with Pro. Pro users can click directly on any part of the letter and edit it inside the app. Once happy, download as PDF or TXT. Free users can see the first half only.</div></div>
         <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Is my data safe and private? <i class="ti ti-plus"></i></div><div class="faq-a">Yes. We do not store your personal information or the content you enter. Each generation is processed securely and deleted immediately. We never share your data with third parties.</div></div>
-        <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Can I cancel my Pro subscription anytime? <i class="ti ti-plus"></i></div><div class="faq-a">Absolutely. Cancel anytime with no questions asked. No long-term contracts or hidden fees. If you cancel, you keep Pro access until the end of your current billing period.</div></div>
-        <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Does it work for students in Pakistan and India? <i class="ti ti-plus"></i></div><div class="faq-a">Yes! HireReady AI works perfectly for students in Pakistan and India. Payments are accepted via Visa, Mastercard, and PayPal internationally. The cover letters can be tailored for local or international job markets including GCC countries, UK, US, and more.</div></div>
-        <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Does it work for any country or job type? <i class="ti ti-plus"></i></div><div class="faq-a">Yes! HireReady AI works for any job in any country. Optimised for US and UK standards but produces great results for any market worldwide including Pakistan, India, Middle East, Europe, Australia, and more.</div></div>
-        <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Can I use this for the Resume Summary without uploading a PDF? <i class="ti ti-plus"></i></div><div class="faq-a">Yes. The Resume Summary feature is text-based — just type or paste your experience, skills, and background. No file upload required. The AI generates a professional summary paragraph you can use at the top of your resume. This feature is available on the Pro plan.</div></div>
+        <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Is it a one-time payment or subscription? <i class="ti ti-plus"></i></div><div class="faq-a">Absolutely. It is a one-time payment — no subscription, no recurring charges, no cancellation needed. You pay once and get cover letters according to you plan. Simple as that.</div></div>
+        <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Does it work for any country or job type? <i class="ti ti-plus"></i></div><div class="faq-a">Yes! HireReady AI works for any job in any country. Optimised for great results for any market worldwide.</div></div>
+        <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">How do I activate my plan after purchase? <i class="ti ti-plus"></i></div><div class="faq-a">After purchasing on Gumroad you will receive a confirmation email from us within a few hours containing your unique secret access code. Visit HireReady AI, click "Activate Plan" in the top navigation, enter your code, and your credits will be instantly unlocked.</div></div>
+        <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">How long does it take to receive my access code? <i class="ti ti-plus"></i></div><div class="faq-a">We send access codes manually within a few hours of your purchase. If you have not received your code within 24 hours please check your spam folder and contact us at hirereadyai.support@gmail.com with your Gumroad order confirmation and we will send it immediately.</div></div>
+        <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Can I use my credits on different devices? <i class="ti ti-plus"></i></div><div class="faq-a">Your credits are saved on the browser and device you activated them on. If you switch devices or clear your browser data your credits will reset. We recommend using the same browser and device for all your cover letters. If you have any issues contact us at hirereadyai.support@gmail.com.</div></div>
       </div>
     </div>
   </div>
@@ -581,9 +568,8 @@
   <div class="sec-wrap mt2" style="padding-bottom:0">
     <div class="cta">
       <h2>Your dream job is one letter away</h2>
-      <p>Join 10,000+ students who landed interviews with HireReady AI. Free to start — no account needed.</p>
-      <button class="cta-btn" onclick="document.getElementById('app').scrollIntoView({behavior:'smooth'})"><i class="ti ti-wand"></i> Generate my free cover letter now</button>
-      <div class="cta-note">Free plan available forever. Pro from $4.99/month.</div>
+      <p>Join students worldwide who landed interviews with HireReady AI. Free to start — no account needed.</p>
+      <button class="cta-btn" onclick="document.getElementById('app').scrollIntoView({behavior:'smooth'})"><i class="ti ti-wand"></i> Generate my cover letter now</button>
     </div>
   </div>
 </div>
@@ -610,7 +596,7 @@
           <div class="about-v"><i class="ti ti-heart"></i><div><div class="av-t">Student first</div><div class="av-d">Every decision puts students first. Free tier always available.</div></div></div>
           <div class="about-v"><i class="ti ti-shield-check"></i><div><div class="av-t">Privacy by default</div><div class="av-d">We never store your personal data. Your information stays yours.</div></div></div>
           <div class="about-v"><i class="ti ti-sparkles"></i><div><div class="av-t">Quality always</div><div class="av-d">We use only the best AI to ensure professional results every time.</div></div></div>
-          <div class="about-v"><i class="ti ti-world"></i><div><div class="av-t">Global reach</div><div class="av-d">Built for students worldwide — US, UK, Europe, Asia, Pakistan, India, and beyond.</div></div></div>
+          <div class="about-v"><i class="ti ti-world"></i><div><div class="av-t">Global reach</div><div class="av-d">Built for students worldwide — US, UK, Europe, Australia, Asian Region and beyond.</div></div></div>
         </div>
       </div>
     </div>
@@ -630,7 +616,7 @@
       <div class="sec-title">Contact HireReady AI</div>
       <div class="sec-sub">We are a small team that genuinely cares about helping students. Reach out anytime.</div>
       <div class="ct-grid">
-        <div class="ct-card"><div class="ct-icon"><i class="ti ti-mail"></i></div><div><div class="ct-t">Email support</div><div class="ct-v">support@hirereadyai.com</div></div></div>
+        <div class="ct-card"><div class="ct-icon"><i class="ti ti-mail"></i></div><div><div class="ct-t">Email support</div><div class="ct-v">hirereadyai.support@gmail.com</div></div></div>
         <div class="ct-card"><div class="ct-icon"><i class="ti ti-clock"></i></div><div><div class="ct-t">Response time</div><div class="ct-v">Within 24 hours</div></div></div>
         <div class="ct-card"><div class="ct-icon"><i class="ti ti-brand-twitter"></i></div><div><div class="ct-t">Twitter / X</div><div class="ct-v">@HireReadyAI</div></div></div>
         <div class="ct-card"><div class="ct-icon"><i class="ti ti-ad"></i></div><div><div class="ct-t">Advertise with us</div><div class="ct-v">ads@hirereadyai.com</div></div></div>
@@ -650,9 +636,9 @@
         <h3>2. How we use information</h3><p>We use anonymous usage data to improve our service. This contains no personally identifiable information. We use Google Analytics to understand how users interact with our platform.</p>
         <h3>3. Cookies</h3><p>We use essential cookies to ensure the website functions correctly. We also use advertising cookies for Google AdSense. You may disable cookies in your browser settings.</p>
         <h3>4. Third party services</h3><p>We use third-party AI services to generate cover letters. Your prompt data is sent solely for generating your letter and is not stored or used for training.</p>
-        <h3>5. Payments</h3><p>Payment processing is handled entirely by Lemon Squeezy. We do not store or access your payment card details.</p>
-        <h3>6. Your rights</h3><p>Since we do not store personal data, there is nothing to delete or export. For concerns, contact support@hirereadyai.com.</p>
-        <h3>7. Contact</h3><p>For privacy questions, email support@hirereadyai.com. We respond within 24 hours.</p>
+        <h3>5. Payments</h3><p>Payment processing is handled entirely by GUMROAD. We do not store or access your payment card details.</p>
+        <h3>6. Your rights</h3><p>Since we do not store personal data, there is nothing to delete or export. For concerns, contact hirereadyai.support@gmail.com</p>
+        <h3>7. Contact</h3><p>For privacy questions, email hirereadyai.support@gmail.com We respond within 24 hours.</p>
       </div>
     </div>
   </div>
@@ -668,10 +654,10 @@
         <h3>1. Acceptance of terms</h3><p>By using HireReady AI you agree to these terms. If you do not agree, please do not use our service.</p>
         <h3>2. Use of service</h3><p>HireReady AI is provided for personal use to help individuals create cover letters and resume content. You may not resell or redistribute outputs without written permission.</p>
         <h3>3. AI-generated content</h3><p>Cover letters are created by artificial intelligence. You are responsible for reviewing content before submitting to employers. We do not guarantee employment outcomes.</p>
-        <h3>4. Subscriptions and payments</h3><p>Pro subscriptions are billed monthly at $4.99. You may cancel at any time. No refunds for partial months. Payments processed by Lemon Squeezy.</p>
+        <h3>4. Subscriptions and payments</h3><p>Credits are sold as one-time purchases. All sales are final. No refunds once an access code has been delivered. Payments processed by GUMROAD.</p>
         <h3>5. Limitation of liability</h3><p>HireReady AI is provided as-is without warranties. We are not liable for any employment decisions made based on our content.</p>
         <h3>6. Changes to terms</h3><p>We may update these terms from time to time. Continued use constitutes acceptance of new terms.</p>
-        <h3>7. Contact</h3><p>For questions, contact support@hirereadyai.com.</p>
+        <h3>7. Contact</h3><p>For questions, contact hirereadyai.support@gmail.com</p>
       </div>
     </div>
   </div>
@@ -687,8 +673,6 @@
       <div class="ft-col">
         <h4>Product</h4>
         <a onclick="showPage('home')">Cover letter</a>
-        <a onclick="showUpgrade()">Resume summary</a>
-        <a onclick="showUpgrade()">Resume analyser</a>
         <a onclick="showPage('home');setTimeout(()=>document.getElementById('pricing').scrollIntoView({behavior:'smooth'}),100)">Pricing</a>
       </div>
       <div class="ft-col">
@@ -711,28 +695,33 @@
   <div class="m-box">
     <div class="m-icon"><i class="ti ti-star"></i></div>
     <h2>Unlock HireReady Pro</h2>
-    <p>Everything you need to land your dream job. One simple price. Cancel anytime.</p>
+    <p>Everything you need to land your dream job. Cancel anytime.</p>
     <div class="m-feats">
-      <div class="mf"><i class="ti ti-check"></i> Unlimited cover letters</div>
-      <div class="mf"><i class="ti ti-check"></i> Resume summary generator</div>
-      <div class="mf"><i class="ti ti-check"></i> Resume analyser and scorer</div>
+      <div class="mf"><i class="ti ti-check"></i> Professional cover letters</div>
       <div class="mf"><i class="ti ti-check"></i> Edit your letter inside the app</div>
       <div class="mf"><i class="ti ti-check"></i> Download as PDF and TXT</div>
       <div class="mf"><i class="ti ti-check"></i> One-click copy</div>
       <div class="mf"><i class="ti ti-check"></i> Priority AI — faster generation</div>
     </div>
-    <div class="m-price">$4.99 <span>/ month</span></div>
-    <div class="m-pn">Cancel anytime. Instant access. No hidden fees.</div>
-    <!-- ✅ REPLACE THE onclick BELOW WITH YOUR ACTUAL LEMON SQUEEZY LINK -->
-    <!-- Example: onclick="window.open('https://your-store.lemonsqueezy.com/checkout/buy/YOUR-PRODUCT-ID')" -->
-    <button class="m-cta" onclick="window.open('https://your-store.lemonsqueezy.com/checkout/buy/YOUR-PRODUCT-ID')">Continue to secure payment →</button>
+<div style="display:flex;flex-direction:column;gap:10px;margin-bottom:1.5rem">
+  <button class="m-cta" style="background:#4B5563" onclick="window.open('https://husnain555.gumroad.com/l/vderkd')">
+    Starter — $5 for 30 letters
+  </button>
+  <button class="m-cta" onclick="window.open('https://husnain555.gumroad.com/l/ngmelp')">
+    Popular — $12 for 100 letters ⭐
+  </button>
+  <button class="m-cta" style="background:#065F46" onclick="window.open('https://husnain555.gumroad.com/l/zpbloj')">
+    Pro — $20 for 200 letters
+  </button>
+</div>
+<div class="m-pn">One-time payment. No subscription. No hidden fees.</div>
     <div class="m-pay-row">
       <div class="m-pay-item"><i class="ti ti-credit-card" style="font-size:12px;margin-right:3px"></i>Visa</div>
       <div class="m-pay-item">Mastercard</div>
       <div class="m-pay-item"><i class="ti ti-brand-paypal" style="font-size:12px;margin-right:3px"></i>PayPal</div>
       <div class="m-pay-item"><i class="ti ti-shield-check" style="font-size:12px;margin-right:3px;color:var(--green)"></i>SSL Secured</div>
     </div>
-    <div style="font-size:11px;color:var(--text-4);margin-top:6px;margin-bottom:10px">Works from Pakistan, India &amp; worldwide · Powered by Lemon Squeezy</div>
+    <div style="font-size:11px;color:var(--text-4);margin-top:6px;margin-bottom:10px">Works from Everywhere &amp; worldwide · Powered by GUMROAD</div>
     <button class="m-skip" onclick="closeUpgrade()">Maybe later</button>
   </div>
 </div>
@@ -797,8 +786,15 @@
   }
 
   /* ──────────── COVER LETTER GENERATION ──────────── */
-  async function generateCoverLetter() {
-    if (usedFree) { showUpgrade(); return; }
+async function generateCoverLetter(){
+  if(usedFree){showUpgrade();return;}
+  let credits = parseInt(localStorage.getItem('hr_credits') || '0');
+  let plan = localStorage.getItem('hr_plan') || 'free';
+  if(plan === 'paid' && credits <= 0){
+    showUpgrade();
+    alert('You have used all your credits! Please purchase a new plan.');
+    return;
+  }
 
     const name    = document.getElementById('cl-name').value.trim() || 'the applicant';
     const job     = document.getElementById('cl-job').value.trim();
@@ -857,9 +853,19 @@ Write only the cover letter.`;
       document.getElementById('cl-body').textContent = lines.slice(0, cut).join('\n');
       document.getElementById('cl-blur').textContent = lines.slice(cut).join('\n');
       document.getElementById('cl-lock').classList.add('show');
-      usedFree = true;
-      btn.innerHTML = '<i class="ti ti-lock"></i> Free letter used — upgrade for unlimited';
-      btn.style.background = '#4B5563';
+let currentPlan = localStorage.getItem('hr_plan') || 'free';
+if(currentPlan === 'free'){
+  usedFree=true;
+  btn.innerHTML='<i class="ti ti-lock"></i> Free letter used — upgrade for unlimited';
+  btn.style.background='#4B5563';
+} else {
+  let currentCredits = parseInt(localStorage.getItem('hr_credits') || '0');
+  currentCredits = currentCredits - 1;
+  localStorage.setItem('hr_credits', currentCredits);
+  updateCreditDisplay();
+  btn.disabled = false;
+  btn.innerHTML='<i class="ti ti-wand"></i> Generate cover letter';
+}
     } catch (e) {
       document.getElementById('cl-body').innerHTML = '<div style="padding:1rem;color:#991B1B;font-size:14px">Something went wrong: ' + (e.message || 'Please try again.') + '</div>';
       btn.disabled = false;
@@ -937,6 +943,118 @@ Rules:
     if (!text) return;
     navigator.clipboard.writeText(text).then(() => showToast('Copied to clipboard!'));
   }
+
+function showUnlockBox(){
+  document.getElementById('unlock-box').style.display='flex';
+}
+
+// SECRET CODES — Add your codes here
+const validCodes = {
+  // STARTER CODES — 30 letters each
+  'HR-S-2618': 30,
+  'HR-S-3921': 30,
+  'HR-S-4856': 30,
+  'HR-S-5173': 30,
+  'HR-S-6284': 30,
+  'HR-S-7391': 30,
+  'HR-S-8462': 30,
+  'HR-S-9173': 30,
+  'HR-S-1047': 30,
+  'HR-S-2398': 30,
+  'HR-S-0110': 30,
+
+  // POPULAR CODES — 100 letters each
+  'HR-P-1847': 100,
+  'HR-P-2953': 100,
+  'HR-P-3764': 100,
+  'HR-P-4821': 100,
+  'HR-P-5937': 100,
+  'HR-P-6148': 100,
+  'HR-P-7253': 100,
+  'HR-P-8364': 100,
+  'HR-P-9471': 100,
+  'HR-P-1582': 100,
+
+  // PRO CODES — 200 letters each
+  'HR-PRO-1847': 200,
+  'HR-PRO-2953': 200,
+  'HR-PRO-3764': 200,
+  'HR-PRO-4821': 200,
+  'HR-PRO-5937': 200,
+  'HR-PRO-6148': 200,
+  'HR-PRO-7253': 200,
+  'HR-PRO-8364': 200,
+  'HR-PRO-9471': 200,
+  'HR-PRO-1582': 200,
+};
+
+// USED CODES — prevents reuse
+const usedCodes = JSON.parse(localStorage.getItem('hr_used_codes') || '[]');
+
+function activatePlan(){
+  const code = document.getElementById('unlock-code').value.trim().toUpperCase();
+
+  if(!code){
+    alert('Please enter your access code.');
+    return;
+  }
+
+  // Check if code was already used on this device
+  if(usedCodes.includes(code)){
+    alert('This code has already been used on this device.');
+    return;
+  }
+
+  // Check if code is valid
+  if(!validCodes[code]){
+    alert('Invalid code. Please check your email and try again.\n\nNeed help? Contact hirereadyai.support@gmail.com');
+    return;
+  }
+
+  // Activate the plan
+  const credits = validCodes[code];
+  usedCodes.push(code);
+  localStorage.setItem('hr_used_codes', JSON.stringify(usedCodes));
+  localStorage.setItem('hr_credits', credits);
+  localStorage.setItem('hr_plan', 'paid');
+  localStorage.setItem('hr_code', code);
+
+  document.getElementById('unlock-box').style.display='none';
+  updateCreditDisplay();
+
+  usedFree = false;
+  const btn = document.getElementById('cl-btn');
+  btn.disabled = false;
+  btn.style.background = '#1A56DB';
+  btn.innerHTML = '<i class="ti ti-wand"></i> Generate my cover letter';
+
+  alert('✅ Plan activated! You have ' + credits + ' cover letters ready. Good luck with your job search!');
+}
+
+function updateCreditDisplay(){
+  const credits = parseInt(localStorage.getItem('hr_credits') || '0');
+  const plan = localStorage.getItem('hr_plan') || 'free';
+  if(plan === 'paid'){
+    document.getElementById('credit-bar').style.display='block';
+    document.getElementById('credit-display').textContent = credits + ' credits remaining';
+    if(credits <= 5){
+      document.getElementById('credit-bar').style.background='#DC2626';
+      document.getElementById('credit-display').textContent = '⚠️ Only ' + credits + ' credits left!';
+    }
+  }
+}
+
+window.addEventListener('load', function(){
+  updateCreditDisplay();
+  const plan = localStorage.getItem('hr_plan') || 'free';
+  if(plan === 'paid'){
+    usedFree = false;
+    const btn = document.getElementById('cl-btn');
+    btn.disabled = false;
+    btn.style.background = '#1A56DB';
+    btn.innerHTML = '<i class="ti ti-wand"></i> Generate my cover letter';
+  }
+});
 </script>
 </body>
 </html>
