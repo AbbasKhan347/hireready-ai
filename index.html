@@ -326,8 +326,7 @@
     <a onclick="showPage('contact')">Contact</a>
   </div>
   <div class="nav-right">
-    <button class="btn-out" onclick="showUnlockBox()" style="margin-right:8px">Activate plan</button>
-    <button class="btn-out" onclick="showUpgrade()">Buy credits</button>
+<button class="btn-out" onclick="showUpgrade()">⭐ Support us</button>
   </div>
 </nav>
 
@@ -336,7 +335,7 @@
   <section class="hero">
     <div class="hero-badge"><i class="ti ti-sparkles"></i> AI-Powered Career Tools</div>
     <h1>Land your dream job with a <span>perfect cover letter</span></h1>
-    <p>Generate a professional, ATS-optimised cover letter in 30 seconds. Tailored to your job, your skills, your story. 100% free to try.</p>
+    <p>Generate a professional, ATS-optimised cover letter in 30 seconds. Tailored to your job, your skills, your story. 100% free — unlimited letters.</p>
     <div class="hero-cta">
       <button class="h-btn pri" onclick="document.getElementById('app').scrollIntoView({behavior:'smooth'})"><i class="ti ti-wand"></i> Generate cover letter</button>
       <button class="h-btn sec" onclick="showPage('about')"><i class="ti ti-info-circle"></i> Learn more</button>
@@ -373,8 +372,7 @@
 
       <!-- COVER LETTER TAB -->
       <div class="tab-sec active" id="sec-cl">
-        <div class="form-info"><strong>Details:</strong> Your first cover letter is completely free — no account needed. Purchase a plan to unlock your full letter, copy, and download.</div>
-        <div class="form-grid">
+      <div class="form-info"><strong>100% Free:</strong> Generate unlimited professional cover letters — completely free. No account needed. No credit card required.</div>        <div class="form-grid">
           <div class="field"><label for="cl-name">Your full name</label><input type="text" id="cl-name" placeholder="e.g. Ahmed Khan" autocomplete="off"/></div>
           <div class="field"><label for="cl-job">Target job title <span style="color:#ef4444">*</span></label><input type="text" id="cl-job" placeholder="e.g. Software Engineer" autocomplete="off"/></div>
           <div class="field"><label for="cl-company">Company name <span style="color:#ef4444">*</span></label><input type="text" id="cl-company" placeholder="e.g. Google" autocomplete="off"/></div>
@@ -725,7 +723,19 @@
     <button class="m-skip" onclick="closeUpgrade()">Maybe later</button>
   </div>
 </div>
-
+  
+<!-- Add a simple email collection box after generating: -->
+  <div id="email-collect" style="margin-top:1rem;padding:16px;background:var(--blue-light);border-radius:var(--r);text-align:center;display:none">
+  <p style="font-size:14px;font-weight:600;color:var(--blue-dark);margin-bottom:10px">
+    Want to save your letter and get job tips? Enter your email:
+  </p>
+  <div style="display:flex;gap:8px;max-width:400px;margin:0 auto">
+    <input type="email" placeholder="your@email.com" style="flex:1;padding:10px 14px;font-size:14px;border:1.5px solid var(--border-2);border-radius:var(--r);font-family:Inter,sans-serif"/>
+    <button style="padding:10px 16px;background:var(--blue);color:#fff;border:none;border-radius:var(--r);font-size:13px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif">Subscribe</button>
+  </div>
+  <p style="font-size:11px;color:var(--text-4);margin-top:8px">No spam. Unsubscribe anytime.</p>
+</div>
+  
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
@@ -737,6 +747,7 @@
   function showPage(n) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.getElementById('page-' + n).classList.add('active');
+    document.getElementById('email-collect').style.display='block';
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
@@ -787,7 +798,7 @@
 
   /* ──────────── COVER LETTER GENERATION ──────────── */
 async function generateCoverLetter(){
-  if(usedFree){showUpgrade();return;}
+  //if(usedFree){showUpgrade();return;}
   let credits = parseInt(localStorage.getItem('hr_credits') || '0');
   let plan = localStorage.getItem('hr_plan') || 'free';
   if(plan === 'paid' && credits <= 0){
@@ -848,16 +859,9 @@ Write only the cover letter.`;
       if (data.error) throw new Error(data.error);
 
       const lines = data.result.split('\n');
-      const cut = Math.ceil(lines.length * 0.5);
-
-      document.getElementById('cl-body').textContent = lines.slice(0, cut).join('\n');
-      document.getElementById('cl-blur').textContent = lines.slice(cut).join('\n');
-      document.getElementById('cl-lock').classList.add('show');
-let currentPlan = localStorage.getItem('hr_plan') || 'free';
-if(currentPlan === 'free'){
-  usedFree=true;
-  btn.innerHTML='<i class="ti ti-lock"></i> Free letter used — upgrade for unlimited';
-  btn.style.background='#4B5563';
+ document.getElementById('cl-body').textContent = data.result;
+btn.disabled = false;
+btn.innerHTML = '<i class="ti ti-wand"></i> Generate another letter';
 } else {
   let currentCredits = parseInt(localStorage.getItem('hr_credits') || '0');
   currentCredits = currentCredits - 1;
