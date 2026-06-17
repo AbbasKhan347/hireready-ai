@@ -433,6 +433,31 @@
             <div class="q-item"><i class="ti ti-check"></i> Professional tone</div>
             <div class="q-item"><i class="ti ti-check"></i> UK/US standard</div>
           </div>
+          <!-- EMAIL COLLECTION BOX -->
+<div id="email-collect" style="display:none;padding:20px;background:var(--blue-light);border-top:1px solid var(--border)">
+  <p style="font-size:14px;font-weight:600;color:var(--blue-dark);margin-bottom:4px;text-align:center">
+    <i class="ti ti-mail"></i> Want job tips and career advice?
+  </p>
+  <p style="font-size:13px;color:var(--text-3);text-align:center;margin-bottom:12px">
+    Join our free newsletter — we send weekly job search tips and interview advice.
+  </p>
+  <div style="display:flex;gap:8px;max-width:420px;margin:0 auto">
+    <input 
+      type="email" 
+      id="collect-email"
+      placeholder="Enter your email address" 
+      style="flex:1;padding:10px 14px;font-size:14px;border:1.5px solid var(--border-2);border-radius:var(--r);font-family:Inter,sans-serif;background:#fff"
+    />
+    <button 
+      onclick="collectEmail()" 
+      style="padding:10px 16px;background:var(--blue);color:#fff;border:none;border-radius:var(--r);font-size:13px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif;white-space:nowrap">
+      Subscribe free
+    </button>
+  </div>
+  <p style="font-size:11px;color:var(--text-4);margin-top:8px;text-align:center">
+    No spam ever. Unsubscribe anytime.
+  </p>
+</div>
         </div>
         <div style="margin-top:1.5rem"><div class="ad"><span>Advertisement — LinkedIn Premium: Get noticed by top recruiters. First month free.</span><span class="ad-tag">Ad</span></div></div>
         <div class="tip" style="margin-top:1rem"><i class="ti ti-bulb"></i><span>Get Professional cover letters on single prompt— one time payment, no subscription. Full editing and download included.</span></div>
@@ -740,10 +765,13 @@
 <div class="toast" id="toast"></div>
 
 <script>
+
   let tone = 'professional';
   let usedFree = false;
+  
 
   /* ──────────── PAGE & TAB NAVIGATION ──────────── */
+let tone='professional', usedFree=false;
   function showPage(n) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.getElementById('page-' + n).classList.add('active');
@@ -860,6 +888,7 @@ Write only the cover letter.`;
 
       const lines = data.result.split('\n');
  document.getElementById('cl-body').textContent = data.result;
+      showEmailCollect();
 btn.disabled = false;
 btn.innerHTML = '<i class="ti ti-wand"></i> Generate another letter';
 } else {
@@ -1059,6 +1088,36 @@ window.addEventListener('load', function(){
     btn.innerHTML = '<i class="ti ti-wand"></i> Generate my cover letter';
   }
 });
+  // SHOW EMAIL BOX AFTER GENERATION
+function showEmailCollect(){
+  document.getElementById('email-collect').style.display='block';
+}
+
+// COLLECT EMAIL
+function collectEmail(){
+  const email = document.getElementById('collect-email').value.trim();
+  if(!email || !email.includes('@')){
+    alert('Please enter a valid email address.');
+    return;
+  }
+  // Save email to localStorage for now
+  const emails = JSON.parse(localStorage.getItem('collected_emails') || '[]');
+  if(emails.includes(email)){
+    alert('You are already subscribed! Thank you.');
+    return;
+  }
+  emails.push(email);
+  localStorage.setItem('collected_emails', JSON.stringify(emails));
+  
+  // Hide the form and show thank you
+  document.getElementById('email-collect').innerHTML = `
+    <div style="text-align:center;padding:10px">
+      <i class="ti ti-circle-check" style="font-size:32px;color:var(--green);display:block;margin-bottom:8px"></i>
+      <p style="font-size:14px;font-weight:600;color:var(--text)">Thank you for subscribing!</p>
+      <p style="font-size:13px;color:var(--text-3)">We will send you weekly job tips and career advice.</p>
+    </div>
+  `;
+}
 </script>
 </body>
 </html>
