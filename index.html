@@ -825,81 +825,135 @@ let tone='professional', usedFree=false;
   }
 
   /* ──────────── COVER LETTER GENERATION ──────────── */
-async function generateCoverLetter(){
+//async function generateCoverLetter(){
+
+  
   //if(usedFree){showUpgrade();return;}
-  let credits = parseInt(localStorage.getItem('hr_credits') || '0');
-  let plan = localStorage.getItem('hr_plan') || 'free';
-  if(plan === 'paid' && credits <= 0){
-    showUpgrade();
-    alert('You have used all your credits! Please purchase a new plan.');
+//   let credits = parseInt(localStorage.getItem('hr_credits') || '0');
+//   let plan = localStorage.getItem('hr_plan') || 'free';
+//   if(plan === 'paid' && credits <= 0){
+//     showUpgrade();
+//     alert('You have used all your credits! Please purchase a new plan.');
+//     return;
+//   }
+
+//     const name    = document.getElementById('cl-name').value.trim() || 'the applicant';
+//     const job     = document.getElementById('cl-job').value.trim();
+//     const company = document.getElementById('cl-company').value.trim();
+//     const level   = document.getElementById('cl-level').value;
+//     const skills  = document.getElementById('cl-skills').value.trim();
+//     const jd      = document.getElementById('cl-jd').value.trim();
+
+//     if (!job || !company) {
+//       showToast('Please fill in the job title and company name.');
+//       return;
+//     }
+
+//     const btn = document.getElementById('cl-btn');
+//     btn.disabled = true;
+//     btn.innerHTML = '<i class="ti ti-loader spin"></i> Crafting your letter...';
+
+//     const out = document.getElementById('cl-out');
+//     out.classList.add('show');
+//     document.getElementById('cl-body').innerHTML = '<div style="padding:2.5rem;text-align:center;color:#6B7280;font-size:14px"><i class="ti ti-loader spin" style="font-size:24px;display:block;margin-bottom:12px;color:#1A56DB"></i>Crafting your personalised cover letter...</div>';
+//     document.getElementById('cl-blur').textContent = '';
+//     document.getElementById('cl-lock').classList.remove('show');
+
+//     const prompt = `Write a professional ATS-friendly cover letter:
+// Applicant: ${name}
+// Job: ${job} at ${company}
+// Level: ${level}
+// Skills: ${skills || 'not specified'}
+// Job description: ${jd || 'not provided'}
+// Tone: ${tone}, US/UK professional standard
+
+// Rules:
+// - Strong opening showing immediate value
+// - 2-3 relevant skills with brief examples
+// - Genuine enthusiasm for the company
+// - Confident call to action close
+// - 3-4 paragraphs under 350 words
+// - Human natural never robotic
+// - Start with "Dear Hiring Manager,"
+// - No address blocks or dates
+
+// Write only the cover letter.`;
+
+//     try {
+//       const res = await fetch('/api/generate', {
+//         method: 'POST',
+//         headers: { 'Content-Type': 'application/json' },
+//         body: JSON.stringify({ prompt, type: 'cover_letter' })
+//       });
+//       const data = await res.json();
+//       if (data.error) throw new Error(data.error);
+
+//       const lines = data.result.split('\n');
+//  document.getElementById('cl-body').textContent = data.result;
+//       showEmailCollect();
+// btn.disabled = false;
+// btn.innerHTML = '<i class="ti ti-wand"></i> Generate another letter';
+// } else {
+//   let currentCredits = parseInt(localStorage.getItem('hr_credits') || '0');
+//   currentCredits = currentCredits - 1;
+//   localStorage.setItem('hr_credits', currentCredits);
+//   updateCreditDisplay();
+//   btn.disabled = false;
+//   btn.innerHTML='<i class="ti ti-wand"></i> Generate cover letter';
+// }
+//     } 
+
+  async function generateCoverLetter(){
+  const name    = document.getElementById('cl-name').value.trim() || 'the applicant';
+  const job     = document.getElementById('cl-job').value.trim();
+  const company = document.getElementById('cl-company').value.trim();
+  const level   = document.getElementById('cl-level').value;
+  const skills  = document.getElementById('cl-skills').value.trim();
+  const jd      = document.getElementById('cl-jd').value.trim();
+
+  if(!job || !company){
+    alert('Please fill in the job title and company name.');
     return;
   }
 
-    const name    = document.getElementById('cl-name').value.trim() || 'the applicant';
-    const job     = document.getElementById('cl-job').value.trim();
-    const company = document.getElementById('cl-company').value.trim();
-    const level   = document.getElementById('cl-level').value;
-    const skills  = document.getElementById('cl-skills').value.trim();
-    const jd      = document.getElementById('cl-jd').value.trim();
+  const btn = document.getElementById('cl-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<i class="ti ti-loader spin"></i> Crafting your letter...';
 
-    if (!job || !company) {
-      showToast('Please fill in the job title and company name.');
-      return;
-    }
+  const out = document.getElementById('cl-out');
+  out.classList.add('show');
+  document.getElementById('cl-body').innerHTML = '<div style="padding:2.5rem;text-align:center;color:#6B7280;font-size:14px"><i class="ti ti-loader spin" style="font-size:24px;display:block;margin-bottom:12px;color:#1A56DB"></i>Crafting your personalised cover letter...</div>';
+  document.getElementById('cl-blur').textContent = '';
+  document.getElementById('cl-lock').classList.remove('show');
 
-    const btn = document.getElementById('cl-btn');
-    btn.disabled = true;
-    btn.innerHTML = '<i class="ti ti-loader spin"></i> Crafting your letter...';
+  const prompt = `Write a professional ATS-friendly cover letter:\nApplicant: ${name}\nJob: ${job} at ${company}\nLevel: ${level}\nSkills: ${skills||'not specified'}\nJob description: ${jd||'not provided'}\nTone: ${tone}, US/UK professional standard\n\nRules:\n- Strong opening showing immediate value\n- 2-3 relevant skills with brief examples\n- Genuine enthusiasm for the company\n- Confident call to action close\n- 3-4 paragraphs under 350 words\n- Human natural never robotic\n- Start with "Dear Hiring Manager,"\n- No address blocks or dates\n\nWrite only the cover letter.`;
 
-    const out = document.getElementById('cl-out');
-    out.classList.add('show');
-    document.getElementById('cl-body').innerHTML = '<div style="padding:2.5rem;text-align:center;color:#6B7280;font-size:14px"><i class="ti ti-loader spin" style="font-size:24px;display:block;margin-bottom:12px;color:#1A56DB"></i>Crafting your personalised cover letter...</div>';
+  try {
+    const res = await fetch('/api/generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt })
+    });
+    const data = await res.json();
+    if(data.error) throw new Error(data.error);
+
+    // SHOW FULL LETTER — FREE MODE
+    document.getElementById('cl-body').textContent = data.result;
     document.getElementById('cl-blur').textContent = '';
     document.getElementById('cl-lock').classList.remove('show');
 
-    const prompt = `Write a professional ATS-friendly cover letter:
-Applicant: ${name}
-Job: ${job} at ${company}
-Level: ${level}
-Skills: ${skills || 'not specified'}
-Job description: ${jd || 'not provided'}
-Tone: ${tone}, US/UK professional standard
+    // SHOW EMAIL COLLECTION
+    showEmailCollect();
 
-Rules:
-- Strong opening showing immediate value
-- 2-3 relevant skills with brief examples
-- Genuine enthusiasm for the company
-- Confident call to action close
-- 3-4 paragraphs under 350 words
-- Human natural never robotic
-- Start with "Dear Hiring Manager,"
-- No address blocks or dates
+    btn.disabled = false;
+    btn.innerHTML = '<i class="ti ti-wand"></i> Generate another letter';
 
-Write only the cover letter.`;
-
-    try {
-      const res = await fetch('/api/generate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ prompt, type: 'cover_letter' })
-      });
-      const data = await res.json();
-      if (data.error) throw new Error(data.error);
-
-      const lines = data.result.split('\n');
- document.getElementById('cl-body').textContent = data.result;
-      showEmailCollect();
-btn.disabled = false;
-btn.innerHTML = '<i class="ti ti-wand"></i> Generate another letter';
-} else {
-  let currentCredits = parseInt(localStorage.getItem('hr_credits') || '0');
-  currentCredits = currentCredits - 1;
-  localStorage.setItem('hr_credits', currentCredits);
-  updateCreditDisplay();
-  btn.disabled = false;
-  btn.innerHTML='<i class="ti ti-wand"></i> Generate cover letter';
-}
-    } catch (e) {
+  } catch(err) {
+    document.getElementById('cl-body').innerHTML = '<div style="padding:1rem;color:#991B1B;font-size:14px">Something went wrong. Please try again.</div>';
+    btn.disabled = false;
+    btn.innerHTML = '<i class="ti ti-wand"></i> Generate my cover letter — free';
+  }
+} catch (e) {
       document.getElementById('cl-body').innerHTML = '<div style="padding:1rem;color:#991B1B;font-size:14px">Something went wrong: ' + (e.message || 'Please try again.') + '</div>';
       btn.disabled = false;
       btn.style.background = '';
@@ -908,10 +962,7 @@ btn.innerHTML = '<i class="ti ti-wand"></i> Generate another letter';
     btn.disabled = true;
   }
 
-  function regenCoverLetter() {
-    if (usedFree) { showUpgrade(); return; }
-    generateCoverLetter();
-  }
+function regen(){ generateCoverLetter(); }
 
   /* ──────────── RESUME SUMMARY GENERATION ──────────── */
   async function generateResumeSummary() {
