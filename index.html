@@ -947,8 +947,8 @@ function downloadPDF() {
       lower.startsWith('dear') || 
       lower.startsWith('sincerely') || 
       lower.startsWith('best regards') || 
-      lower.startsWith('yours faithfully') ||
-      cleanParagraph.length < 40; // Preserves individual meta lines like Name/Date
+      lower.startsWith('yours faithfully');
+   //   cleanParagraph.length < 40; // Preserves individual meta lines like Name/Date
 
     renderParagraph(cleanParagraph, isHeaderOrSalutation);
   });
