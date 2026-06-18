@@ -434,16 +434,51 @@
     }
 
     /* ===== RESPONSIVE TWEAKS ===== */
+/* ===== RESPONSIVE TWEAKS ===== */
     @media(max-width:480px) {
       .card { padding:1.5rem; }
       .app-card { padding:1rem; }
       .out-body { padding:16px; font-size:13px; }
     }
+
+    /* ===== DARK MODE THEME SYSTEM ===== */
+    body {
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+    input, select, textarea {
+      color: var(--text);
+    }
+    .btn-theme {
+      background: none; border: none; color: var(--text-3); font-size: 20px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; width: 38px; height: 38px;
+      border-radius: var(--r); transition: background .15s, color .15s; margin-right: 4px;
+    }
+    .btn-theme:hover { background: var(--bg-3); color: var(--text); }
+
+    body.dark-mode {
+      --bg: #1f2937;        /* Sleek Slate Gray */
+      --bg-2: #111827;      /* Solid Obsidian */
+      --bg-3: #030712;      /* Midnight Deep Space */
+      --text: #f9fafb;      /* Bright Off-White */
+      --text-3: #d1d5db;    /* Soft Gray Readable Text */
+      --text-4: #9ca3af;    /* Dark Muted Subtext */
+      --border: rgba(255,255,255,0.08);
+      --border-2: rgba(255,255,255,0.18);
+      --blue-light: rgba(26,86,219,0.15);
+    }
+    body.dark-mode .hero {
+      background: linear-gradient(135deg, #1e3a8a 0%, #111827 50%, #030712 100%);
+    }
+    body.dark-mode .support-card {
+      background: linear-gradient(135deg, #2e1065 0%, #111827 100%);
+      border-color: #a78bfa;
+    }
+    body.dark-mode .support-card h3,
+    body.dark-mode .support-card p,
+    body.dark-mode .support-card div {
+      color: #f5f3ff !important;
+    }
   </style>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://gumroad.com/js/gumroad.js"></script>
-</head>
-<body>
 
 <!-- ===== NAVIGATION ===== -->
 <nav>
@@ -454,7 +489,11 @@
     <a onclick="showPage('about')">About</a>
     <a onclick="showPage('contact')">Contact</a>
   </div>
-  <div class="nav-right">
+<div class="nav-right">
+    <button class="btn-theme" onclick="toggleTheme()" title="Toggle Light/Dark Mode">
+      <i class="ti ti-sun" id="theme-icon"></i>
+    </button>
+    
     <button class="btn-support" onclick="document.getElementById('support-section').scrollIntoView({behavior:'smooth'})">
       <i class="ti ti-heart-filled"></i> <span>Support</span>
     </button>
@@ -1030,11 +1069,34 @@ function downloadPDF() {
 }
 
 // ─── INIT & PREMIUM EXTENSIONS ─────────────────────────────────
-// ─── INIT ──────────────────────────────────────────────────
+// ─── THEME CONTROLLER ENGINE ──────────────────────────────
+  function toggleTheme() {
+    const isDark = document.body.classList.toggle('dark-mode');
+    localStorage.setItem('hr_theme', isDark ? 'dark' : 'light');
+    updateThemeIcon(isDark);
+  }
+
+  function updateThemeIcon(isDark) {
+    const icon = document.getElementById('theme-icon');
+    if (icon) {
+      icon.className = isDark ? 'ti ti-moon' : 'ti ti-sun';
+    }
+  }
+
+  // ─── INIT ──────────────────────────────────────────────────
   document.addEventListener('DOMContentLoaded', function() {
     showPage('home');
     
-    // Automatically sets up the responsive popup listeners for Gumroad links
+    // Check local store or user system preference for Dark Mode
+    const savedTheme = localStorage.getItem('hr_theme');
+    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const useDark = savedTheme === 'dark' || (!savedTheme && systemPrefersDark);
+    
+    if (useDark) {
+      document.body.classList.add('dark-mode');
+    }
+    updateThemeIcon(useDark);
+    
     if (window.Gumroad) {
       Gumroad.init();
     }
