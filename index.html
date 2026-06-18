@@ -478,11 +478,7 @@
           <div class="field"><label for="cl-job">Target job title <span style="color:#ef4444">*</span></label><input type="text" id="cl-job" placeholder="e.g. Software Engineer" autocomplete="off"/></div>
           <div class="field"><label for="cl-company">Company name <span style="color:#ef4444">*</span></label><input type="text" id="cl-company" placeholder="e.g. Google" autocomplete="off"/></div>
           <div class="field"><label for="cl-level">Experience level</label>
-           
-            <!-- button for Clear all -->
-            <button class="act-btn" onclick="clearForm()" style="margin-top:8px">
-  <i class="ti ti-eraser"></i> Clear all
-</button>
+      
             <select id="cl-level">
               <option value="fresh graduate">Fresh graduate</option>
               <option value="student / intern">Student / intern</option>
@@ -497,6 +493,10 @@
             <div class="ch" id="jd-count">0 words</div>
           </div>
           <div class="field full">
+                        <!-- button for Clear all -->
+            <button class="act-btn" onclick="clearForm()" style="margin-top:8px">
+  <i class="ti ti-eraser"></i> Clear all
+</button>
             <div class="tone-lbl">Tone</div>
             <div class="tone-row">
               <button class="tone-opt active" onclick="selTone(this,'professional')">Professional</button>
