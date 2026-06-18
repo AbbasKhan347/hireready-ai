@@ -473,11 +473,49 @@
       background: linear-gradient(135deg, #2e1065 0%, #111827 100%);
       border-color: #a78bfa;
     }
-    body.dark-mode .support-card h3,
+body.dark-mode .support-card h3,
     body.dark-mode .support-card p,
     body.dark-mode .support-card div {
       color: #f5f3ff !important;
     }
+
+    /* ===== ABOUT & CONTACT PAGES DESIGN SYSTEM ===== */
+    .about-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; margin-top: 1.5rem;
+    }
+    @media (max-width: 768px) { .about-grid { grid-template-columns: 1fr; gap: 1.5rem; } }
+    .about-text p {
+      color: var(--text-3); line-height: 1.6; margin-bottom: 1rem; font-size: 14px;
+    }
+    .about-vals {
+      display: flex; flex-direction: column; gap: 1.25rem;
+    }
+    .about-v {
+      display: flex; gap: 1rem; align-items: flex-start; padding: 1rem; 
+      background: var(--bg-2); border-radius: var(--r); border: 1px solid var(--border);
+    }
+    .about-v i {
+      font-size: 22px; color: #1A56DB; background: var(--blue-light); 
+      padding: 8px; border-radius: 8px;
+    }
+    .av-t { font-weight: 600; color: var(--text); font-size: 15px; margin-bottom: 2px; }
+    .av-d { color: var(--text-4); font-size: 13px; line-height: 1.4; }
+
+    .ct-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.25rem; margin-top: 1.5rem;
+    }
+    .ct-card {
+      display: flex; gap: 1rem; align-items: center; padding: 1.25rem;
+      background: var(--bg-2); border-radius: var(--r); border: 1px solid var(--border);
+    }
+    .ct-icon {
+      font-size: 24px; color: #1A56DB; display: flex; align-items: center; justify-content: center;
+    }
+    .ct-t { font-size: 12px; color: var(--text-4); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; }
+    .ct-v { font-size: 14px; color: var(--text); font-weight: 500; margin-top: 2px; word-break: break-all; }
+    
+    .legal h3 { color: var(--text); font-size: 16px; margin: 1.5rem 0 0.5rem; font-weight: 600; }
+    .legal p { color: var(--text-3); font-size: 14px; line-height: 1.6; margin-bottom: 0.75rem; }
   </style>
 
 <!-- ===== NAVIGATION ===== -->
@@ -749,12 +787,78 @@
     </div>
   </div>
 
+<div class="page" id="about" style="display:none;">
+    <div class="hero" style="padding:3rem 1.5rem 2.5rem">
+      <div class="hero-badge"><i class="ti ti-info-circle"></i> About us</div>
+      <h1 style="color: var(--text);">We help students <span style="color: #1A56DB;">land jobs</span></h1>
+      <p style="color: var(--text-3);">HireReady AI was built with one mission — to make professional job applications accessible to every student, everywhere.</p>
+    </div>
+    <div class="sec-wrap mt2">
+      <div class="card">
+        <div class="sec-kicker" style="color: #1A56DB; font-weight: 600; text-transform: uppercase; font-size: 12px; letter-spacing: 0.5px; margin-bottom: 4px;">Our story</div>
+        <div class="sec-title" style="font-size: 22px; font-weight: 700; color: var(--text); margin-bottom: 1rem;">Why we built HireReady AI</div>
+        <div class="about-grid">
+          <div class="about-text">
+            <p>Every year, millions of students and fresh graduates struggle with the same problem — they are qualified for the job, but they do not know how to write a cover letter that gets them noticed.</p>
+            <p>Cover letter writing is a skill nobody teaches in school. Career coaches charge hundreds of dollars. Professional writers charge even more. Most students just give up and send generic, ineffective letters — or worse, nothing at all.</p>
+            <p>We built HireReady AI to change that. Using the latest AI technology, we generate a professional, tailored, ATS-optimised cover letter in 30 seconds — for free. No experience needed. No expensive coaches. Just you, your details, and a letter that gets results.</p>
+            <p>Our mission is simple: every student deserves a fair chance at their dream job.</p>
+          </div>
+          <div class="about-vals">
+            <div class="about-v"><i class="ti ti-heart"></i><div><div class="av-t">Student first</div><div class="av-d">Every decision puts students first. 100% free forever.</div></div></div>
+            <div class="about-v"><i class="ti ti-shield-check"></i><div><div class="av-t">Privacy by default</div><div class="av-d">We never store your personal data. Your information stays yours.</div></div></div>
+            <div class="about-v"><i class="ti ti-sparkles"></i><div><div class="av-t">Quality always</div><div class="av-d">We use only the best AI to ensure professional results every time.</div></div></div>
+            <div class="about-v"><i class="ti ti-world"></i><div><div class="av-t">Global reach</div><div class="av-d">Built for students worldwide — US, UK, Europe, Australia, Asia and beyond.</div></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page" id="contact" style="display:none;">
+    <div class="hero" style="padding:3rem 1.5rem 2.5rem">
+      <div class="hero-badge"><i class="ti ti-mail"></i> Contact us</div>
+      <h1 style="color: var(--text);">We are here to <span style="color: #1A56DB;">help you</span></h1>
+      <p style="color: var(--text-3);">Have a question, feedback, or need support? We respond to every message within 24 hours.</p>
+    </div>
+    <div class="sec-wrap mt2">
+      <div class="card">
+        <div class="sec-kicker" style="color: #1A56DB; font-weight: 600; text-transform: uppercase; font-size: 12px; letter-spacing: 0.5px; margin-bottom: 4px;">Get in touch</div>
+        <div class="sec-title" style="font-size: 22px; font-weight: 700; color: var(--text); margin-bottom: 4px;">Contact HireReady AI</div>
+        <div class="sec-sub" style="color: var(--text-4); font-size: 14px; margin-bottom: 1.5rem;">We are a small team that genuinely cares about helping students. Reach out anytime.</div>
+        <div class="ct-grid">
+          <div class="ct-card"><div class="ct-icon"><i class="ti ti-mail"></i></div><div><div class="ct-t">Email support</div><div class="ct-v">hirereadyai.support@gmail.com</div></div></div>
+          <div class="ct-card"><div class="ct-icon"><i class="ti ti-clock"></i></div><div><div class="ct-t">Response time</div><div class="ct-v">Within 24 hours</div></div></div>
+          <div class="ct-card"><div class="ct-icon"><i class="ti ti-brand-twitter"></i></div><div><div class="ct-t">Twitter / X</div><div class="ct-v">@HireReadyAI</div></div></div>
+          <div class="ct-card"><div class="ct-icon"><i class="ti ti-ad"></i></div><div><div class="ct-t">Advertise with us</div><div class="ct-v">ads@hirereadyai.com</div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page" id="privacy" style="display:none;">
+    <div class="sec-wrap" style="padding-top:2rem">
+      <div class="card">
+        <div class="sec-title" style="font-size: 24px; font-weight: 700; color: var(--text); margin-bottom: 1rem;">Privacy Policy</div>
+        <div class="legal">
+          <p style="color: var(--text-4); font-style: italic;">Last updated: June 2026</p>
+          <h3>1. Information we collect</h3><p>HireReady AI does not require account registration. We do not collect or store personal details entered into the cover letter form. Each generation request is processed in real time and discarded immediately after your letter is generated.</p>
+          <h3>2. How we use information</h3><p>We use anonymous usage data to improve our service. This contains no personally identifiable information. We use Google Analytics to understand how users interact with our platform.</p>
+          <h3>3. Cookies</h3><p>We use essential cookies to ensure the website functions correctly. We also use advertising cookies for Google AdSense. You may disable cookies in your browser settings.</p>
+          <h3>4. Third party services</h3><p>We use third-party AI services to generate cover letters. Your prompt data is sent solely for generating your letter and is not stored or used for training.</p>
+          <h3>5. Your rights</h3><p>Since we do not store personal data, there is nothing to delete or export. For concerns, contact hirereadyai.support@gmail.com</p>
+          <h3>6. Contact</h3><p>For privacy questions, email hirereadyai.support@gmail.com We respond within 24 hours.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="page" id="terms" style="display:none;">
     <div class="sec-wrap" style="padding-top:2rem">
       <div class="card">
-        <div class="sec-title">Terms of Service</div>
+        <div class="sec-title" style="font-size: 24px; font-weight: 700; color: var(--text); margin-bottom: 1rem;">Terms of Service</div>
         <div class="legal">
-          <p>Last updated: June 2026</p>
+          <p style="color: var(--text-4); font-style: italic;">Last updated: June 2026</p>
           <h3>1. Acceptance of terms</h3><p>By using HireReady AI you agree to these terms. If you do not agree, please do not use our service.</p>
           <h3>2. Use of service</h3><p>HireReady AI is provided for personal use to help individuals create cover letters and resume content. You may not resell or redistribute outputs without written permission.</p>
           <h3>3. AI-generated content</h3><p>Cover letters are created by artificial intelligence. You are responsible for reviewing content before submitting to employers. We do not guarantee employment outcomes.</p>
