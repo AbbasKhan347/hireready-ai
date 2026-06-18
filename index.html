@@ -18,6 +18,38 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
 
   <style>
+    /* ===== SUPPORT CARD – Clean Classes ===== */
+.support-icon {
+  font-size: 40px;
+  color: #8B5CF6;
+  display: block;
+  margin-bottom: 12px;
+}
+
+.support-flex {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+}
+
+.support-tip {
+  font-size: 12px;
+  color: #6D28D9;
+  font-weight: 500;
+}
+
+.support-footer {
+  font-size: 11px;
+  color: #7C3AED;
+  margin-top: 12px;
+  opacity: 0.7;
+}
+
+/* Remove underline from the support button link */
+.support-btn {
+  text-decoration: none !important;
+}
     /* ===== ROOT VARIABLES ===== */
     :root {
       --blue: #1A56DB;
@@ -565,28 +597,18 @@
 
   <!-- SUPPORT SECTION -->
   <div class="sec-wrap mt2" id="support-section">
-    <div class="support-card">
-      <i class="ti ti-heart-filled" style="font-size:40px;color:#8B5CF6;display:block;margin-bottom:12px"></i>
-      <h3>Support HireReady AI ❤️</h3>
-      <p>This tool is 100% free and always will be. If you've landed an interview or found value in our service, consider supporting us to keep the AI running and improving.</p>
-      <div style="display:flex;flex-direction:column;gap:12px;align-items:center">
-        <a href="https://husnain555.gumroad.com/l/ylirid" target="_blank" class="support-btn" style="text-decoration:none;">
-          <i class="ti ti-heart"></i> Support via Gumroad
-        </a>
-        <div style="font-size:12px;color:#6D28D9;font-weight:500">One‑time tip – any amount you choose</div>
-        <!-- Uncomment and fill for local Pakistan methods -->
-        <!--
-        <div style="font-size:12px;color:#4C1D95;margin-top:6px;border-top:1px dashed #C4B5FD;padding-top:10px;width:100%;max-width:300px">
-          <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:12px">
-            <span><i class="ti ti-device-mobile"></i> JazzCash: 03XX-XXXXXXX</span>
-            <span><i class="ti ti-device-mobile"></i> Easypaisa: 03XX-XXXXXXX</span>
-          </div>
-        </div>
-        -->
-      </div>
-      <div style="font-size:11px;color:#7C3AED;margin-top:12px;opacity:.7">Every contribution helps keep this tool free for students worldwide 🙏</div>
-    </div>
+<div class="support-card">
+  <i class="ti ti-heart-filled support-icon"></i>
+  <h3>Support HireReady AI ❤️</h3>
+  <p>This tool is 100% free and always will be. If you've landed an interview or found value in our service, consider supporting us to keep the AI running and improving.</p>
+  <div class="support-flex">
+    <a href="https://husnain555.gumroad.com/l/ylirid" target="_blank" class="support-btn">
+      <i class="ti ti-heart"></i> Support via Gumroad
+    </a>
+    <div class="support-tip">One‑time tip – any amount you choose</div>
   </div>
+  <div class="support-footer">Every contribution helps keep this tool free for students worldwide 🙏</div>
+</div>
 
   <!-- FAQ -->
   <div class="sec-wrap mt2">
