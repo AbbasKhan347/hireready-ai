@@ -442,7 +442,7 @@
   </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://gumroad.com/js/gumroad.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script></head>
+</head>
 <body>
 
 <!-- ===== NAVIGATION ===== -->
@@ -604,9 +604,9 @@
   <h3>Support HireReady AI ❤️</h3>
   <p>This tool is 100% free and always will be. If you've landed an interview or found value in our service, consider supporting us to keep the AI running and improving.</p>
   <div class="support-flex">
-    <a href="https://husnain555.gumroad.com/l/ylirid" data-gumroad-overlay-checkout="true" target="_blank" class="support-btn" style="text-decoration:none;">
-  <i class="ti ti-heart"></i> Support via Gumroad
-</a>
+<a href="https://husnain555.gumroad.com/l/ylirid" data-gumroad-overlay-checkout="true" target="_blank" class="support-btn" style="text-decoration:none;">
+          <i class="ti ti-heart"></i> Support via Gumroad
+        </a>
     <div class="support-tip">One‑time tip – any amount you choose</div>
   </div>
   <div class="support-footer">Every contribution helps keep this tool free for students worldwide 🙏</div>
@@ -1030,15 +1030,15 @@ function downloadPDF() {
 }
 
 // ─── INIT & PREMIUM EXTENSIONS ─────────────────────────────────
-document.addEventListener('DOMContentLoaded', function() {
-  showPage('home');
-  
-  // High-converting configuration logic: This prepares your Gumroad link to function 
-  // seamlessly as an overlay pop-up window over your live application layer.
-  if (window.Gumroad) {
-    Gumroad.init();
-  }
-});
+// ─── INIT ──────────────────────────────────────────────────
+  document.addEventListener('DOMContentLoaded', function() {
+    showPage('home');
+    
+    // Automatically sets up the responsive popup listeners for Gumroad links
+    if (window.Gumroad) {
+      Gumroad.init();
+    }
+  });
 </script>
 </body>
 </html>
