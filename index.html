@@ -876,6 +876,7 @@
   // ─── PDF DOWNLOAD ──────────────────────────────────────────
 // ─── PDF DOWNLOAD (html2pdf.js) ──────────────────────────
 // ─── PDF DOWNLOAD (jsPDF – Text‑Based) ──────────────────────────
+// ─── PDF DOWNLOAD – Clean Letter Only (No Branding) ─────────
 function downloadPDF() {
   const letterText = document.getElementById('cl-body').textContent;
   if (!letterText || letterText.includes('Crafting your') || letterText.includes('Something went wrong')) {
@@ -883,13 +884,11 @@ function downloadPDF() {
     return;
   }
 
-  // Get user details
+  // Get user details (only for filename, not visible in PDF)
   const name = document.getElementById('cl-name').value.trim() || 'Applicant';
   const job = document.getElementById('cl-job').value.trim() || 'Position';
-  const company = document.getElementById('cl-company').value.trim() || 'Company';
-  const today = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
-  // Prepare letter lines
+  // Split into lines, remove empty lines
   const lines = letterText.split('\n').filter(line => line.trim() !== '');
 
   // ─── Create PDF with jsPDF ──────────────────────────────────
@@ -901,110 +900,40 @@ function downloadPDF() {
   });
 
   const pageWidth = 210; // A4 width in mm
-  const leftMargin = 20;
-  const rightMargin = 20;
+  const leftMargin = 25;
+  const rightMargin = 25;
   const maxWidth = pageWidth - leftMargin - rightMargin;
-  let y = 25; // starting Y position from top
+  let y = 30; // start from top with some margin
 
-  // Helper to add a line of text with word wrapping
-  function addLine(text, fontSize = 12, style = 'normal', align = 'left') {
-    doc.setFontSize(fontSize);
+  // Helper to add a paragraph with word wrapping and justification
+  function addParagraph(text, fontSize = 12, style = 'normal', align = 'justify') {
     doc.setFont('helvetica', style);
-    const lines = doc.splitTextToSize(text, maxWidth);
-    doc.text(lines, leftMargin, y, { align: align });
-    y += (lines.length * fontSize * 0.45) + 2; // line height approx
+    doc.setFontSize(fontSize);
+    const wrapped = doc.splitTextToSize(text, maxWidth);
+    doc.text(wrapped, leftMargin, y, { align: align });
+    y += (wrapped.length * fontSize * 0.45) + 2.5; // line spacing
   }
 
-  // ─── 1. Header ──────────────────────────────────────────────
-  doc.setFont('helvetica', 'bold');
-  doc.setFontSize(18);
-  doc.setTextColor('#1A56DB');
-  doc.text('HireReady AI', leftMargin, y);
-  y += 8;
-  doc.setFontSize(11);
-  doc.setTextColor('#6B7280');
-  doc.setFont('helvetica', 'normal');
-  doc.text('Professional Cover Letter', leftMargin, y);
-  y += 6;
-
-  // Date (right aligned)
-  doc.setFontSize(11);
-  doc.setTextColor('#6B7280');
-  const dateWidth = doc.getTextWidth(today);
-  doc.text(today, pageWidth - rightMargin - dateWidth, y - 6);
-
-  // Separator line
-  y += 4;
-  doc.setDrawColor('#1A56DB');
-  doc.setLineWidth(0.5);
-  doc.line(leftMargin, y, pageWidth - rightMargin, y);
-  y += 8;
-
-  // ─── 2. Applicant info ──────────────────────────────────────
-  doc.setFont('helvetica', 'bold');
-  doc.setFontSize(16);
-  doc.setTextColor('#111827');
-  doc.text(name, leftMargin, y);
-  y += 8;
-  doc.setFont('helvetica', 'normal');
-  doc.setFontSize(13);
-  doc.setTextColor('#374151');
-  doc.text(`Application for ${job} at ${company}`, leftMargin, y);
-  y += 10;
-
-  // ─── 3. Letter body ──────────────────────────────────────────
-  doc.setFont('helvetica', 'normal');
-  doc.setFontSize(12);
-  doc.setTextColor('#1F2937');
-
+  // ─── Write the letter content ──────────────────────────────
   for (const line of lines) {
     const trimmed = line.trim();
-    // Detect headings / salutations / closings
+    // Detect salutation / closing to make them bold
     const lower = trimmed.toLowerCase();
-    if (lower.includes('dear')) {
-      doc.setFont('helvetica', 'bold');
-      doc.setFontSize(13);
-      const wrapped = doc.splitTextToSize(trimmed, maxWidth);
-      doc.text(wrapped, leftMargin, y);
-      y += (wrapped.length * 13 * 0.45) + 3;
-      doc.setFont('helvetica', 'normal');
-      doc.setFontSize(12);
-    } else if (lower.includes('sincerely') || lower.includes('best regards') || lower.includes('thank you')) {
-      y += 4;
-      doc.setFont('helvetica', 'bold');
-      doc.setFontSize(12);
-      const wrapped = doc.splitTextToSize(trimmed, maxWidth);
-      doc.text(wrapped, leftMargin, y);
-      y += (wrapped.length * 12 * 0.45) + 3;
-      doc.setFont('helvetica', 'normal');
+    if (lower.includes('dear') || lower.includes('sincerely') || 
+        lower.includes('best regards') || lower.includes('yours faithfully')) {
+      addParagraph(trimmed, 12, 'bold', 'left');
     } else {
-      // Regular paragraph – word wrap and justify (we'll align left, but you can set align='justify')
-      const wrapped = doc.splitTextToSize(trimmed, maxWidth);
-      doc.text(wrapped, leftMargin, y, { align: 'justify' });
-      y += (wrapped.length * 12 * 0.45) + 2;
+      addParagraph(trimmed, 12, 'normal', 'justify');
     }
 
     // Check if we need a new page
     if (y > 270) {
       doc.addPage();
-      y = 25;
+      y = 30;
     }
   }
 
-  // ─── 4. Footer ──────────────────────────────────────────────
-  y += 8;
-  if (y > 270) {
-    doc.addPage();
-    y = 25;
-  }
-  doc.setFont('helvetica', 'italic');
-  doc.setFontSize(10);
-  doc.setTextColor('#9CA3AF');
-  const footer = 'Generated by HireReady AI — Free Cover Letter Tool for Students';
-  const footerWidth = doc.getTextWidth(footer);
-  doc.text(footer, (pageWidth - footerWidth) / 2, y);
-
-  // ─── 5. Save ──────────────────────────────────────────────────
+  // ─── Save PDF ──────────────────────────────────────────────────
   const fileName = `Cover_Letter_${name.replace(/\s+/g, '_')}_${job.replace(/\s+/g, '_')}.pdf`;
   doc.save(fileName);
   showToast('✅ PDF downloaded successfully!');
