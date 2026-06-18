@@ -478,6 +478,11 @@
           <div class="field"><label for="cl-job">Target job title <span style="color:#ef4444">*</span></label><input type="text" id="cl-job" placeholder="e.g. Software Engineer" autocomplete="off"/></div>
           <div class="field"><label for="cl-company">Company name <span style="color:#ef4444">*</span></label><input type="text" id="cl-company" placeholder="e.g. Google" autocomplete="off"/></div>
           <div class="field"><label for="cl-level">Experience level</label>
+           
+            <!-- button for Clear all -->
+            <button class="act-btn" onclick="clearForm()" style="margin-top:8px">
+  <i class="ti ti-eraser"></i> Clear all
+</button>
             <select id="cl-level">
               <option value="fresh graduate">Fresh graduate</option>
               <option value="student / intern">Student / intern</option>
@@ -874,6 +879,14 @@
     });
   }
 
+  // Clear All Function
+function clearForm() {
+  document.querySelectorAll('#cl-name, #cl-job, #cl-company, #cl-skills, #cl-jd')
+    .forEach(el => el.value = '');
+  document.getElementById('jd-count').textContent = '0 words';
+  document.getElementById('cl-out').classList.remove('show');
+  showToast('🧹 Form cleared');
+}
   // ─── PDF DOWNLOAD ──────────────────────────────────────────
 // ─── PDF DOWNLOAD (html2pdf.js) ──────────────────────────
 // ─── PDF DOWNLOAD (jsPDF – Text‑Based) ──────────────────────────
