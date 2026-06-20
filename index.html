@@ -1081,15 +1081,40 @@ function goToPayment() {
   }
 
   // ── EMAIL COLLECT ──────────────────────────────────
-  function collectEmail() {
+async function collectEmail() {
     const email = document.getElementById('collect-email').value.trim();
-    if (!email || !email.includes('@')) { showToast('Please enter a valid email address.'); return; }
-    const emails = JSON.parse(localStorage.getItem('collected_emails') || '[]');
-    if (emails.includes(email)) { showToast('You are already subscribed! Thank you.'); return; }
-    emails.push(email);
-    localStorage.setItem('collected_emails', JSON.stringify(emails));
-    document.getElementById('email-collect').innerHTML =
-      '<div style="text-align:center;padding:10px"><i class="ti ti-circle-check" style="font-size:32px;color:var(--green);display:block;margin-bottom:8px"></i><p style="font-size:14px;font-weight:600;color:var(--text)">Thank you for subscribing!</p><p style="font-size:13px;color:var(--text-3)">We will send you weekly job tips and career advice.</p></div>';
+    if (!email || !email.includes('@')) {
+      showToast('Please enter a valid email address.');
+      return;
+    }
+
+    const btn = document.querySelector('.email-row button');
+    btn.disabled = true;
+    btn.textContent = 'Subscribing...';
+
+    try {
+      const res = await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        document.getElementById('email-collect').innerHTML =
+          '<div style="text-align:center;padding:10px"><i class="ti ti-circle-check" style="font-size:32px;color:var(--green);display:block;margin-bottom:8px"></i><p style="font-size:14px;font-weight:600;color:var(--text)">Thank you for subscribing!</p><p style="font-size:13px;color:var(--text-3)">We will send you weekly job tips and career advice.</p></div>';
+        showToast('Successfully subscribed!');
+      } else {
+        showToast('Something went wrong. Please try again.');
+        btn.disabled = false;
+        btn.textContent = 'Subscribe free';
+      }
+    } catch (e) {
+      showToast('Something went wrong. Please try again.');
+      btn.disabled = false;
+      btn.textContent = 'Subscribe free';
+    }
   }
 
   // ── COPY ───────────────────────────────────────────
