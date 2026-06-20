@@ -19,6 +19,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://gumroad.com/js/gumroad.js"></script>
 
   <style>
     /* ===== CSS VARIABLES ===== */
@@ -1014,14 +1015,25 @@
     document.getElementById('custom-amount').value = '';
   }
 
-  function goToPayment() {
+function goToPayment() {
     const custom = document.getElementById('custom-amount').value.trim();
     const amount = custom || selectedTipAmount;
-    // REPLACE THIS URL WITH YOUR GUMROAD SUPPORT LINK
-    const gumroadUrl = 'https://husnain555.gumroad.com/l/ylirid';
-        window.open(gumroadUrl + '?suggested_price=' + amount, '_blank');
+    
+    // Construct the URL with the dynamic price
+    const gumroadUrl = 'https://husnain555.gumroad.com/l/ylirid?price=' + amount;
+
+    // Create an invisible link to trigger the Gumroad overlay securely
+    const tempLink = document.createElement('a');
+    tempLink.href = gumroadUrl;
+    tempLink.setAttribute('data-gumroad-overlay-checkout', 'true');
+    
+    // Append, click, and remove the invisible link instantly
+    document.body.appendChild(tempLink);
+    tempLink.click();
+    document.body.removeChild(tempLink);
+
     closeSupport();
-    showToast('Thank you for your support! ❤️');
+    showToast('Loading secure checkout... ❤️');
   }
 
   // Click outside modal to close
@@ -1225,7 +1237,7 @@ Write only the cover letter text. Nothing else.`;
     btn.innerHTML = '<i class="ti ti-wand"></i> Generate my cover letter — free';
   }
 
-  // ── INIT ───────────────────────────────────────────
+// ── INIT ───────────────────────────────────────────
   document.addEventListener('DOMContentLoaded', function () {
     showPage('home');
     const saved = localStorage.getItem('hr_theme');
@@ -1233,6 +1245,11 @@ Write only the cover letter text. Nothing else.`;
     const useDark = saved === 'dark' || (!saved && sysDark);
     if (useDark) document.body.classList.add('dark');
     updateThemeIcon(useDark);
+    
+    // Wake up the Gumroad popup engine
+    if (window.Gumroad) {
+      Gumroad.init();
+    }
   });
 </script>
 </body>
