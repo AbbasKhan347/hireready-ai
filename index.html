@@ -520,7 +520,7 @@ body.dark-mode .support-card h3,
 
 <!-- ===== NAVIGATION ===== -->
 <nav>
-  <div class="logo" onclick="showPage('home')"><i class="ti ti-briefcase" aria-hidden="true"></i>></i>Hire<span>Ready</span> AI</div>
+  <div class="logo" onclick="showPage('home')"><i class="ti ti-briefcase" aria-hidden="true"></i>Hire<span>Ready</span> AI</div>
   <div class="nav-links">
     <a onclick="showPage('home')">Home</a>
     <a onclick="showPage('home');setTimeout(()=>document.getElementById('how').scrollIntoView({behavior:'smooth'}),100)">How it works</a>
@@ -675,19 +675,18 @@ body.dark-mode .support-card h3,
   </div>
 
   <!-- SUPPORT SECTION -->
-  <div class="sec-wrap mt2" id="support-section">
-<div class="support-card">
-  <i class="ti ti-heart-filled support-icon"></i>
-  <h3>Support HireReady AI ❤️</h3>
-  <p>This tool is 100% free and always will be. If you've landed an interview or found value in our service, consider supporting us to keep the AI running and improving.</p>
-  <div class="support-flex">
-<a href="https://husnain555.gumroad.com/l/ylirid" target="_blank" class="support-btn" style="text-decoration:none;">
-          <i class="ti ti-heart"></i> Support via Gumroad
-        </a>
-    <div class="support-tip">One‑time tip – any amount you choose</div>
+  <div class="sw mt2" id="support-section">
+    <div class="support-card">
+      <i class="ti ti-heart-filled" style="font-size:40px;color:var(--purple);display:block;margin-bottom:12px"></i>
+      <h3>Support HireReady AI ❤️</h3>
+      <p>This tool is 100% free and always will be. If you have landed an interview or found value here, consider supporting us to keep the AI running and improving for students worldwide.</p>
+      <button class="support-btn" onclick="openSupport()">
+        <i class="ti ti-heart"></i> Support us — any amount
+      </button>
+      <div class="support-tip">One-time tip — any amount you choose 🙏</div>
+      <div class="support-foot">Every contribution helps keep this tool free for students worldwide</div>
+    </div>
   </div>
-  <div class="support-footer">Every contribution helps keep this tool free for students worldwide 🙏</div>
-</div>
 
   <!-- FAQ -->
   <div class="sec-wrap mt2">
