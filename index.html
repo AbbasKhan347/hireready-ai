@@ -573,9 +573,14 @@
       <input type="number" id="custom-amount" placeholder="Or enter custom amount ($)" min="1" />
     </div>
 
-    <button class="modal-pay-btn" onclick="goToPayment()">
-      <i class="ti ti-heart"></i> Support via Gumroad
-    </button>
+   <a id="gumroad-pay-link"
+   href="https://husnain555.gumroad.com/l/ylirid?wanted=true"
+   data-gumroad-overlay-checkout="true"
+   data-gumroad-price="3"
+   class="modal-pay-btn"
+   style="text-decoration:none; display:inline-flex; align-items:center; justify-content:center; gap:8px; width:100%; padding:14px; font-size:15px; font-weight:700; background:#8B5CF6; color:#fff; border:none; border-radius:8px; cursor:pointer; font-family:inherit; box-shadow:0 4px 14px rgba(139,92,246,.35); transition:background 0.15s;">
+    <i class="ti ti-heart"></i> Support via Gumroad
+</a>
     <div class="modal-note">You will be taken to our secure Gumroad page to complete the payment.</div>
     <button class="modal-skip" onclick="closeSupport()">Maybe later</button>
   </div>
@@ -1017,25 +1022,22 @@
 
 function goToPayment() {
     const custom = document.getElementById('custom-amount').value.trim();
-    const amount = custom || selectedTipAmount;
-    
-    // Construct the URL with the dynamic price
-    const gumroadUrl = 'https://husnain555.gumroad.com/l/ylirid?price=' + amount;
+    let amount = selectedTipAmount; // from your preset buttons (1,3,5)
 
-    // Create an invisible link to trigger the Gumroad overlay securely
-    const tempLink = document.createElement('a');
-    tempLink.href = gumroadUrl;
-    tempLink.setAttribute('data-gumroad-overlay-checkout', 'true');
-    
-    // Append, click, and remove the invisible link instantly
-    document.body.appendChild(tempLink);
-    tempLink.click();
-    document.body.removeChild(tempLink);
+    if (custom && !isNaN(custom) && parseInt(custom) > 0) {
+        amount = parseInt(custom);
+    }
 
-    closeSupport();
-    showToast('Loading secure checkout... ❤️');
-  }
+    const payLink = document.getElementById('gumroad-pay-link');
+    if (!payLink) return;
 
+    // Update the price and URL
+    payLink.setAttribute('data-gumroad-price', amount);
+    payLink.href = `https://husnain555.gumroad.com/l/ylirid?wanted=true&price=${amount}`;
+
+    closeSupport(); // close your custom modal
+    payLink.click(); // triggers the Gumroad overlay
+}
   // Click outside modal to close
   document.getElementById('support-modal').addEventListener('click', function(e) {
     if (e.target === this) closeSupport();
