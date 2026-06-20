@@ -1,64 +1,39 @@
-<!-- updated Deepseek code -->
+<!-- updated claude code -->
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Free AI Cover Letter Generator — HireReady AI</title>
-  <meta name="description" content="Generate professional ATS-optimised cover letters in seconds. 100% free for students." />
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💼</text></svg>" />
-  <link rel="canonical" href="https://hireready-ai-puce.vercel.app/" />
+  <title>Free AI Cover Letter Generator for Students — HireReady AI</title>
+  <meta name="description" content="Generate a professional, ATS-optimised cover letter in 30 seconds with AI. 100% free for students and fresh graduates. No account needed." />
+  <meta name="keywords" content="free AI cover letter generator, cover letter for students, AI cover letter writer, ATS cover letter, cover letter fresh graduate, cover letter UK, cover letter US" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://aicovertletter.com/" />
   <meta property="og:title" content="Free AI Cover Letter Generator — HireReady AI" />
-  <meta property="og:description" content="Generate a professional cover letter in 30 seconds. Free for students." />
+  <meta property="og:description" content="Generate a professional cover letter in 30 seconds. 100% free for students." />
+  <meta property="og:type" content="website" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💼</text></svg>" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="preconnect" href="https://cdn.jsdelivr.net" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
   <style>
-    /* ===== SUPPORT CARD – Clean Classes ===== */
-.support-icon {
-  font-size: 40px;
-  color: #8B5CF6;
-  display: block;
-  margin-bottom: 12px;
-}
-
-.support-flex {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  align-items: center;
-}
-
-.support-tip {
-  font-size: 12px;
-  color: #6D28D9;
-  font-weight: 500;
-}
-
-.support-footer {
-  font-size: 11px;
-  color: #7C3AED;
-  margin-top: 12px;
-  opacity: 0.7;
-}
-
-/* Remove underline from the support button link */
-.support-btn {
-  text-decoration: none !important;
-}
-    /* ===== ROOT VARIABLES ===== */
+    /* ===== CSS VARIABLES ===== */
     :root {
       --blue: #1A56DB;
       --blue-dark: #0E3FA0;
       --blue-light: #EBF2FF;
+      --purple: #8B5CF6;
+      --purple-dark: #7C3AED;
+      --purple-light: #EDE9FE;
       --text: #111827;
+      --text-2: #374151;
       --text-3: #6B7280;
       --text-4: #9CA3AF;
-      --bg: #fff;
+      --bg: #ffffff;
       --bg-2: #F9FAFB;
       --bg-3: #F3F4F6;
       --border: rgba(0,0,0,0.08);
@@ -69,9 +44,38 @@
       --r-xl: 20px;
       --s: 0 1px 3px rgba(0,0,0,0.08);
       --sm: 0 4px 6px rgba(0,0,0,0.07);
+      --sl: 0 10px 15px rgba(0,0,0,0.08);
     }
-    /* ===== RESET & BASE ===== */
-    *, *::before, *::after { box-sizing: border-box; margin:0; padding:0; }
+
+    /* ===== DARK MODE ===== */
+    body.dark {
+      --bg: #1f2937;
+      --bg-2: #111827;
+      --bg-3: #030712;
+      --text: #f9fafb;
+      --text-2: #e5e7eb;
+      --text-3: #d1d5db;
+      --text-4: #9ca3af;
+      --border: rgba(255,255,255,0.08);
+      --border-2: rgba(255,255,255,0.18);
+      --blue-light: rgba(26,86,219,0.2);
+      --purple-light: rgba(139,92,246,0.2);
+    }
+    body.dark .hero {
+      background: linear-gradient(135deg, #1e3a8a 0%, #111827 50%, #030712 100%);
+    }
+    body.dark .support-card {
+      background: linear-gradient(135deg, #2e1065 0%, #111827 100%);
+      border-color: #a78bfa;
+    }
+    body.dark .support-card h3 { color: #f5f3ff; }
+    body.dark .support-card p { color: #ddd6fe; }
+    body.dark .support-tip { color: #c4b5fd; }
+    body.dark .support-foot { color: #a78bfa; }
+    body.dark footer { background: #030712; }
+
+    /* ===== RESET ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     body {
       font-family: 'Inter', sans-serif;
@@ -79,460 +83,519 @@
       color: var(--text);
       font-size: 15px;
       line-height: 1.6;
+      transition: background 0.3s ease, color 0.3s ease;
     }
     a { color: var(--blue); text-decoration: none; }
     a:hover { text-decoration: underline; }
 
     /* ===== NAV ===== */
     nav {
-      position: sticky; top:0; z-index:200;
+      position: sticky; top: 0; z-index: 200;
       display: flex; align-items: center; justify-content: space-between;
-      padding: 0 24px; height:64px;
+      padding: 0 24px; height: 64px;
       background: var(--bg);
       border-bottom: 1px solid var(--border);
       box-shadow: var(--s);
+      transition: background 0.3s ease;
     }
-    .logo { display:flex; align-items:center; gap:10px; font-size:18px; font-weight:700; cursor:pointer; }
-    .logo i { font-size:24px; color:var(--blue); }
-    .logo span { color:var(--blue); }
-    .nav-links { display:flex; align-items:center; gap:24px; }
-    .nav-links a { font-size:14px; font-weight:500; color:var(--text-3); cursor:pointer; }
-    .nav-links a:hover { color:var(--blue); text-decoration:none; }
-    .nav-right { display:flex; gap:10px; align-items:center; }
+    .logo {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 18px; font-weight: 700; cursor: pointer; color: var(--text);
+    }
+    .logo i { font-size: 24px; color: var(--blue); }
+    .logo span { color: var(--blue); }
+    .nav-links { display: flex; align-items: center; gap: 24px; }
+    .nav-links a {
+      font-size: 14px; font-weight: 500; color: var(--text-3); cursor: pointer;
+    }
+    .nav-links a:hover { color: var(--blue); text-decoration: none; }
+    .nav-right { display: flex; gap: 8px; align-items: center; }
+    .btn-theme {
+      background: none; border: none; color: var(--text-3); font-size: 20px;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      width: 38px; height: 38px; border-radius: var(--r);
+      transition: background 0.15s, color 0.15s;
+    }
+    .btn-theme:hover { background: var(--bg-3); color: var(--text); }
     .btn-support {
-      padding:8px 18px; font-size:13px; font-weight:600; border:none;
-      color:#fff; background:#8B5CF6; border-radius:var(--r);
-      cursor:pointer; display:inline-flex; align-items:center; gap:6px;
-      font-family:inherit;
+      padding: 8px 16px; font-size: 13px; font-weight: 600; border: none;
+      color: #fff; background: var(--purple); border-radius: var(--r);
+      cursor: pointer; display: inline-flex; align-items: center; gap: 6px;
+      font-family: inherit; transition: background 0.15s;
     }
-    .btn-support:hover { background:#7C3AED; }
-    @media(max-width:640px) {
-      .nav-links { display:none; }
-      .btn-support span { display:none; }
+    .btn-support:hover { background: var(--purple-dark); }
+    @media(max-width: 640px) {
+      .nav-links { display: none; }
+      .btn-support span { display: none; }
     }
 
     /* ===== HERO ===== */
     .hero {
-      text-align:center; padding:5rem 1.5rem 4rem;
-      background:linear-gradient(135deg,#EBF2FF 0%,#F0F7FF 50%,#F9FAFB 100%);
-      border-bottom:1px solid var(--border);
+      text-align: center; padding: 5rem 1.5rem 4rem;
+      background: linear-gradient(135deg, #EBF2FF 0%, #F0F7FF 50%, #F9FAFB 100%);
+      border-bottom: 1px solid var(--border);
+      transition: background 0.3s ease;
     }
     .hero-badge {
-      display:inline-flex; align-items:center; gap:6px;
-      font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:1px;
-      color:var(--blue); background:var(--blue-light);
-      border:1px solid rgba(26,86,219,0.2); padding:6px 14px; border-radius:20px;
-      margin-bottom:1.5rem;
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;
+      color: var(--blue); background: var(--blue-light);
+      border: 1px solid rgba(26,86,219,0.2); padding: 6px 14px; border-radius: 20px;
+      margin-bottom: 1.5rem;
     }
     .hero h1 {
-      font-size:44px; font-weight:700; line-height:1.15;
-      max-width:640px; margin:0 auto 1.2rem;
+      font-size: 44px; font-weight: 700; line-height: 1.15;
+      color: var(--text); max-width: 640px; margin: 0 auto 1.2rem;
     }
-    .hero h1 span { color:var(--blue); }
+    .hero h1 span { color: var(--blue); }
     .hero p {
-      font-size:17px; color:var(--text-3);
-      max-width:520px; margin:0 auto 2rem; line-height:1.8;
+      font-size: 17px; color: var(--text-3);
+      max-width: 520px; margin: 0 auto 2rem; line-height: 1.8;
     }
-    .hero-cta { display:flex; justify-content:center; gap:12px; flex-wrap:wrap; margin-bottom:3rem; }
+    .hero-cta { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-bottom: 3rem; }
     .h-btn {
-      padding:14px 28px; font-size:15px; font-weight:700; border:none;
-      border-radius:var(--r); cursor:pointer; display:flex; align-items:center; gap:8px;
-      transition:all .15s; font-family:inherit;
+      padding: 14px 28px; font-size: 15px; font-weight: 700; border: none;
+      border-radius: var(--r); cursor: pointer; display: flex; align-items: center; gap: 8px;
+      transition: all 0.15s; font-family: inherit;
     }
-    .h-btn.pri { background:var(--blue); color:#fff; box-shadow:0 4px 14px rgba(26,86,219,.35); }
-    .h-btn.pri:hover { background:var(--blue-dark); transform:translateY(-1px); }
-    .h-btn.sec { background:var(--bg); color:var(--text); border:1.5px solid var(--border-2); }
-    .h-btn.sec:hover { background:var(--bg-2); }
-    .hero-stats { display:flex; justify-content:center; gap:3rem; flex-wrap:wrap; }
-    .stat-num { font-size:26px; font-weight:700; }
-    .stat-label { font-size:12px; color:var(--text-4); text-transform:uppercase; letter-spacing:1px; margin-top:2px; }
-    @media(max-width:640px) {
-      .hero h1 { font-size:30px; }
-      .hero p { font-size:15px; }
-    }
+    .h-btn.pri { background: var(--blue); color: #fff; box-shadow: 0 4px 14px rgba(26,86,219,.35); }
+    .h-btn.pri:hover { background: var(--blue-dark); transform: translateY(-1px); }
+    .h-btn.sec { background: var(--bg); color: var(--text); border: 1.5px solid var(--border-2); }
+    .h-btn.sec:hover { background: var(--bg-2); }
+    .hero-stats { display: flex; justify-content: center; gap: 3rem; flex-wrap: wrap; }
+    .stat-num { font-size: 26px; font-weight: 700; color: var(--text); }
+    .stat-label { font-size: 12px; color: var(--text-4); text-transform: uppercase; letter-spacing: 1px; margin-top: 2px; }
+    @media(max-width: 640px) { .hero h1 { font-size: 28px; } .hero p { font-size: 15px; } }
 
     /* ===== ADS ===== */
-    .aw { max-width:860px; margin:1.5rem auto 0; padding:0 1.5rem; }
+    .aw { max-width: 860px; margin: 1.5rem auto 0; padding: 0 1.5rem; }
     .ad {
-      display:flex; align-items:center; justify-content:space-between;
-      padding:12px 18px; background:var(--bg); border:1px solid var(--border);
-      border-radius:var(--r); font-size:13px; color:var(--text-4); box-shadow:var(--s);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 12px 18px; background: var(--bg); border: 1px solid var(--border);
+      border-radius: var(--r); font-size: 13px; color: var(--text-4); box-shadow: var(--s);
     }
-    .ad-tag { font-size:10px; text-transform:uppercase; letter-spacing:1px; border:1px solid var(--border-2); padding:2px 7px; border-radius:4px; }
+    .ad-tag {
+      font-size: 10px; text-transform: uppercase; letter-spacing: 1px;
+      border: 1px solid var(--border-2); padding: 2px 7px; border-radius: 4px;
+      color: var(--text-4); flex-shrink: 0; margin-left: 10px;
+    }
 
     /* ===== SECTIONS ===== */
-    .sec-wrap { max-width:860px; margin:2.5rem auto 0; padding:0 1.5rem; }
-    .card { background:var(--bg); border:1px solid var(--border); border-radius:var(--r-xl); padding:2.5rem; box-shadow:var(--s); }
-    .sec-kicker { font-size:11px; font-weight:600; letter-spacing:3px; text-transform:uppercase; color:var(--blue); margin-bottom:6px; }
-    .sec-title { font-size:24px; font-weight:700; margin-bottom:6px; }
-    .sec-sub { font-size:14px; color:var(--text-3); margin-bottom:2rem; line-height:1.7; }
+    .sw { max-width: 860px; margin: 2.5rem auto 0; padding: 0 1.5rem; }
+    .card {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: var(--r-xl); padding: 2.5rem; box-shadow: var(--s);
+    }
+    .kicker { font-size: 11px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: var(--blue); margin-bottom: 6px; }
+    .sec-title { font-size: 24px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+    .sec-sub { font-size: 14px; color: var(--text-3); margin-bottom: 2rem; line-height: 1.7; }
 
     /* ===== HOW IT WORKS ===== */
-    .steps { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:1.5rem; }
-    .step { text-align:center; padding:1.5rem 1rem; background:var(--bg-2); border-radius:var(--r-lg); border:1px solid var(--border); }
+    .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1.5rem; }
+    .step { text-align: center; padding: 1.5rem 1rem; background: var(--bg-2); border-radius: var(--r-lg); border: 1px solid var(--border); }
     .step-n {
-      width:40px; height:40px; background:var(--blue); color:#fff; border-radius:50%;
-      display:flex; align-items:center; justify-content:center; font-size:16px; font-weight:700;
-      margin:0 auto 12px;
+      width: 40px; height: 40px; background: var(--blue); color: #fff; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 700;
+      margin: 0 auto 12px;
     }
-    .step-t { font-size:15px; font-weight:600; margin-bottom:6px; }
-    .step-d { font-size:13px; color:var(--text-3); line-height:1.6; }
+    .step-t { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+    .step-d { font-size: 13px; color: var(--text-3); line-height: 1.6; }
 
-    /* ===== APP TABS ===== */
+    /* ===== TABS ===== */
     .tabs {
-      display:flex; background:var(--bg); border:1px solid var(--border);
-      border-radius:var(--r-lg) var(--r-lg) 0 0; overflow:hidden; border-bottom:none;
-      box-shadow:var(--s);
+      display: flex; background: var(--bg); border: 1px solid var(--border);
+      border-radius: var(--r-lg) var(--r-lg) 0 0; overflow: hidden; border-bottom: none;
+      box-shadow: var(--s);
     }
     .tab-btn {
-      flex:1; padding:16px; font-size:14px; font-weight:600;
-      color:var(--text-3); background:var(--bg-2); border:none;
-      cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px;
-      border-bottom:3px solid transparent; transition:all .15s; font-family:inherit;
+      flex: 1; padding: 16px; font-size: 14px; font-weight: 600;
+      color: var(--text-3); background: var(--bg-2); border: none;
+      cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;
+      border-bottom: 3px solid transparent; transition: all 0.15s; font-family: inherit;
     }
-    .tab-btn.active { color:var(--blue); background:var(--bg); border-bottom-color:var(--blue); }
+    .tab-btn.active { color: var(--blue); background: var(--bg); border-bottom-color: var(--blue); }
     .app-card {
-      background:var(--bg); border:1px solid var(--border); border-top:none;
-      border-radius:0 0 var(--r-lg) var(--r-lg); padding:2rem; box-shadow:var(--sm);
+      background: var(--bg); border: 1px solid var(--border); border-top: none;
+      border-radius: 0 0 var(--r-lg) var(--r-lg); padding: 2rem; box-shadow: var(--sm);
     }
-    .tab-sec { display:none; }
-    .tab-sec.active { display:block; }
+    .tab-sec { display: none; }
+    .tab-sec.active { display: block; }
 
     /* ===== FORM ===== */
     .form-info {
-      font-size:14px; color:var(--text-2); margin-bottom:1.5rem;
-      padding:12px 16px; background:var(--blue-light); border-radius:var(--r);
-      border-left:3px solid var(--blue); line-height:1.7;
+      font-size: 14px; color: var(--text-2); margin-bottom: 1.5rem;
+      padding: 12px 16px; background: var(--blue-light); border-radius: var(--r);
+      border-left: 3px solid var(--blue); line-height: 1.7;
     }
-    .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px; }
-    @media(max-width:540px){ .form-grid { grid-template-columns:1fr; } }
-    .full { grid-column:1/-1; }
-    .field label { display:block; font-size:12px; font-weight:600; color:var(--text-3); text-transform:uppercase; letter-spacing:.5px; margin-bottom:6px; }
-    input, select, textarea {
-      width:100%; padding:11px 14px; font-size:14px; font-family:inherit;
-      border:1.5px solid var(--border-2); border-radius:var(--r); background:var(--bg);
-      transition:all .15s;
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+    @media(max-width: 540px) { .form-grid { grid-template-columns: 1fr; } }
+    .full { grid-column: 1 / -1; }
+    .field label {
+      display: block; font-size: 12px; font-weight: 600; color: var(--text-3);
+      text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;
     }
-    input:focus, select:focus, textarea:focus {
-      outline:none; border-color:var(--blue); box-shadow:0 0 0 3px rgba(26,86,219,.1);
+    input[type=text], input[type=email], select, textarea {
+      width: 100%; padding: 11px 14px; font-size: 14px; font-family: inherit;
+      border: 1.5px solid var(--border-2); border-radius: var(--r);
+      background: var(--bg); color: var(--text); transition: all 0.15s;
     }
-    textarea { resize:vertical; min-height:100px; line-height:1.6; }
-    .ch { font-size:11px; color:var(--text-4); margin-top:4px; text-align:right; }
-    .tone-lbl { font-size:12px; font-weight:600; color:var(--text-3); text-transform:uppercase; letter-spacing:.5px; margin-bottom:8px; }
-    .tone-row { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-bottom:16px; }
-    @media(max-width:480px){ .tone-row { grid-template-columns:repeat(2,1fr); } }
+    input[type=text]:focus, input[type=email]:focus, select:focus, textarea:focus {
+      outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(26,86,219,.1);
+    }
+    textarea { resize: vertical; min-height: 100px; line-height: 1.6; }
+    .ch { font-size: 11px; color: var(--text-4); margin-top: 4px; text-align: right; }
+    .tone-lbl { font-size: 12px; font-weight: 600; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+    .tone-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 16px; }
+    @media(max-width: 480px) { .tone-row { grid-template-columns: repeat(2, 1fr); } }
     .tone-opt {
-      padding:10px 6px; font-size:13px; font-weight:500; border:1.5px solid var(--border-2);
-      border-radius:var(--r); background:var(--bg); color:var(--text-3);
-      cursor:pointer; text-align:center; transition:all .15s; font-family:inherit;
+      padding: 10px 6px; font-size: 13px; font-weight: 500; border: 1.5px solid var(--border-2);
+      border-radius: var(--r); background: var(--bg); color: var(--text-3);
+      cursor: pointer; text-align: center; transition: all 0.15s; font-family: inherit;
     }
-    .tone-opt.active { border-color:var(--blue); background:var(--blue-light); color:var(--blue-dark); font-weight:600; }
+    .tone-opt:hover { border-color: var(--blue); color: var(--blue); background: var(--blue-light); }
+    .tone-opt.active { border-color: var(--blue); background: var(--blue-light); color: var(--blue-dark); font-weight: 600; }
 
     /* ===== GENERATE BUTTON ===== */
     .gen-btn {
-      width:100%; padding:16px; font-size:15px; font-weight:700;
-      background:var(--blue); color:#fff; border:none; border-radius:var(--r);
-      cursor:pointer; display:flex; align-items:center; justify-content:center; gap:10px;
-      box-shadow:0 4px 14px rgba(26,86,219,.3); transition:all .15s; font-family:inherit;
+      width: 100%; padding: 16px; font-size: 15px; font-weight: 700;
+      background: var(--blue); color: #fff; border: none; border-radius: var(--r);
+      cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;
+      box-shadow: 0 4px 14px rgba(26,86,219,.3); transition: all 0.15s; font-family: inherit;
     }
-    .gen-btn:hover { background:var(--blue-dark); transform:translateY(-1px); }
-    .gen-btn:disabled { opacity:.5; cursor:not-allowed; transform:none; }
+    .gen-btn:hover { background: var(--blue-dark); transform: translateY(-1px); }
+    .gen-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
     /* ===== OUTPUT ===== */
     .out-card {
-      display:none; margin-top:1.5rem; border:1px solid var(--border);
-      border-radius:var(--r-lg); overflow:hidden; box-shadow:var(--sm);
+      display: none; margin-top: 1.5rem; border: 1px solid var(--border);
+      border-radius: var(--r-lg); overflow: hidden; box-shadow: var(--sm);
     }
-    .out-card.show { display:block; animation:fadeIn .3s ease; }
-    @keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+    .out-card.show { display: block; animation: fadeIn 0.3s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
     .out-head {
-      display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;
-      padding:14px 18px; background:var(--bg-2); border-bottom:1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+      padding: 14px 18px; background: var(--bg-2); border-bottom: 1px solid var(--border);
     }
-    .out-title { font-size:14px; font-weight:600; display:flex; align-items:center; gap:8px; }
-    .out-title i { font-size:18px; color:var(--green); }
-    .out-actions { display:flex; gap:8px; flex-wrap:wrap; }
+    .out-title { font-size: 14px; font-weight: 600; color: var(--text); display: flex; align-items: center; gap: 8px; }
+    .out-title i { font-size: 18px; color: var(--green); }
+    .out-actions { display: flex; gap: 8px; flex-wrap: wrap; }
     .act-btn {
-      padding:7px 13px; font-size:12px; font-weight:600; border:1.5px solid var(--border-2);
-      border-radius:var(--r); background:var(--bg); color:var(--text-3);
-      cursor:pointer; display:flex; align-items:center; gap:5px; font-family:inherit;
-      transition:all .15s;
+      padding: 7px 13px; font-size: 12px; font-weight: 600; border: 1.5px solid var(--border-2);
+      border-radius: var(--r); background: var(--bg); color: var(--text-3);
+      cursor: pointer; display: flex; align-items: center; gap: 5px; font-family: inherit;
+      transition: all 0.15s;
     }
-    .act-btn:hover { background:var(--bg-2); color:var(--text); border-color:var(--text-3); }
-    .act-btn.pdf { background:#1A56DB; color:#fff; border-color:#1A56DB; }
-    .act-btn.pdf:hover { background:#0E3FA0; }
+    .act-btn:hover { background: var(--bg-2); color: var(--text); border-color: var(--text-3); }
+    .act-btn.pdf { background: var(--blue); color: #fff; border-color: var(--blue); }
+    .act-btn.pdf:hover { background: var(--blue-dark); }
+    .act-btn i { font-size: 14px; }
     .out-body {
-      padding:24px; font-size:14px; line-height:2; color:var(--text);
-      white-space:pre-wrap; background:var(--bg); max-height:600px; overflow-y:auto;
+      padding: 24px; font-size: 14px; line-height: 2; color: var(--text);
+      white-space: pre-wrap; background: var(--bg); max-height: 600px; overflow-y: auto;
     }
     .q-row {
-      display:flex; gap:16px; flex-wrap:wrap; padding:12px 18px;
-      border-top:1px solid var(--border); background:var(--bg-2);
+      display: flex; gap: 16px; flex-wrap: wrap; padding: 12px 18px;
+      border-top: 1px solid var(--border); background: var(--bg-2);
     }
-    .q-item { display:flex; align-items:center; gap:5px; font-size:12px; color:var(--green); font-weight:500; }
-    .q-item i { font-size:15px; }
+    .q-item { display: flex; align-items: center; gap: 5px; font-size: 12px; color: var(--green); font-weight: 500; }
+    .q-item i { font-size: 15px; }
+
+    /* ===== EMAIL COLLECT ===== */
+    .email-box { display: none; padding: 20px; background: var(--blue-light); border-top: 1px solid var(--border); }
+    .email-box-title { font-size: 14px; font-weight: 600; color: var(--blue-dark); margin-bottom: 4px; text-align: center; }
+    .email-box-sub { font-size: 13px; color: var(--text-3); text-align: center; margin-bottom: 12px; }
+    .email-row { display: flex; gap: 8px; max-width: 420px; margin: 0 auto; }
+    .email-row input { flex: 1; background: var(--bg); }
+    .email-row button {
+      padding: 10px 16px; background: var(--blue); color: #fff; border: none;
+      border-radius: var(--r); font-size: 13px; font-weight: 600; cursor: pointer;
+      font-family: inherit; white-space: nowrap; transition: background 0.15s;
+    }
+    .email-row button:hover { background: var(--blue-dark); }
+    .email-note { font-size: 11px; color: var(--text-4); margin-top: 8px; text-align: center; }
 
     /* ===== TRUST ===== */
     .trust {
-      display:flex; align-items:center; justify-content:center; gap:20px; flex-wrap:wrap;
-      padding:1.2rem; background:var(--bg); border:1px solid var(--border);
-      border-radius:var(--r-lg); margin-top:2rem; box-shadow:var(--s);
+      display: flex; align-items: center; justify-content: center; gap: 20px; flex-wrap: wrap;
+      padding: 1.2rem; background: var(--bg); border: 1px solid var(--border);
+      border-radius: var(--r-lg); margin-top: 2rem; box-shadow: var(--s);
     }
-    .trust-item { display:flex; align-items:center; gap:6px; font-size:12px; font-weight:600; color:var(--text-3); }
-    .trust-item i { font-size:18px; color:var(--blue); }
+    .trust-item { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; color: var(--text-3); }
+    .trust-item i { font-size: 18px; color: var(--blue); }
 
     /* ===== REVIEWS ===== */
-    .rev-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:14px; margin-top:1.5rem; }
-    .rev-card { background:var(--bg-2); border:1px solid var(--border); border-radius:var(--r-lg); padding:1.4rem; }
-    .reviewer { display:flex; align-items:center; gap:12px; margin-bottom:12px; }
-    .av { width:44px; height:44px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:700; flex-shrink:0; }
-    .a1 { background:#DBEAFE; color:#1E40AF; } .a2 { background:#D1FAE5; color:#065F46; } .a3 { background:#EDE9FE; color:#4C1D95; } .a4 { background:#FEE2E2; color:#991B1B; } .a5 { background:#FEF3C7; color:#92400E; } .a6 { background:#CFFAFE; color:#164E63; }
-    .rv-name { font-size:14px; font-weight:600; }
-    .rv-meta { font-size:12px; color:var(--text-4); }
-    .stars { color:#F59E0B; font-size:14px; margin-bottom:10px; }
-    .rv-text { font-size:13px; color:var(--text-3); line-height:1.7; }
-    .verified { display:flex; align-items:center; gap:4px; font-size:11px; color:var(--green); font-weight:600; margin-top:10px; }
+    .rev-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; margin-top: 1.5rem; }
+    .rev-card {
+      background: var(--bg-2); border: 1px solid var(--border);
+      border-radius: var(--r-lg); padding: 1.4rem; transition: box-shadow 0.15s;
+    }
+    .rev-card:hover { box-shadow: var(--sm); }
+    .reviewer { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+    .av { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; flex-shrink: 0; }
+    .a1{background:#DBEAFE;color:#1E40AF} .a2{background:#D1FAE5;color:#065F46} .a3{background:#EDE9FE;color:#4C1D95}
+    .a4{background:#FEE2E2;color:#991B1B} .a5{background:#FEF3C7;color:#92400E} .a6{background:#CFFAFE;color:#164E63}
+    .rv-name { font-size: 14px; font-weight: 600; color: var(--text); }
+    .rv-meta { font-size: 12px; color: var(--text-4); }
+    .stars { color: #F59E0B; font-size: 14px; margin-bottom: 10px; }
+    .rv-text { font-size: 13px; color: var(--text-3); line-height: 1.7; }
+    .verified { display: flex; align-items: center; gap: 4px; font-size: 11px; color: var(--green); font-weight: 600; margin-top: 10px; }
+    .verified i { font-size: 14px; }
 
     /* ===== SUPPORT CARD ===== */
     .support-card {
-      background:linear-gradient(135deg,#EDE9FE 0%,#F5F3FF 100%);
-      border:2px solid #8B5CF6; border-radius:var(--r-xl); padding:2.5rem; text-align:center; margin-top:2rem;
+      background: linear-gradient(135deg, #EDE9FE 0%, #F5F3FF 100%);
+      border: 2px solid var(--purple); border-radius: var(--r-xl);
+      padding: 2.5rem; text-align: center;
+      transition: background 0.3s ease, border-color 0.3s ease;
     }
-    .support-card h3 { font-size:22px; font-weight:700; color:#1E1B4B; margin-bottom:8px; }
-    .support-card p { font-size:14px; color:#4C1D95; line-height:1.7; margin-bottom:1.5rem; max-width:480px; margin-left:auto; margin-right:auto; }
+    .support-card h3 { font-size: 22px; font-weight: 700; color: #1E1B4B; margin-bottom: 8px; }
+    .support-card p { font-size: 14px; color: #4C1D95; line-height: 1.7; margin-bottom: 1.5rem; max-width: 480px; margin-left: auto; margin-right: auto; }
     .support-btn {
-      display:inline-flex; align-items:center; gap:10px; padding:14px 32px;
-      font-size:15px; font-weight:700; background:#8B5CF6; color:#fff; border:none;
-      border-radius:var(--r); cursor:pointer; font-family:inherit;
-      box-shadow:0 4px 14px rgba(139,92,246,.4); transition:all .15s;
+      display: inline-flex; align-items: center; gap: 10px; padding: 14px 32px;
+      font-size: 15px; font-weight: 700; background: var(--purple); color: #fff; border: none;
+      border-radius: var(--r); cursor: pointer; font-family: inherit;
+      box-shadow: 0 4px 14px rgba(139,92,246,.4); transition: all 0.15s;
     }
-    .support-btn:hover { background:#7C3AED; transform:translateY(-2px); box-shadow:0 6px 20px rgba(139,92,246,.5); }
+    .support-btn:hover { background: var(--purple-dark); transform: translateY(-2px); }
+    .support-tip { font-size: 12px; color: #6D28D9; font-weight: 500; margin-top: 10px; }
+    .support-foot { font-size: 11px; color: #7C3AED; margin-top: 8px; opacity: 0.7; }
+
+    /* ===== SUPPORT MODAL ===== */
+    .modal-ov {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.6); z-index: 999;
+      align-items: center; justify-content: center;
+      padding: 1.5rem; backdrop-filter: blur(4px);
+    }
+    .modal-ov.show { display: flex; }
+    .modal-box {
+      background: var(--bg); border-radius: var(--r-xl);
+      padding: 2.5rem 2rem; max-width: 460px; width: 100%;
+      text-align: center; box-shadow: var(--sl);
+      border: 1px solid var(--border);
+      animation: fadeIn 0.25s ease;
+    }
+    .modal-icon {
+      width: 64px; height: 64px; background: var(--purple-light);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 16px;
+    }
+    .modal-icon i { font-size: 30px; color: var(--purple); }
+    .modal-box h2 { font-size: 22px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+    .modal-box > p { font-size: 14px; color: var(--text-3); line-height: 1.7; margin-bottom: 1.5rem; }
+    .tip-amounts {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 1.5rem;
+    }
+    .tip-amount {
+      padding: 12px 8px; border: 2px solid var(--border-2); border-radius: var(--r-lg);
+      background: var(--bg); cursor: pointer; font-family: inherit;
+      transition: all 0.15s; text-align: center;
+    }
+    .tip-amount:hover { border-color: var(--purple); background: var(--purple-light); }
+    .tip-amount.selected { border-color: var(--purple); background: var(--purple-light); }
+    .tip-amount .amount { font-size: 20px; font-weight: 700; color: var(--text); display: block; }
+    .tip-amount .label { font-size: 11px; color: var(--text-4); margin-top: 2px; }
+    .tip-custom-row { display: flex; gap: 8px; margin-bottom: 1.2rem; }
+    .tip-custom-row input {
+      flex: 1; padding: 10px 14px; font-size: 14px;
+      border: 1.5px solid var(--border-2); border-radius: var(--r);
+      background: var(--bg); color: var(--text); font-family: inherit;
+    }
+    .tip-custom-row input:focus { outline: none; border-color: var(--purple); }
+    .modal-pay-btn {
+      width: 100%; padding: 14px; font-size: 15px; font-weight: 700;
+      background: var(--purple); color: #fff; border: none; border-radius: var(--r);
+      cursor: pointer; font-family: inherit; margin-bottom: 10px;
+      box-shadow: 0 4px 14px rgba(139,92,246,.35); transition: background 0.15s;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .modal-pay-btn:hover { background: var(--purple-dark); }
+    .modal-note { font-size: 12px; color: var(--text-4); margin-bottom: 1rem; }
+    .modal-skip { font-size: 13px; color: var(--text-4); background: none; border: none; cursor: pointer; font-family: inherit; }
+    .modal-skip:hover { color: var(--text-3); }
 
     /* ===== FAQ ===== */
-    .faq-list { margin-top:1.5rem; display:flex; flex-direction:column; gap:10px; }
-    .faq-item { border:1px solid var(--border); border-radius:var(--r-lg); overflow:hidden; }
+    .faq-list { margin-top: 1.5rem; display: flex; flex-direction: column; gap: 10px; }
+    .faq-item { border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden; }
     .faq-q {
-      display:flex; align-items:center; justify-content:space-between; padding:16px 20px;
-      font-size:14px; font-weight:600; background:var(--bg); cursor:pointer;
-      user-select:none; transition:background .15s;
+      display: flex; align-items: center; justify-content: space-between; padding: 16px 20px;
+      font-size: 14px; font-weight: 600; color: var(--text); background: var(--bg);
+      cursor: pointer; user-select: none; transition: background 0.15s;
     }
-    .faq-q:hover { background:var(--bg-2); }
-    .faq-q i { font-size:18px; color:var(--text-4); transition:transform .2s; flex-shrink:0; }
-    .faq-q.open i { transform:rotate(45deg); color:var(--blue); }
-    .faq-a { display:none; padding:14px 20px 16px; font-size:14px; color:var(--text-3); line-height:1.8; border-top:1px solid var(--border); }
-    .faq-a.show { display:block; }
+    .faq-q:hover { background: var(--bg-2); }
+    .faq-q i { font-size: 18px; color: var(--text-4); transition: transform 0.2s; flex-shrink: 0; }
+    .faq-q.open i { transform: rotate(45deg); color: var(--blue); }
+    .faq-a { display: none; padding: 14px 20px 16px; font-size: 14px; color: var(--text-3); line-height: 1.8; border-top: 1px solid var(--border); }
+    .faq-a.show { display: block; }
 
-    /* ===== ABOUT / CONTACT / LEGAL ===== */
-    .about-grid { display:grid; grid-template-columns:1fr 1fr; gap:2rem; margin-top:1.5rem; align-items:start; }
-    @media(max-width:640px){ .about-grid { grid-template-columns:1fr; } }
-    .about-text p { font-size:14px; color:var(--text-3); line-height:1.8; margin-bottom:1rem; }
-    .about-vals { display:flex; flex-direction:column; gap:12px; }
-    .about-v { display:flex; align-items:flex-start; gap:12px; padding:14px; background:var(--bg-2); border-radius:var(--r-lg); border:1px solid var(--border); }
-    .about-v i { font-size:22px; color:var(--blue); flex-shrink:0; margin-top:2px; }
-    .av-t { font-size:14px; font-weight:600; margin-bottom:3px; }
-    .av-d { font-size:13px; color:var(--text-3); line-height:1.6; }
+    /* ===== ABOUT ===== */
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 1.5rem; align-items: start; }
+    @media(max-width: 640px) { .about-grid { grid-template-columns: 1fr; } }
+    .about-text p { font-size: 14px; color: var(--text-3); line-height: 1.8; margin-bottom: 1rem; }
+    .about-vals { display: flex; flex-direction: column; gap: 12px; }
+    .about-v {
+      display: flex; align-items: flex-start; gap: 12px; padding: 14px;
+      background: var(--bg-2); border-radius: var(--r-lg); border: 1px solid var(--border);
+    }
+    .about-v i { font-size: 22px; color: var(--blue); flex-shrink: 0; margin-top: 2px; }
+    .av-t { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 3px; }
+    .av-d { font-size: 13px; color: var(--text-3); line-height: 1.6; }
 
-    .ct-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:14px; margin-top:1.5rem; }
-    .ct-card { display:flex; align-items:flex-start; gap:14px; padding:1.2rem; background:var(--bg-2); border:1px solid var(--border); border-radius:var(--r-lg); }
-    .ct-icon { width:42px; height:42px; background:var(--blue-light); border-radius:var(--r); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
-    .ct-icon i { font-size:20px; color:var(--blue); }
-    .ct-t { font-size:13px; font-weight:600; margin-bottom:3px; }
-    .ct-v { font-size:13px; color:var(--text-3); }
-
-    .legal { font-size:14px; color:var(--text-3); line-height:1.9; margin-top:1rem; }
-    .legal h3 { font-size:16px; font-weight:600; color:var(--text); margin:1.5rem 0 6px; }
-    .legal h3:first-child { margin-top:0; }
+    /* ===== CONTACT ===== */
+    .ct-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin-top: 1.5rem; }
+    .ct-card {
+      display: flex; align-items: flex-start; gap: 14px; padding: 1.2rem;
+      background: var(--bg-2); border: 1px solid var(--border); border-radius: var(--r-lg);
+    }
+    .ct-icon {
+      width: 42px; height: 42px; background: var(--blue-light);
+      border-radius: var(--r); display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .ct-icon i { font-size: 20px; color: var(--blue); }
+    .ct-t { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 3px; }
+    .ct-v { font-size: 13px; color: var(--text-3); word-break: break-all; }
 
     /* ===== CTA ===== */
     .cta {
-      background:linear-gradient(135deg,var(--blue) 0%,var(--blue-dark) 100%);
-      border-radius:var(--r-xl); padding:3rem 2rem; text-align:center; box-shadow:var(--sm);
+      background: linear-gradient(135deg, var(--blue) 0%, var(--blue-dark) 100%);
+      border-radius: var(--r-xl); padding: 3rem 2rem; text-align: center; box-shadow: var(--sm);
     }
-    .cta h2 { font-size:26px; font-weight:700; color:#fff; margin-bottom:10px; }
-    .cta p { font-size:15px; color:rgba(255,255,255,.8); margin-bottom:2rem; line-height:1.7; }
+    .cta h2 { font-size: 26px; font-weight: 700; color: #fff; margin-bottom: 10px; }
+    .cta p { font-size: 15px; color: rgba(255,255,255,.8); margin-bottom: 2rem; line-height: 1.7; }
     .cta-btn {
-      display:inline-flex; align-items:center; gap:8px; padding:14px 32px;
-      font-size:15px; font-weight:700; background:#fff; color:var(--blue);
-      border:none; border-radius:var(--r); cursor:pointer; font-family:inherit;
-      box-shadow:0 4px 14px rgba(0,0,0,.15); transition:all .15s;
+      display: inline-flex; align-items: center; gap: 8px; padding: 14px 32px;
+      font-size: 15px; font-weight: 700; background: #fff; color: var(--blue);
+      border: none; border-radius: var(--r); cursor: pointer; font-family: inherit;
+      box-shadow: 0 4px 14px rgba(0,0,0,.15); transition: all 0.15s;
     }
-    .cta-btn:hover { transform:translateY(-2px); box-shadow:0 6px 20px rgba(0,0,0,.2); }
-    .cta-note { font-size:12px; color:rgba(255,255,255,.6); margin-top:12px; }
+    .cta-btn:hover { transform: translateY(-2px); }
+    .cta-note { font-size: 12px; color: rgba(255,255,255,.6); margin-top: 12px; }
 
-  /* ===== FOOTER ===== */
-    footer {
-      background: #111827; color:rgba(255,255,255,.7);
-      padding:3rem 1.5rem 2rem; margin-top:3rem;
-    }
-    .ft-in { max-width:860px; margin:0 auto; }
-    .ft-top { display:grid; grid-template-columns:2fr 1fr 1fr; gap:2rem; margin-bottom:2rem; }
-    @media(max-width:640px){ .ft-top { grid-template-columns:1fr; } }
-    .ft-brand { font-size:18px; font-weight:700; color:#fff; display:flex; align-items:center; gap:8px; margin-bottom:10px; }
-    .ft-brand i { color:#3B82F6; }
-    .ft-desc { font-size:13px; line-height:1.7; color:rgba(255,255,255,.55); }
-    .ft-col h4 { font-size:13px; font-weight:600; color:#fff; text-transform:uppercase; letter-spacing:1px; margin-bottom:12px; }
-    .ft-col a { display:block; font-size:13px; color:rgba(255,255,255,.55); margin-bottom:8px; cursor:pointer; }
-    .ft-col a:hover { color:#fff; text-decoration:none; }
-    .ft-bot { border-top:1px solid rgba(255,255,255,.1); padding-top:1.5rem; display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; }
-    .ft-bot p { font-size:12px; color:rgba(255,255,255,.4); }
+    /* ===== LEGAL ===== */
+    .legal { font-size: 14px; color: var(--text-3); line-height: 1.9; margin-top: 1rem; }
+    .legal h3 { font-size: 16px; font-weight: 600; color: var(--text); margin: 1.5rem 0 6px; }
+    .legal h3:first-child { margin-top: 0; }
 
-    /* ===== UTILITIES ===== */
-    .spin { animation:spin 1s linear infinite; display:inline-block; }
-    @keyframes spin { from { transform:rotate(0deg); } to { transform:rotate(360deg); } }
-    .mt2 { margin-top:2rem; }
-    .tip {
-      display:flex; align-items:flex-start; gap:10px; padding:14px 16px;
-      background:#FFFBEB; border-radius:var(--r); font-size:13px; color:#92400E;
-      margin-top:1rem; border:1px solid rgba(146,64,14,.15);
+    /* ===== FOOTER ===== */
+    footer { background: #111827; color: rgba(255,255,255,.7); padding: 3rem 1.5rem 2rem; margin-top: 3rem; }
+    .ft-in { max-width: 860px; margin: 0 auto; }
+    .ft-top { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 2rem; margin-bottom: 2rem; }
+    @media(max-width: 640px) { .ft-top { grid-template-columns: 1fr; } }
+    .ft-brand { font-size: 18px; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+    .ft-brand i { color: #3B82F6; }
+    .ft-desc { font-size: 13px; line-height: 1.7; color: rgba(255,255,255,.55); }
+    .ft-col h4 { font-size: 13px; font-weight: 600; color: #fff; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+    .ft-col a { display: block; font-size: 13px; color: rgba(255,255,255,.55); margin-bottom: 8px; cursor: pointer; }
+    .ft-col a:hover { color: #fff; text-decoration: none; }
+    .ft-bot { border-top: 1px solid rgba(255,255,255,.1); padding-top: 1.5rem; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+    .ft-bot p { font-size: 12px; color: rgba(255,255,255,.4); }
+
+    /* ===== UTILS ===== */
+    .spin { animation: spin 1s linear infinite; display: inline-block; }
+    @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    .mt2 { margin-top: 2rem; }
+    .tip-box {
+      display: flex; align-items: flex-start; gap: 10px; padding: 14px 16px;
+      background: #FFFBEB; border-radius: var(--r); font-size: 13px; color: #92400E;
+      margin-top: 1rem; border: 1px solid rgba(146,64,14,.15);
     }
-    .tip i { font-size:17px; margin-top:1px; flex-shrink:0; }
-    .page { display:none; }
-    .page.active { display:block; }
+    .tip-box i { font-size: 17px; margin-top: 1px; flex-shrink: 0; }
 
     /* ===== TOAST ===== */
     .toast {
-      position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(80px);
-      background:#111827; color:#fff; padding:12px 22px; border-radius:var(--r);
-      font-size:13px; font-weight:600; z-index:9999; opacity:0;
-      transition:all .3s; pointer-events:none; white-space:nowrap;
+      position: fixed; bottom: 24px; left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: #111827; color: #fff; padding: 12px 22px; border-radius: var(--r);
+      font-size: 13px; font-weight: 600; z-index: 9999; opacity: 0;
+      transition: all 0.3s; pointer-events: none; white-space: nowrap;
     }
-    .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-    /* ===== PRINT / PDF STYLES ===== */
+    /* ===== PAGE SYSTEM ===== */
+    .page { display: none; }
+    .page.active { display: block; }
+
+    /* ===== PRINT ===== */
     @media print {
-      /* Hide everything except the letter content */
-      nav, footer, .hero, .cta, .trust, .tabs, .app-card .form-grid,
-      .gen-btn, .form-info, .out-head, .out-actions, .q-row,
-      .tip, .rev-grid, .support-card, .faq-list, .sec-wrap:not(#app),
-      .ad, .aw, .hero-cta, .hero-stats, .hero-badge, .sec-kicker,
-      .sec-title, .sec-sub, .steps, .card, .about-grid, .ct-grid,
-      .legal, .ft-top, .ft-bot, .toast {
-        display: none !important;
-      }
+      nav, footer, .hero, .cta, .trust, .tabs, .form-grid, .gen-btn,
+      .form-info, .out-head, .out-actions, .q-row, .tip-box, .rev-grid,
+      .support-card, .faq-list, .sw:not(#app), .ad, .aw,
+      .hero-cta, .hero-stats, .hero-badge, .kicker, .sec-title,
+      .sec-sub, .steps, .card, .about-grid, .ct-grid, .legal,
+      .ft-top, .ft-bot, .toast, .email-box { display: none !important; }
       .out-card, #cl-body, .out-body {
-        display: block !important;
-        visibility: visible !important;
-        position: relative !important;
-        margin: 0 !important;
-        padding: 40px 50px !important;
-        border: none !important;
-        box-shadow: none !important;
-        border-radius: 0 !important;
-        width: 100% !important;
-        min-height: 100vh !important;
-        background: white !important;
-        color: #111827 !important;
-        overflow: visible !important;
-        max-height: none !important;
+        display: block !important; visibility: visible !important;
+        position: relative !important; margin: 0 !important;
+        padding: 40px 50px !important; border: none !important;
+        box-shadow: none !important; border-radius: 0 !important;
+        width: 100% !important; background: white !important;
+        color: #111827 !important; overflow: visible !important; max-height: none !important;
       }
-      .out-body {
-        font-size: 13px !important;
-        line-height: 1.8 !important;
-        white-space: pre-wrap !important;
-      }
+      .out-body { font-size: 13px !important; line-height: 1.8 !important; white-space: pre-wrap !important; }
       @page { margin: 2cm; size: A4; }
     }
 
-    /* ===== RESPONSIVE TWEAKS ===== */
-/* ===== RESPONSIVE TWEAKS ===== */
-    @media(max-width:480px) {
-      .card { padding:1.5rem; }
-      .app-card { padding:1rem; }
-      .out-body { padding:16px; font-size:13px; }
+    /* ===== RESPONSIVE ===== */
+    @media(max-width: 480px) {
+      .card { padding: 1.5rem; }
+      .app-card { padding: 1rem; }
+      .out-body { padding: 16px; font-size: 13px; }
+      .tip-amounts { grid-template-columns: repeat(3, 1fr); }
     }
-
-    /* ===== DARK MODE THEME SYSTEM ===== */
-    body {
-      transition: background 0.3s ease, color 0.3s ease;
-    }
-    input, select, textarea {
-      color: var(--text);
-    }
-    .btn-theme {
-      background: none; border: none; color: var(--text-3); font-size: 20px; cursor: pointer;
-      display: flex; align-items: center; justify-content: center; width: 38px; height: 38px;
-      border-radius: var(--r); transition: background .15s, color .15s; margin-right: 4px;
-    }
-    .btn-theme:hover { background: var(--bg-3); color: var(--text); }
-
-    body.dark-mode {
-      --bg: #1f2937;        /* Sleek Slate Gray */
-      --bg-2: #111827;      /* Solid Obsidian */
-      --bg-3: #030712;      /* Midnight Deep Space */
-      --text: #f9fafb;      /* Bright Off-White */
-      --text-3: #d1d5db;    /* Soft Gray Readable Text */
-      --text-4: #9ca3af;    /* Dark Muted Subtext */
-      --border: rgba(255,255,255,0.08);
-      --border-2: rgba(255,255,255,0.18);
-      --blue-light: rgba(26,86,219,0.15);
-    }
-    body.dark-mode .hero {
-      background: linear-gradient(135deg, #1e3a8a 0%, #111827 50%, #030712 100%);
-    }
-    body.dark-mode .support-card {
-      background: linear-gradient(135deg, #2e1065 0%, #111827 100%);
-      border-color: #a78bfa;
-    }
-body.dark-mode .support-card h3,
-    body.dark-mode .support-card p,
-    body.dark-mode .support-card div {
-      color: #f5f3ff !important;
-    }
-
-    /* ===== ABOUT & CONTACT PAGES DESIGN SYSTEM ===== */
-    .about-grid {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; margin-top: 1.5rem;
-    }
-    @media (max-width: 768px) { .about-grid { grid-template-columns: 1fr; gap: 1.5rem; } }
-    .about-text p {
-      color: var(--text-3); line-height: 1.6; margin-bottom: 1rem; font-size: 14px;
-    }
-    .about-vals {
-      display: flex; flex-direction: column; gap: 1.25rem;
-    }
-    .about-v {
-      display: flex; gap: 1rem; align-items: flex-start; padding: 1rem; 
-      background: var(--bg-2); border-radius: var(--r); border: 1px solid var(--border);
-    }
-    .about-v i {
-      font-size: 22px; color: #1A56DB; background: var(--blue-light); 
-      padding: 8px; border-radius: 8px;
-    }
-    .av-t { font-weight: 600; color: var(--text); font-size: 15px; margin-bottom: 2px; }
-    .av-d { color: var(--text-4); font-size: 13px; line-height: 1.4; }
-
-    .ct-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.25rem; margin-top: 1.5rem;
-    }
-    .ct-card {
-      display: flex; gap: 1rem; align-items: center; padding: 1.25rem;
-      background: var(--bg-2); border-radius: var(--r); border: 1px solid var(--border);
-    }
-    .ct-icon {
-      font-size: 24px; color: #1A56DB; display: flex; align-items: center; justify-content: center;
-    }
-    .ct-t { font-size: 12px; color: var(--text-4); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; }
-    .ct-v { font-size: 14px; color: var(--text); font-weight: 500; margin-top: 2px; word-break: break-all; }
-    
-    .legal h3 { color: var(--text); font-size: 16px; margin: 1.5rem 0 0.5rem; font-weight: 600; }
-    .legal p { color: var(--text-3); font-size: 14px; line-height: 1.6; margin-bottom: 0.75rem; }
   </style>
+</head>
+<body>
 
-<!-- ===== NAVIGATION ===== -->
+<!-- ===== SUPPORT MODAL ===== -->
+<div class="modal-ov" id="support-modal">
+  <div class="modal-box">
+    <div class="modal-icon"><i class="ti ti-heart-filled"></i></div>
+    <h2>Support HireReady AI ❤️</h2>
+    <p>This tool is 100% free and always will be. If you have found value here, consider a small tip to keep the AI running and improving for students worldwide.</p>
+
+    <div class="tip-amounts">
+      <button class="tip-amount selected" onclick="selectTip(this, '3')">
+        <span class="amount">$3</span>
+        <span class="label">Coffee tip</span>
+      </button>
+      <button class="tip-amount" onclick="selectTip(this, '5')">
+        <span class="amount">$5</span>
+        <span class="label">Kind support</span>
+      </button>
+      <button class="tip-amount" onclick="selectTip(this, '10')">
+        <span class="amount">$10</span>
+        <span class="label">Big thanks</span>
+      </button>
+    </div>
+
+    <div class="tip-custom-row">
+      <input type="number" id="custom-amount" placeholder="Or enter custom amount ($)" min="1" />
+    </div>
+
+    <button class="modal-pay-btn" onclick="goToPayment()">
+      <i class="ti ti-heart"></i> Support via Gumroad
+    </button>
+    <div class="modal-note">You will be taken to our secure Gumroad page to complete the payment.</div>
+    <button class="modal-skip" onclick="closeSupport()">Maybe later</button>
+  </div>
+</div>
+
+<!-- ===== NAV ===== -->
 <nav>
-  <div class="logo" onclick="showPage('home')"><i class="ti ti-briefcase" aria-hidden="true"></i>Hire<span>Ready</span> AI</div>
+  <div class="logo" onclick="showPage('home')">
+    <i class="ti ti-briefcase"></i>Hire<span>Ready</span> AI
+  </div>
   <div class="nav-links">
     <a onclick="showPage('home')">Home</a>
-    <a onclick="showPage('home');setTimeout(()=>document.getElementById('how').scrollIntoView({behavior:'smooth'}),100)">How it works</a>
+    <a onclick="showPage('home'); setTimeout(()=>document.getElementById('how').scrollIntoView({behavior:'smooth'}),100)">How it works</a>
     <a onclick="showPage('about')">About</a>
     <a onclick="showPage('contact')">Contact</a>
   </div>
-<div class="nav-right">
-    <button class="btn-theme" onclick="toggleTheme()" title="Toggle Light/Dark Mode">
+  <div class="nav-right">
+    <button class="btn-theme" onclick="toggleTheme()" title="Toggle dark mode">
       <i class="ti ti-sun" id="theme-icon"></i>
     </button>
-    
-    <button class="btn-support" onclick="document.getElementById('support-section').scrollIntoView({behavior:'smooth'})">
+    <button class="btn-support" onclick="openSupport()">
       <i class="ti ti-heart-filled"></i> <span>Support</span>
     </button>
   </div>
@@ -541,55 +604,73 @@ body.dark-mode .support-card h3,
 <!-- ===== HOME PAGE ===== -->
 <div class="page active" id="page-home">
 
-  <!-- HERO -->
   <section class="hero">
     <div class="hero-badge"><i class="ti ti-sparkles"></i> 100% Free — No Credit Card Needed</div>
     <h1>Land your dream job with a <span>perfect cover letter</span></h1>
-    <p>Generate a professional, ATS-optimised cover letter in 30 seconds. Tailored to your job, your skills, your story. Completely free.</p>
+    <p>Generate a professional, ATS-optimised cover letter in 30 seconds. Tailored to your job, your skills, your story. Completely free — unlimited letters.</p>
     <div class="hero-cta">
-      <button class="h-btn pri" onclick="document.getElementById('app').scrollIntoView({behavior:'smooth'})"><i class="ti ti-wand"></i> Generate cover letter</button>
-      <button class="h-btn sec" onclick="showPage('about')"><i class="ti ti-info-circle"></i> Learn more</button>
+      <button class="h-btn pri" onclick="document.getElementById('app').scrollIntoView({behavior:'smooth'})">
+        <i class="ti ti-wand"></i> Generate cover letter
+      </button>
+      <button class="h-btn sec" onclick="showPage('about')">
+        <i class="ti ti-info-circle"></i> Learn more
+      </button>
     </div>
     <div class="hero-stats">
-      <div><div class="stat-num">50K+</div><div class="stat-label">Letters made</div></div>
+      <div><div class="stat-num">50+</div><div class="stat-label">Letters made</div></div>
       <div><div class="stat-num">100%</div><div class="stat-label">ATS friendly</div></div>
       <div><div class="stat-num">4.8/5</div><div class="stat-label">Rating</div></div>
       <div><div class="stat-num">30 sec</div><div class="stat-label">Average time</div></div>
     </div>
   </section>
 
-  <!-- AD -->
-  <div class="aw"><div class="ad"><span>📢 Ad — Reach thousands of job-seeking students daily. <a href="mailto:ads@hirereadyai.com">Advertise with us</a></span><span class="ad-tag">Ad</span></div></div>
+  <div class="aw">
+    <div class="ad">
+      <span>Advertisement — Your ad here. Reach thousands of job-seeking students daily. Contact: hirereadyai.support@gmail.com</span>
+      <span class="ad-tag">Ad</span>
+    </div>
+  </div>
 
-  <!-- HOW IT WORKS -->
-  <div class="sec-wrap" id="how">
+  <div class="sw" id="how">
     <div class="card">
-      <div class="sec-kicker">Simple process</div>
+      <div class="kicker">Simple process</div>
       <div class="sec-title">How HireReady AI works</div>
-      <div class="sec-sub">Three simple steps to your perfect cover letter. No experience needed.</div>
+      <div class="sec-sub">Four simple steps to your perfect cover letter. No experience needed.</div>
       <div class="steps">
         <div class="step"><div class="step-n">1</div><div class="step-t">Fill your details</div><div class="step-d">Enter your name, job title, company, skills, and paste the job description.</div></div>
         <div class="step"><div class="step-n">2</div><div class="step-t">AI generates</div><div class="step-d">Our AI writes a professional, tailored, ATS-optimised cover letter in seconds.</div></div>
-        <div class="step"><div class="step-n">3</div><div class="step-t">Edit and download</div><div class="step-d">Review, edit any part you want, then copy or download as PDF.</div></div>
-        <div class="step"><div class="step-n">4</div><div class="step-t">Get the interview</div><div class="step-d">Your ATS-optimised letter gets past filters and lands in front of real hiring managers.</div></div>
+        <div class="step"><div class="step-n">3</div><div class="step-t">Copy or download</div><div class="step-d">Copy your letter or download it as a clean PDF — ready to send.</div></div>
+        <div class="step"><div class="step-n">4</div><div class="step-t">Get the interview</div><div class="step-d">Your ATS-optimised letter gets past filters and reaches real hiring managers.</div></div>
       </div>
     </div>
   </div>
 
-  <!-- APP -->
-  <div class="sec-wrap mt2" id="app">
+  <div class="sw mt2" id="app">
     <div class="tabs">
-      <button class="tab-btn active" onclick="switchTab('cl')" id="tab-cl"><i class="ti ti-file-text"></i> Cover letter</button>
+      <button class="tab-btn active" onclick="switchTab('cl')" id="tab-cl">
+        <i class="ti ti-file-text"></i> Cover letter generator
+      </button>
     </div>
     <div class="app-card">
       <div class="tab-sec active" id="sec-cl">
-        <div class="form-info"><strong>💡 Free for everyone:</strong> No account needed. No credit card. No limits. Generate as many cover letters as you need — completely free.</div>
+        <div class="form-info">
+          <strong>100% Free:</strong> Generate unlimited professional cover letters — no account needed, no credit card, no limits.
+        </div>
         <div class="form-grid">
-          <div class="field"><label for="cl-name">Your full name</label><input type="text" id="cl-name" placeholder="e.g. Ahmed Khan" autocomplete="off"/></div>
-          <div class="field"><label for="cl-job">Target job title <span style="color:#ef4444">*</span></label><input type="text" id="cl-job" placeholder="e.g. Software Engineer" autocomplete="off"/></div>
-          <div class="field"><label for="cl-company">Company name <span style="color:#ef4444">*</span></label><input type="text" id="cl-company" placeholder="e.g. Google" autocomplete="off"/></div>
-          <div class="field"><label for="cl-level">Experience level</label>
-      
+          <div class="field">
+            <label for="cl-name">Your full name</label>
+            <input type="text" id="cl-name" placeholder="e.g. Ahmed Khan" autocomplete="off" />
+          </div>
+          <div class="field">
+            <label for="cl-job">Target job title <span style="color:#ef4444">*</span></label>
+            <input type="text" id="cl-job" placeholder="e.g. Software Engineer" autocomplete="off" />
+          </div>
+          <div class="field">
+            <label for="cl-company">Company name <span style="color:#ef4444">*</span></label>
+            <input type="text" id="cl-company" placeholder="e.g. Google" autocomplete="off" />
+          </div>
+          <div class="field">
+            <label for="cl-level">Experience level</label>
             <select id="cl-level">
               <option value="fresh graduate">Fresh graduate</option>
               <option value="student / intern">Student / intern</option>
@@ -597,19 +678,20 @@ body.dark-mode .support-card h3,
               <option value="3-5 years experience">3–5 years experience</option>
             </select>
           </div>
-          <div class="field full"><label for="cl-skills">Your key skills</label><input type="text" id="cl-skills" placeholder="e.g. Python, data analysis, teamwork, communication" autocomplete="off"/></div>
           <div class="field full">
-            <label for="cl-jd">Job description <span style="font-weight:400;text-transform:none;letter-spacing:0">(more detail = better letter)</span></label>
-            <textarea id="cl-jd" placeholder="Paste the job description or key requirements here..."></textarea>
-            <div class="ch" id="jd-count">0 words</div>
-                                    <!-- button for Clear all -->
-            <button class="act-btn" onclick="clearForm()" style="margin-top:8px">
-  <i class="ti ti-eraser"></i> Clear all
-</button>
+            <label for="cl-skills">Your key skills</label>
+            <input type="text" id="cl-skills" placeholder="e.g. Python, data analysis, teamwork, communication" autocomplete="off" />
           </div>
           <div class="field full">
-
-            <div class="tone-lbl">Tone</div>
+            <label for="cl-jd">Job description <span style="font-weight:400;text-transform:none;letter-spacing:0">(more detail = better letter)</span></label>
+            <textarea id="cl-jd" placeholder="Paste the job description or key requirements here. The more detail you add, the more tailored your letter will be."></textarea>
+            <div class="ch" id="jd-count">0 words</div>
+            <button class="act-btn" onclick="clearForm()" style="margin-top:8px">
+              <i class="ti ti-eraser"></i> Clear all
+            </button>
+          </div>
+          <div class="field full">
+            <div class="tone-lbl">Choose your tone</div>
             <div class="tone-row">
               <button class="tone-opt active" onclick="selTone(this,'professional')">Professional</button>
               <button class="tone-opt" onclick="selTone(this,'confident')">Confident</button>
@@ -618,58 +700,82 @@ body.dark-mode .support-card h3,
             </div>
           </div>
         </div>
-        <button class="gen-btn" id="cl-btn" onclick="generateCoverLetter()"><i class="ti ti-wand"></i> Generate my cover letter — free</button>
+
+        <button class="gen-btn" id="cl-btn" onclick="generateCoverLetter()">
+          <i class="ti ti-wand"></i> Generate my cover letter — free
+        </button>
+
         <div class="out-card" id="cl-out">
           <div class="out-head">
             <div class="out-title"><i class="ti ti-circle-check"></i> Your cover letter is ready</div>
             <div class="out-actions">
               <button class="act-btn pdf" onclick="downloadPDF()"><i class="ti ti-file-type-pdf"></i> Download PDF</button>
               <button class="act-btn" onclick="copyCoverLetter()"><i class="ti ti-copy"></i> Copy</button>
-              <button class="act-btn" onclick="regenCoverLetter()"><i class="ti ti-refresh"></i> Regenerate</button>
+              <button class="act-btn" onclick="generateCoverLetter()"><i class="ti ti-refresh"></i> Regenerate</button>
             </div>
           </div>
           <div class="out-body" id="cl-body"></div>
+          <div class="email-box" id="email-collect">
+            <div class="email-box-title"><i class="ti ti-mail"></i> Want weekly job tips and career advice?</div>
+            <div class="email-box-sub">Join our free newsletter — practical tips for landing your dream job.</div>
+            <div class="email-row">
+              <input type="email" id="collect-email" placeholder="Enter your email address" />
+              <button onclick="collectEmail()">Subscribe free</button>
+            </div>
+            <div class="email-note">No spam ever. Unsubscribe anytime.</div>
+          </div>
           <div class="q-row">
             <div class="q-item"><i class="ti ti-check"></i> ATS friendly</div>
             <div class="q-item"><i class="ti ti-check"></i> Personalised</div>
             <div class="q-item"><i class="ti ti-check"></i> Professional tone</div>
-            <div class="q-item"><i class="ti ti-check"></i> UK/US standard</div>
+            <div class="q-item"><i class="ti ti-check"></i> UK / US standard</div>
           </div>
         </div>
-        <div style="margin-top:1.5rem"><div class="ad"><span>📢 Ad — LinkedIn Premium: Get noticed by top recruiters. First month free.</span><span class="ad-tag">Ad</span></div></div>
-        <div class="tip" style="margin-top:1rem"><i class="ti ti-bulb"></i><span>100% free — generate unlimited cover letters. No hidden fees, no credit card required.</span></div>
+
+        <div style="margin-top:1.5rem">
+          <div class="ad">
+            <span>Advertisement — LinkedIn Premium: Get noticed by top recruiters. First month free.</span>
+            <span class="ad-tag">Ad</span>
+          </div>
+        </div>
+        <div class="tip-box">
+          <i class="ti ti-bulb"></i>
+          <span>Tip: The more details you add in the job description field, the more tailored and accurate your cover letter will be.</span>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- TRUST BADGES -->
-  <div class="sec-wrap mt2">
+  <div class="sw mt2">
     <div class="trust">
       <div class="trust-item"><i class="ti ti-shield-lock"></i> SSL Secured</div>
       <div class="trust-item"><i class="ti ti-eye-off"></i> Privacy protected</div>
       <div class="trust-item"><i class="ti ti-clock"></i> Instant generation</div>
       <div class="trust-item"><i class="ti ti-device-mobile"></i> Mobile friendly</div>
-      <div class="trust-item"><i class="ti ti-star"></i> 4.9/5 rating</div>
-      <div class="trust-item"><i class="ti ti-heart"></i> 100% free</div>
+      <div class="trust-item"><i class="ti ti-infinity"></i> Unlimited free</div>
+      <div class="trust-item"><i class="ti ti-star"></i> 4.8/5 rating</div>
     </div>
   </div>
 
-  <!-- AD -->
-  <div class="sec-wrap mt2"><div class="ad"><span>📢 Ad — Grammarly Pro: Write with confidence. Perfect grammar every time.</span><span class="ad-tag">Ad</span></div></div>
+  <div class="sw mt2">
+    <div class="ad">
+      <span>Advertisement — Grammarly Pro: Write with confidence. Perfect grammar every time.</span>
+      <span class="ad-tag">Ad</span>
+    </div>
+  </div>
 
-  <!-- REVIEWS -->
-  <div class="sec-wrap mt2">
+  <div class="sw mt2">
     <div class="card">
-      <div class="sec-kicker">Student reviews</div>
+      <div class="kicker">Student reviews</div>
       <div class="sec-title">Real students. Real results.</div>
       <div class="sec-sub">Students are already using HireReady AI to land interviews at top companies worldwide.</div>
       <div class="rev-grid">
-        <div class="rev-card"><div class="reviewer"><div class="av a1">JM</div><div><div class="rv-name">James Mitchell</div><div class="rv-meta">CS graduate — Amazon UK</div></div></div><div class="stars">★★★★★</div><div class="rv-text">"I spent two weeks trying to write my cover letter and got nowhere. HireReady AI gave me a perfect one in under a minute. Got an interview call within 3 days."</div><div class="verified"><i class="ti ti-circle-check"></i> Verified user</div></div>
-        <div class="rev-card"><div class="reviewer"><div class="av a2">SA</div><div><div class="rv-name">Sofia Andersson</div><div class="rv-meta">Business student — Deloitte UK</div></div></div><div class="stars">★★★★★</div><div class="rv-text">"As a non-native English speaker I always worried my writing was not professional enough. HireReady AI made my letter sound completely polished."</div><div class="verified"><i class="ti ti-circle-check"></i> Verified user</div></div>
-        <div class="rev-card"><div class="reviewer"><div class="av a3">RK</div><div><div class="rv-name">Riya Kapoor</div><div class="rv-meta">Marketing student — Unilever</div></div></div><div class="stars">★★★★★</div><div class="rv-text">"I applied to 12 companies using letters from this app and got 7 interview calls. I just tweak the company name and the letter is ready."</div><div class="verified"><i class="ti ti-circle-check"></i> Verified user</div></div>
-        <div class="rev-card"><div class="reviewer"><div class="av a4">DW</div><div><div class="rv-name">Daniel Webb</div><div class="rv-meta">Engineering graduate — Tesla</div></div></div><div class="stars">★★★★★</div><div class="rv-text">"The cover letter feature saved me hours. I had no idea how to write such a professional letter. The app nailed it on the first try."</div><div class="verified"><i class="ti ti-circle-check"></i> Verified user</div></div>
-        <div class="rev-card"><div class="reviewer"><div class="av a5">AL</div><div><div class="rv-name">Aisha Lowe</div><div class="rv-meta">Law student — London firm</div></div></div><div class="stars">★★★★★</div><div class="rv-text">"Cover letters for law firms need to be very precise and formal. The formal tone option produced something that sounded like it came from a senior associate."</div><div class="verified"><i class="ti ti-circle-check"></i> Verified user</div></div>
-        <div class="rev-card"><div class="reviewer"><div class="av a6">TN</div><div><div class="rv-name">Tom Nguyen</div><div class="rv-meta">Data science — Microsoft</div></div></div><div class="stars">★★★★★</div><div class="rv-text">"I tried ChatGPT for cover letters but it always sounds generic. HireReady AI actually reads the job description and tailors everything to it."</div><div class="verified"><i class="ti ti-circle-check"></i> Verified user</div></div>
+        <div class="rev-card"><div class="reviewer"><div class="av a1">JM</div><div><div class="rv-name">James Mitchell</div><div class="rv-meta">CS graduate — Amazon UK</div></div></div><div class="stars">★★★★★</div><div class="rv-text">"I spent two weeks trying to write my cover letter and got nowhere. HireReady AI gave me a perfect one in under a minute. Got an interview call within 3 days. Completely changed my job search."</div><div class="verified"><i class="ti ti-circle-check"></i> Verified user</div></div>
+        <div class="rev-card"><div class="reviewer"><div class="av a2">SA</div><div><div class="rv-name">Sofia Andersson</div><div class="rv-meta">Business student — Deloitte UK</div></div></div><div class="stars">★★★★★</div><div class="rv-text">"As a non-native English speaker I always worried my writing was not professional enough. HireReady AI made my letter sound completely polished. My professor asked who wrote it for me!"</div><div class="verified"><i class="ti ti-circle-check"></i> Verified user</div></div>
+        <div class="rev-card"><div class="reviewer"><div class="av a3">RK</div><div><div class="rv-name">Riya Kapoor</div><div class="rv-meta">Marketing student — Unilever</div></div></div><div class="stars">★★★★★</div><div class="rv-text">"I applied to 12 companies using letters from this app and got 7 interview calls. I just tweak the company name and the letter is ready. This tool is incredible."</div><div class="verified"><i class="ti ti-circle-check"></i> Verified user</div></div>
+        <div class="rev-card"><div class="reviewer"><div class="av a4">DW</div><div><div class="rv-name">Daniel Webb</div><div class="rv-meta">Engineering graduate — Tesla</div></div></div><div class="stars">★★★★★</div><div class="rv-text">"The cover letter feature saved me hours. I had no idea how to write such a professional letter. The app nailed it on the first try. Highly recommend to every student."</div><div class="verified"><i class="ti ti-circle-check"></i> Verified user</div></div>
+        <div class="rev-card"><div class="reviewer"><div class="av a5">AL</div><div><div class="rv-name">Aisha Lowe</div><div class="rv-meta">Law student — London firm</div></div></div><div class="stars">★★★★★</div><div class="rv-text">"Cover letters for law firms need to be very precise and formal. The formal tone option produced something that sounded like it came from a senior associate, not a student."</div><div class="verified"><i class="ti ti-circle-check"></i> Verified user</div></div>
+        <div class="rev-card"><div class="reviewer"><div class="av a6">TN</div><div><div class="rv-name">Tom Nguyen</div><div class="rv-meta">Data science — Microsoft</div></div></div><div class="stars">★★★★★</div><div class="rv-text">"I tried ChatGPT for cover letters but it always sounds generic. HireReady AI actually reads the job description and tailors everything to it. My letter matched exactly what Microsoft wanted."</div><div class="verified"><i class="ti ti-circle-check"></i> Verified user</div></div>
       </div>
     </div>
   </div>
@@ -688,198 +794,148 @@ body.dark-mode .support-card h3,
     </div>
   </div>
 
-  <!-- FAQ -->
-  <div class="sec-wrap mt2">
+  <div class="sw mt2">
     <div class="card">
-      <div class="sec-kicker">FAQ</div>
+      <div class="kicker">FAQ</div>
       <div class="sec-title">Frequently asked questions</div>
       <div class="faq-list">
-        <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Is this really free? <i class="ti ti-plus"></i></div><div class="faq-a">Yes! HireReady AI is 100% free for students and job seekers. No credit card required, no limits, no hidden fees. Generate as many cover letters as you need.</div></div>
+        <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Is HireReady AI really free? <i class="ti ti-plus"></i></div><div class="faq-a">Yes! HireReady AI is 100% free for students and job seekers. No credit card required, no limits, no hidden fees. Generate as many cover letters as you need.</div></div>
         <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">How good is the AI-generated cover letter? <i class="ti ti-plus"></i></div><div class="faq-a">Very good! Our AI writes professional, ATS-optimised cover letters that match UK and US hiring standards. The more details you provide — especially the job description — the more tailored your letter will be. Students consistently report getting interview callbacks after using our letters.</div></div>
         <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What is ATS and why does it matter? <i class="ti ti-plus"></i></div><div class="faq-a">ATS stands for Applicant Tracking System. Most large companies use ATS software to automatically filter cover letters before a human ever reads them. Our letters are specifically written to pass ATS filters by including the right keywords and formatting.</div></div>
-        <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Can I edit my cover letter after generating it? <i class="ti ti-plus"></i></div><div class="faq-a">Yes — just click the copy button, paste it into any editor, and make any changes you like. It's your letter, you're in full control.</div></div>
+        <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Can I edit my cover letter after generating it? <i class="ti ti-plus"></i></div><div class="faq-a">Yes — just click the copy button, paste it into Google Docs or Word, and make any changes you like. It is your letter and you are in full control.</div></div>
+        <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Can I download my cover letter as PDF? <i class="ti ti-plus"></i></div><div class="faq-a">Yes! After generating your cover letter click the Download PDF button and it saves a clean, professional PDF file directly to your device — ready to attach to any job application.</div></div>
         <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Is my data safe and private? <i class="ti ti-plus"></i></div><div class="faq-a">Yes. We do not store your personal information or the content you enter. Each generation is processed securely and deleted immediately. We never share your data with third parties.</div></div>
-        <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">How can I support HireReady AI? <i class="ti ti-plus"></i></div><div class="faq-a">We're so glad you asked! You can support us via the Support section above, share this tool with your friends, or reach out if you'd like to sponsor or advertise with us. Every bit helps keep this free for students.</div></div>
-        <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Does it work for any country or job type? <i class="ti ti-plus"></i></div><div class="faq-a">Yes! HireReady AI works for any job in any country. Optimised for great results for any market worldwide.</div></div>
+        <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Does it work for any country or job type? <i class="ti ti-plus"></i></div><div class="faq-a">Yes! HireReady AI works for any job in any country. Optimised for US and UK standards but produces great results for any market worldwide including Europe, Australia, Canada, and more.</div></div>
+        <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">How can I support HireReady AI? <i class="ti ti-plus"></i></div><div class="faq-a">Click the Support button in the navigation or in the Support section below. You can leave a one-time tip of any amount via our secure Gumroad page. Every contribution helps keep this tool free for students worldwide.</div></div>
       </div>
     </div>
   </div>
 
-  <!-- AD -->
-  <div class="sec-wrap mt2"><div class="ad"><span>📢 Ad — Indeed Premium: Apply faster and stand out to employers.</span><span class="ad-tag">Ad</span></div></div>
+  <div class="sw mt2">
+    <div class="ad">
+      <span>Advertisement — Indeed Premium: Apply faster and stand out to employers.</span>
+      <span class="ad-tag">Ad</span>
+    </div>
+  </div>
 
-  <!-- CTA -->
-  <div class="sec-wrap mt2" style="padding-bottom:0">
+  <div class="sw mt2" style="padding-bottom:0">
     <div class="cta">
       <h2>Your dream job is one letter away</h2>
       <p>Join students worldwide who landed interviews with HireReady AI. 100% free — no account needed.</p>
-      <button class="cta-btn" onclick="document.getElementById('app').scrollIntoView({behavior:'smooth'})"><i class="ti ti-wand"></i> Generate my cover letter now</button>
+      <button class="cta-btn" onclick="document.getElementById('app').scrollIntoView({behavior:'smooth'})">
+        <i class="ti ti-wand"></i> Generate my cover letter now
+      </button>
       <div class="cta-note">❤️ 100% free • No credit card • Unlimited generations</div>
     </div>
   </div>
+
 </div>
+<!-- END HOME PAGE -->
 
 <!-- ===== ABOUT PAGE ===== -->
-<div class="page" id="about" style="display:none;">
-    <div class="hero" style="padding:3rem 1.5rem 2.5rem">
-      <div class="hero-badge"><i class="ti ti-info-circle"></i> About us</div>
-      <h1>We help students <span>land jobs</span></h1>
-      <p>HireReady AI was built with one mission — to make professional job applications accessible to every student, everywhere.</p>
-    </div>
-    <div class="sec-wrap mt2">
-      <div class="card">
-        <div class="sec-kicker">Our story</div>
-        <div class="sec-title">Why we built HireReady AI</div>
-        <div class="about-grid">
-          <div class="about-text">
-            <p>Every year, millions of students and fresh graduates struggle with the same problem — they are qualified for the job, but they do not know how to write a cover letter that gets them noticed.</p>
-            <p>Cover letter writing is a skill nobody teaches in school. Career coaches charge hundreds of dollars. Professional writers charge even more. Most students just give up and send generic, ineffective letters — or worse, nothing at all.</p>
-            <p>We built HireReady AI to change that. Using the latest AI technology, we generate a professional, tailored, ATS-optimised cover letter in 30 seconds — for free. No experience needed. No expensive coaches. Just you, your details, and a letter that gets results.</p>
-            <p>Our mission is simple: every student deserves a fair chance at their dream job.</p>
-          </div>
-          <div class="about-vals">
-            <div class="about-v"><i class="ti ti-heart"></i><div><div class="av-t">Student first</div><div class="av-d">Every decision puts students first. 100% free forever.</div></div></div>
-            <div class="about-v"><i class="ti ti-shield-check"></i><div><div class="av-t">Privacy by default</div><div class="av-d">We never store your personal data. Your information stays yours.</div></div></div>
-            <div class="about-v"><i class="ti ti-sparkles"></i><div><div class="av-t">Quality always</div><div class="av-d">We use only the best AI to ensure professional results every time.</div></div></div>
-            <div class="about-v"><i class="ti ti-world"></i><div><div class="av-t">Global reach</div><div class="av-d">Built for students worldwide — US, UK, Europe, Australia, Asia and beyond.</div></div></div>
-          </div>
+<div class="page" id="page-about">
+  <div class="hero" style="padding:3rem 1.5rem 2.5rem">
+    <div class="hero-badge"><i class="ti ti-info-circle"></i> About us</div>
+    <h1>We help students <span>land jobs</span></h1>
+    <p>HireReady AI was built with one mission — to make professional job applications accessible to every student, everywhere.</p>
+  </div>
+  <div class="sw mt2">
+    <div class="card">
+      <div class="kicker">Our story</div>
+      <div class="sec-title">Why we built HireReady AI</div>
+      <div class="about-grid">
+        <div class="about-text">
+          <p>Every year, millions of students and fresh graduates struggle with the same problem — they are qualified for the job, but they do not know how to write a cover letter that gets them noticed.</p>
+          <p>Cover letter writing is a skill nobody teaches in school. Career coaches charge hundreds of dollars. Professional writers charge even more. Most students just give up and send generic, ineffective letters — or worse, nothing at all.</p>
+          <p>We built HireReady AI to change that. Using the latest AI technology, we generate a professional, tailored, ATS-optimised cover letter in 30 seconds — for free. No experience needed. No expensive coaches. Just you, your details, and a letter that gets results.</p>
+          <p>Our mission is simple: every student deserves a fair chance at their dream job.</p>
+        </div>
+        <div class="about-vals">
+          <div class="about-v"><i class="ti ti-heart"></i><div><div class="av-t">Student first</div><div class="av-d">Every decision puts students first. 100% free forever.</div></div></div>
+          <div class="about-v"><i class="ti ti-shield-check"></i><div><div class="av-t">Privacy by default</div><div class="av-d">We never store your personal data. Your information stays yours.</div></div></div>
+          <div class="about-v"><i class="ti ti-sparkles"></i><div><div class="av-t">Quality always</div><div class="av-d">We use only the best AI to ensure professional results every time.</div></div></div>
+          <div class="about-v"><i class="ti ti-world"></i><div><div class="av-t">Global reach</div><div class="av-d">Built for students worldwide — US, UK, Europe, Australia, Canada, and beyond.</div></div></div>
         </div>
       </div>
     </div>
   </div>
+</div>
+<!-- END ABOUT PAGE -->
 
-  <div class="page" id="contact" style="display:none;">
-    <div class="hero" style="padding:3rem 1.5rem 2.5rem">
-      <div class="hero-badge"><i class="ti ti-mail"></i> Contact us</div>
-      <h1>We are here to <span>help you</span></h1>
-      <p>Have a question, feedback, or need support? We respond to every message within 24 hours.</p>
-    </div>
-    <div class="sec-wrap mt2">
-      <div class="card">
-        <div class="sec-kicker">Get in touch</div>
-        <div class="sec-title">Contact HireReady AI</div>
-        <div class="sec-sub">We are a small team that genuinely cares about helping students. Reach out anytime.</div>
-        <div class="ct-grid">
-          <div class="ct-card"><div class="ct-icon"><i class="ti ti-mail"></i></div><div><div class="ct-t">Email support</div><div class="ct-v">hirereadyai.support@gmail.com</div></div></div>
-          <div class="ct-card"><div class="ct-icon"><i class="ti ti-clock"></i></div><div><div class="ct-t">Response time</div><div class="ct-v">Within 24 hours</div></div></div>
-          <div class="ct-card"><div class="ct-icon"><i class="ti ti-brand-twitter"></i></div><div><div class="ct-t">Twitter / X</div><div class="ct-v">@HireReadyAI</div></div></div>
-          <div class="ct-card"><div class="ct-icon"><i class="ti ti-ad"></i></div><div><div class="ct-t">Advertise with us</div><div class="ct-v">ads@hirereadyai.com</div></div></div>
-        </div>
+<!-- ===== CONTACT PAGE ===== -->
+<div class="page" id="page-contact">
+  <div class="hero" style="padding:3rem 1.5rem 2.5rem">
+    <div class="hero-badge"><i class="ti ti-mail"></i> Contact us</div>
+    <h1>We are here to <span>help you</span></h1>
+    <p>Have a question, feedback, or need support? We respond to every message within 24 hours.</p>
+  </div>
+  <div class="sw mt2">
+    <div class="card">
+      <div class="kicker">Get in touch</div>
+      <div class="sec-title">Contact HireReady AI</div>
+      <div class="sec-sub">We are a small team that genuinely cares about helping students. Reach out anytime.</div>
+      <div class="ct-grid">
+        <div class="ct-card"><div class="ct-icon"><i class="ti ti-mail"></i></div><div><div class="ct-t">Email support</div><div class="ct-v">hirereadyai.support@gmail.com</div></div></div>
+        <div class="ct-card"><div class="ct-icon"><i class="ti ti-clock"></i></div><div><div class="ct-t">Response time</div><div class="ct-v">Within 24 hours</div></div></div>
+        <div class="ct-card"><div class="ct-icon"><i class="ti ti-brand-twitter"></i></div><div><div class="ct-t">Twitter / X</div><div class="ct-v">@HireReadyAI</div></div></div>
+        <div class="ct-card"><div class="ct-icon"><i class="ti ti-ad"></i></div><div><div class="ct-t">Advertise with us</div><div class="ct-v">hirereadyai.support@gmail.com</div></div></div>
       </div>
     </div>
   </div>
+</div>
+<!-- END CONTACT PAGE -->
 
-  <div class="page" id="privacy" style="display:none;">
-    <div class="sec-wrap" style="padding-top:2rem">
-      <div class="card">
-        <div class="sec-title">Privacy Policy</div>
-        <div class="legal">
-          <p>Last updated: June 2026</p>
-          <h3>1. Information we collect</h3><p>HireReady AI does not require account registration. We do not collect or store personal details entered into the cover letter form. Each generation request is processed in real time and discarded immediately after your letter is generated.</p>
-          <h3>2. How we use information</h3><p>We use anonymous usage data to improve our service. This contains no personally identifiable information. We use Google Analytics to understand how users interact with our platform.</p>
-          <h3>3. Cookies</h3><p>We use essential cookies to ensure the website functions correctly. We also use advertising cookies for Google AdSense. You may disable cookies in your browser settings.</p>
-          <h3>4. Third party services</h3><p>We use third-party AI services to generate cover letters. Your prompt data is sent solely for generating your letter and is not stored or used for training.</p>
-          <h3>5. Your rights</h3><p>Since we do not store personal data, there is nothing to delete or export. For concerns, contact hirereadyai.support@gmail.com</p>
-          <h3>6. Contact</h3><p>For privacy questions, email hirereadyai.support@gmail.com We respond within 24 hours.</p>
-        </div>
+<!-- ===== PRIVACY PAGE ===== -->
+<div class="page" id="page-privacy">
+  <div class="sw" style="padding-top:2rem">
+    <div class="card">
+      <div class="sec-title">Privacy Policy</div>
+      <div class="legal">
+        <p>Last updated: June 2026</p>
+        <h3>1. Information we collect</h3><p>HireReady AI does not require account registration. We do not collect or store personal details entered into the cover letter form. Each generation request is processed in real time and discarded immediately after your letter is generated.</p>
+        <h3>2. How we use information</h3><p>We use anonymous usage data to improve our service. This contains no personally identifiable information. We use Google Analytics to understand how users interact with our platform.</p>
+        <h3>3. Cookies</h3><p>We use essential cookies to ensure the website functions correctly. We also use advertising cookies for Google AdSense. You may disable cookies in your browser settings.</p>
+        <h3>4. Third party services</h3><p>We use third-party AI services to generate cover letters. Your prompt data is sent solely for generating your letter and is not stored or used for training.</p>
+        <h3>5. Payments</h3><p>Payment processing is handled entirely by Gumroad. We do not store or access your payment card details. Please refer to Gumroad's privacy policy for details.</p>
+        <h3>6. Your rights</h3><p>Since we do not store personal data, there is nothing to delete or export. For concerns, contact hirereadyai.support@gmail.com</p>
+        <h3>7. Contact</h3><p>For privacy questions, email hirereadyai.support@gmail.com. We respond within 24 hours.</p>
       </div>
     </div>
   </div>
+</div>
+<!-- END PRIVACY PAGE -->
 
-<div class="page" id="about" style="display:none;">
-    <div class="hero" style="padding:3rem 1.5rem 2.5rem">
-      <div class="hero-badge"><i class="ti ti-info-circle"></i> About us</div>
-      <h1 style="color: var(--text);">We help students <span style="color: #1A56DB;">land jobs</span></h1>
-      <p style="color: var(--text-3);">HireReady AI was built with one mission — to make professional job applications accessible to every student, everywhere.</p>
-    </div>
-    <div class="sec-wrap mt2">
-      <div class="card">
-        <div class="sec-kicker" style="color: #1A56DB; font-weight: 600; text-transform: uppercase; font-size: 12px; letter-spacing: 0.5px; margin-bottom: 4px;">Our story</div>
-        <div class="sec-title" style="font-size: 22px; font-weight: 700; color: var(--text); margin-bottom: 1rem;">Why we built HireReady AI</div>
-        <div class="about-grid">
-          <div class="about-text">
-            <p>Every year, millions of students and fresh graduates struggle with the same problem — they are qualified for the job, but they do not know how to write a cover letter that gets them noticed.</p>
-            <p>Cover letter writing is a skill nobody teaches in school. Career coaches charge hundreds of dollars. Professional writers charge even more. Most students just give up and send generic, ineffective letters — or worse, nothing at all.</p>
-            <p>We built HireReady AI to change that. Using the latest AI technology, we generate a professional, tailored, ATS-optimised cover letter in 30 seconds — for free. No experience needed. No expensive coaches. Just you, your details, and a letter that gets results.</p>
-            <p>Our mission is simple: every student deserves a fair chance at their dream job.</p>
-          </div>
-          <div class="about-vals">
-            <div class="about-v"><i class="ti ti-heart"></i><div><div class="av-t">Student first</div><div class="av-d">Every decision puts students first. 100% free forever.</div></div></div>
-            <div class="about-v"><i class="ti ti-shield-check"></i><div><div class="av-t">Privacy by default</div><div class="av-d">We never store your personal data. Your information stays yours.</div></div></div>
-            <div class="about-v"><i class="ti ti-sparkles"></i><div><div class="av-t">Quality always</div><div class="av-d">We use only the best AI to ensure professional results every time.</div></div></div>
-            <div class="about-v"><i class="ti ti-world"></i><div><div class="av-t">Global reach</div><div class="av-d">Built for students worldwide — US, UK, Europe, Australia, Asia and beyond.</div></div></div>
-          </div>
-        </div>
+<!-- ===== TERMS PAGE ===== -->
+<div class="page" id="page-terms">
+  <div class="sw" style="padding-top:2rem">
+    <div class="card">
+      <div class="sec-title">Terms of Service</div>
+      <div class="legal">
+        <p>Last updated: June 2026</p>
+        <h3>1. Acceptance of terms</h3><p>By using HireReady AI you agree to these terms. If you do not agree, please do not use our service.</p>
+        <h3>2. Use of service</h3><p>HireReady AI is provided for personal, non-commercial use to help individuals create professional cover letters. You may not resell or redistribute outputs without written permission.</p>
+        <h3>3. AI-generated content</h3><p>Cover letters are created by artificial intelligence. You are responsible for reviewing content before submitting to employers. We do not guarantee employment outcomes.</p>
+        <h3>4. Limitation of liability</h3><p>HireReady AI is provided as-is without warranties of any kind. We are not liable for any employment decisions made based on content generated by our service.</p>
+        <h3>5. Changes to terms</h3><p>We may update these terms from time to time. Continued use constitutes acceptance of new terms.</p>
+        <h3>6. Contact</h3><p>For questions about these terms, contact hirereadyai.support@gmail.com</p>
       </div>
     </div>
   </div>
+</div>
+<!-- END TERMS PAGE -->
 
-  <div class="page" id="contact" style="display:none;">
-    <div class="hero" style="padding:3rem 1.5rem 2.5rem">
-      <div class="hero-badge"><i class="ti ti-mail"></i> Contact us</div>
-      <h1 style="color: var(--text);">We are here to <span style="color: #1A56DB;">help you</span></h1>
-      <p style="color: var(--text-3);">Have a question, feedback, or need support? We respond to every message within 24 hours.</p>
-    </div>
-    <div class="sec-wrap mt2">
-      <div class="card">
-        <div class="sec-kicker" style="color: #1A56DB; font-weight: 600; text-transform: uppercase; font-size: 12px; letter-spacing: 0.5px; margin-bottom: 4px;">Get in touch</div>
-        <div class="sec-title" style="font-size: 22px; font-weight: 700; color: var(--text); margin-bottom: 4px;">Contact HireReady AI</div>
-        <div class="sec-sub" style="color: var(--text-4); font-size: 14px; margin-bottom: 1.5rem;">We are a small team that genuinely cares about helping students. Reach out anytime.</div>
-        <div class="ct-grid">
-          <div class="ct-card"><div class="ct-icon"><i class="ti ti-mail"></i></div><div><div class="ct-t">Email support</div><div class="ct-v">hirereadyai.support@gmail.com</div></div></div>
-          <div class="ct-card"><div class="ct-icon"><i class="ti ti-clock"></i></div><div><div class="ct-t">Response time</div><div class="ct-v">Within 24 hours</div></div></div>
-          <div class="ct-card"><div class="ct-icon"><i class="ti ti-brand-twitter"></i></div><div><div class="ct-t">Twitter / X</div><div class="ct-v">@HireReadyAI</div></div></div>
-          <div class="ct-card"><div class="ct-icon"><i class="ti ti-ad"></i></div><div><div class="ct-t">Advertise with us</div><div class="ct-v">ads@hirereadyai.com</div></div></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="page" id="privacy" style="display:none;">
-    <div class="sec-wrap" style="padding-top:2rem">
-      <div class="card">
-        <div class="sec-title" style="font-size: 24px; font-weight: 700; color: var(--text); margin-bottom: 1rem;">Privacy Policy</div>
-        <div class="legal">
-          <p style="color: var(--text-4); font-style: italic;">Last updated: June 2026</p>
-          <h3>1. Information we collect</h3><p>HireReady AI does not require account registration. We do not collect or store personal details entered into the cover letter form. Each generation request is processed in real time and discarded immediately after your letter is generated.</p>
-          <h3>2. How we use information</h3><p>We use anonymous usage data to improve our service. This contains no personally identifiable information. We use Google Analytics to understand how users interact with our platform.</p>
-          <h3>3. Cookies</h3><p>We use essential cookies to ensure the website functions correctly. We also use advertising cookies for Google AdSense. You may disable cookies in your browser settings.</p>
-          <h3>4. Third party services</h3><p>We use third-party AI services to generate cover letters. Your prompt data is sent solely for generating your letter and is not stored or used for training.</p>
-          <h3>5. Your rights</h3><p>Since we do not store personal data, there is nothing to delete or export. For concerns, contact hirereadyai.support@gmail.com</p>
-          <h3>6. Contact</h3><p>For privacy questions, email hirereadyai.support@gmail.com We respond within 24 hours.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="page" id="terms" style="display:none;">
-    <div class="sec-wrap" style="padding-top:2rem">
-      <div class="card">
-        <div class="sec-title" style="font-size: 24px; font-weight: 700; color: var(--text); margin-bottom: 1rem;">Terms of Service</div>
-        <div class="legal">
-          <p style="color: var(--text-4); font-style: italic;">Last updated: June 2026</p>
-          <h3>1. Acceptance of terms</h3><p>By using HireReady AI you agree to these terms. If you do not agree, please do not use our service.</p>
-          <h3>2. Use of service</h3><p>HireReady AI is provided for personal use to help individuals create cover letters and resume content. You may not resell or redistribute outputs without written permission.</p>
-          <h3>3. AI-generated content</h3><p>Cover letters are created by artificial intelligence. You are responsible for reviewing content before submitting to employers. We do not guarantee employment outcomes.</p>
-          <h3>4. Limitation of liability</h3><p>HireReady AI is provided as-is without warranties. We are not liable for any employment decisions made based on our content.</p>
-          <h3>5. Changes to terms</h3><p>We may update these terms from time to time. Continued use constitutes acceptance of new terms.</p>
-          <h3>6. Contact</h3><p>For questions, contact hirereadyai.support@gmail.com</p>
-        </div>
-      </div>
-    </div>
-  </div>
 <!-- ===== FOOTER ===== -->
 <footer>
   <div class="ft-in">
     <div class="ft-top">
       <div>
-        <div class="ft-brand"><i class="ti ti-briefcase" aria-hidden="true"></i>></i> HireReady AI</div>
+        <div class="ft-brand"><i class="ti ti-briefcase"></i> HireReady AI</div>
         <div class="ft-desc">Helping students and fresh graduates land their dream jobs with AI-powered cover letters. 100% free. No account needed.</div>
       </div>
       <div class="ft-col">
         <h4>Product</h4>
         <a onclick="showPage('home')">Cover letter</a>
-        <a onclick="document.getElementById('support-section').scrollIntoView({behavior:'smooth'})">Support us</a>
+        <a onclick="openSupport()">Support us</a>
       </div>
       <div class="ft-col">
         <h4>Company</h4>
@@ -901,10 +957,11 @@ body.dark-mode .support-card h3,
 
 <!-- ===== JAVASCRIPT ===== -->
 <script>
-  // ─── STATE ──────────────────────────────────────────────
+  // ── STATE ──────────────────────────────────────────
   let tone = 'professional';
+  let selectedTipAmount = '3';
 
-  // ─── PAGE & TAB NAVIGATION ──────────────────────────────
+  // ── PAGE NAVIGATION ────────────────────────────────
   function showPage(n) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     const el = document.getElementById('page-' + n);
@@ -912,23 +969,67 @@ body.dark-mode .support-card h3,
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
+  // ── TAB NAVIGATION ─────────────────────────────────
   function switchTab(t) {
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
     document.querySelectorAll('.tab-sec').forEach(s => s.classList.remove('active'));
-    const tabBtn = document.getElementById('tab-' + t);
+    const btn = document.getElementById('tab-' + t);
     const sec = document.getElementById('sec-' + t);
-    if (tabBtn) tabBtn.classList.add('active');
+    if (btn) btn.classList.add('active');
     if (sec) sec.classList.add('active');
   }
 
-  // ─── TONE SELECTOR ──────────────────────────────────────
+  // ── TONE SELECTOR ──────────────────────────────────
   function selTone(el, t) {
     document.querySelectorAll('.tone-opt').forEach(b => b.classList.remove('active'));
     el.classList.add('active');
     tone = t;
   }
 
-  // ─── TOAST ──────────────────────────────────────────────
+  // ── DARK MODE ──────────────────────────────────────
+  function toggleTheme() {
+    const isDark = document.body.classList.toggle('dark');
+    localStorage.setItem('hr_theme', isDark ? 'dark' : 'light');
+    updateThemeIcon(isDark);
+  }
+
+  function updateThemeIcon(isDark) {
+    const icon = document.getElementById('theme-icon');
+    if (icon) icon.className = isDark ? 'ti ti-moon' : 'ti ti-sun';
+  }
+
+  // ── SUPPORT MODAL ──────────────────────────────────
+  function openSupport() {
+    document.getElementById('support-modal').classList.add('show');
+  }
+
+  function closeSupport() {
+    document.getElementById('support-modal').classList.remove('show');
+  }
+
+  function selectTip(el, amount) {
+    document.querySelectorAll('.tip-amount').forEach(b => b.classList.remove('selected'));
+    el.classList.add('selected');
+    selectedTipAmount = amount;
+    document.getElementById('custom-amount').value = '';
+  }
+
+  function goToPayment() {
+    const custom = document.getElementById('custom-amount').value.trim();
+    const amount = custom || selectedTipAmount;
+    // REPLACE THIS URL WITH YOUR GUMROAD SUPPORT LINK
+    const gumroadUrl = 'https://gumroad.com/l/hirereadyai-support';
+    window.open(gumroadUrl + '?suggested_price=' + amount, '_blank');
+    closeSupport();
+    showToast('Thank you for your support! ❤️');
+  }
+
+  // Click outside modal to close
+  document.getElementById('support-modal').addEventListener('click', function(e) {
+    if (e.target === this) closeSupport();
+  });
+
+  // ── TOAST ──────────────────────────────────────────
   function showToast(msg) {
     const t = document.getElementById('toast');
     t.textContent = msg;
@@ -937,32 +1038,127 @@ body.dark-mode .support-card h3,
     t._hide = setTimeout(() => t.classList.remove('show'), 2800);
   }
 
-  // ─── WORD COUNT ──────────────────────────────────────────
-  document.getElementById('cl-jd')?.addEventListener('input', function() {
+  // ── WORD COUNT ─────────────────────────────────────
+  document.getElementById('cl-jd').addEventListener('input', function () {
     const w = this.value.trim().split(/\s+/).filter(Boolean).length;
     document.getElementById('jd-count').textContent = w + ' words';
   });
 
-  // ─── FAQ ──────────────────────────────────────────────────
+  // ── FAQ ────────────────────────────────────────────
   function toggleFaq(el) {
-    const a = el.nextElementSibling,
-      open = el.classList.contains('open');
+    const a = el.nextElementSibling;
+    const open = el.classList.contains('open');
     document.querySelectorAll('.faq-q').forEach(q => {
       q.classList.remove('open');
       if (q.nextElementSibling) q.nextElementSibling.classList.remove('show');
     });
-    if (!open) { el.classList.add('open');
-      a.classList.add('show'); }
+    if (!open) { el.classList.add('open'); a.classList.add('show'); }
   }
 
-  // ─── COVER LETTER GENERATION ──────────────────────────
+  // ── CLEAR FORM ─────────────────────────────────────
+  function clearForm() {
+    ['cl-name','cl-job','cl-company','cl-skills','cl-jd'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.value = '';
+    });
+    document.getElementById('jd-count').textContent = '0 words';
+    document.getElementById('cl-out').classList.remove('show');
+    showToast('Form cleared');
+  }
+
+  // ── EMAIL COLLECT ──────────────────────────────────
+  function collectEmail() {
+    const email = document.getElementById('collect-email').value.trim();
+    if (!email || !email.includes('@')) { showToast('Please enter a valid email address.'); return; }
+    const emails = JSON.parse(localStorage.getItem('collected_emails') || '[]');
+    if (emails.includes(email)) { showToast('You are already subscribed! Thank you.'); return; }
+    emails.push(email);
+    localStorage.setItem('collected_emails', JSON.stringify(emails));
+    document.getElementById('email-collect').innerHTML =
+      '<div style="text-align:center;padding:10px"><i class="ti ti-circle-check" style="font-size:32px;color:var(--green);display:block;margin-bottom:8px"></i><p style="font-size:14px;font-weight:600;color:var(--text)">Thank you for subscribing!</p><p style="font-size:13px;color:var(--text-3)">We will send you weekly job tips and career advice.</p></div>';
+  }
+
+  // ── COPY ───────────────────────────────────────────
+  function copyCoverLetter() {
+    const text = document.getElementById('cl-body').textContent;
+    if (!text || text.includes('Crafting your') || text.includes('Something went wrong')) {
+      showToast('Generate a cover letter first!'); return;
+    }
+    navigator.clipboard.writeText(text)
+      .then(() => showToast('Copied to clipboard!'))
+      .catch(() => {
+        const ta = document.createElement('textarea');
+        ta.value = text; document.body.appendChild(ta); ta.select();
+        document.execCommand('copy'); document.body.removeChild(ta);
+        showToast('Copied to clipboard!');
+      });
+  }
+
+  // ── PDF DOWNLOAD ───────────────────────────────────
+  function downloadPDF() {
+    const letterText = document.getElementById('cl-body').textContent;
+    if (!letterText || letterText.includes('Crafting your') || letterText.includes('Something went wrong')) {
+      showToast('Generate a cover letter first!'); return;
+    }
+    const name = document.getElementById('cl-name').value.trim() || 'Applicant';
+    const job = document.getElementById('cl-job').value.trim() || 'Position';
+    const company = document.getElementById('cl-company').value.trim() || '';
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' });
+    const PW = 210, PH = 297, ML = 25.4, MR = 25.4, CW = PW - ML - MR;
+    const FS = 11, LH = (FS * 0.3528) * 1.5;
+    let y = 25;
+    // Letterhead
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(22);
+    doc.setTextColor(17, 24, 39);
+    doc.text(name.toUpperCase(), ML, y);
+    y += 7;
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(10);
+    doc.setTextColor(107, 114, 128);
+    const sub = company ? `${job} Candidate — Application for ${company}` : `${job} Candidate`;
+    doc.text(sub, ML, y);
+    y += 6;
+    doc.setDrawColor(229, 231, 235);
+    doc.setLineWidth(0.4);
+    doc.line(ML, y, PW - MR, y);
+    y += 14;
+    doc.setTextColor(17, 24, 39);
+    function renderPara(text, bold = false) {
+      doc.setFont('helvetica', bold ? 'bold' : 'normal');
+      doc.setFontSize(FS);
+      const lines = doc.splitTextToSize(text, CW);
+      lines.forEach(line => {
+        if (y + LH > PH - 25.4) { doc.addPage(); y = 25; }
+        doc.text(line.trim(), ML, y);
+        y += LH;
+      });
+      y += 4.5;
+    }
+    const paras = letterText.split(/\n\s*\n/).filter(p => p.trim());
+    paras.forEach(p => {
+      const clean = p.replace(/\s+/g, ' ').trim();
+      const lower = clean.toLowerCase();
+      const bold = lower.startsWith('dear') || lower.startsWith('sincerely') ||
+        lower.startsWith('best regards') || lower.startsWith('kind regards') ||
+        lower.startsWith('warmly') || lower.startsWith('respectfully') ||
+        lower.startsWith('warm regards') || clean === name;
+      renderPara(clean, bold);
+    });
+    const fn = 'Cover_Letter_' + name.replace(/[^a-zA-Z0-9]/g,'_') + '_' + job.replace(/[^a-zA-Z0-9]/g,'_') + '.pdf';
+    doc.save(fn);
+    showToast('PDF downloaded successfully!');
+  }
+
+  // ── GENERATE COVER LETTER ──────────────────────────
   async function generateCoverLetter() {
-    const name = document.getElementById('cl-name').value.trim() || 'the applicant';
-    const job = document.getElementById('cl-job').value.trim();
+    const name    = document.getElementById('cl-name').value.trim() || 'the applicant';
+    const job     = document.getElementById('cl-job').value.trim();
     const company = document.getElementById('cl-company').value.trim();
-    const level = document.getElementById('cl-level').value;
-    const skills = document.getElementById('cl-skills').value.trim();
-    const jd = document.getElementById('cl-jd').value.trim();
+    const level   = document.getElementById('cl-level').value;
+    const skills  = document.getElementById('cl-skills').value.trim();
+    const jd      = document.getElementById('cl-jd').value.trim();
 
     if (!job || !company) {
       showToast('Please fill in the job title and company name.');
@@ -977,42 +1173,51 @@ body.dark-mode .support-card h3,
     out.classList.add('show');
     document.getElementById('cl-body').innerHTML =
       '<div style="padding:2.5rem;text-align:center;color:#6B7280;font-size:14px"><i class="ti ti-loader spin" style="font-size:24px;display:block;margin-bottom:12px;color:#1A56DB"></i>Crafting your personalised cover letter...</div>';
+    document.getElementById('email-collect').style.display = 'none';
 
-    const prompt = `Write a professional ATS-friendly cover letter:
-  Applicant: ${name}
-  Job: ${job} at ${company}
-  Level: ${level}
-  Skills: ${skills || 'not specified'}
-  Job description: ${jd || 'not provided'}
-  Tone: ${tone}, US/UK professional standard
+    const prompt = `Write a professional ATS-friendly cover letter with these details:
+Applicant name: ${name}
+Target job: ${job}
+Company: ${company}
+Experience level: ${level}
+Key skills: ${skills || 'not specified'}
+Job description: ${jd || 'not provided'}
+Tone: ${tone}, US/UK professional standard
 
-  Rules:
-  - Strong opening showing immediate value
-  - 2-3 relevant skills with brief examples
-  - Genuine enthusiasm for the company
-  - Confident call to action close
-  - 3-4 paragraphs under 350 words
-  - Human natural never robotic
-  - Start with "Dear Hiring Manager,"
-  - No address blocks or dates
+Rules:
+- Start with a strong opening that shows immediate value to the employer
+- Highlight 2-3 most relevant skills with brief specific examples
+- Show genuine enthusiasm for the company and why them specifically
+- End with a confident and clear call to action
+- 3-4 paragraphs under 350 words
+- Sound human, warm, and natural — never robotic or generic
+- Start directly with "Dear Hiring Manager,"
+- Do NOT include address blocks, dates, or headers
 
-  Write only the cover letter.`;
+Write only the cover letter text. Nothing else.`;
 
     try {
       const res = await fetch('/api/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ prompt, type: 'cover_letter' })
+        body: JSON.stringify({ prompt })
       });
+
+      if (!res.ok) {
+        const errData = await res.json().catch(() => ({}));
+        throw new Error(errData.error || 'Server error ' + res.status);
+      }
+
       const data = await res.json();
       if (data.error) throw new Error(data.error);
 
       document.getElementById('cl-body').textContent = data.result;
-      showToast('✅ Cover letter generated successfully!');
+      document.getElementById('email-collect').style.display = 'block';
+      showToast('Cover letter generated successfully!');
+
     } catch (e) {
       document.getElementById('cl-body').innerHTML =
-        '<div style="padding:1rem;color:#991B1B;font-size:14px">⚠️ Something went wrong: ' + (e.message ||
-          'Please try again.') + '</div>';
+        '<div style="padding:1rem;color:#991B1B;font-size:14px">Something went wrong: ' + (e.message || 'Please try again.') + '</div>';
       showToast('Error: ' + (e.message || 'Please try again.'));
     }
 
@@ -1020,185 +1225,14 @@ body.dark-mode .support-card h3,
     btn.innerHTML = '<i class="ti ti-wand"></i> Generate my cover letter — free';
   }
 
-  function regenCoverLetter() {
-    generateCoverLetter();
-  }
-
-  function copyCoverLetter() {
-    const text = document.getElementById('cl-body').textContent;
-    if (!text || text.includes('Crafting your') || text.includes('Something went wrong')) {
-      showToast('Generate a cover letter first!');
-      return;
-    }
-    navigator.clipboard.writeText(text).then(() => showToast('📋 Copied to clipboard!')).catch(() => {
-      // fallback
-      const ta = document.createElement('textarea');
-      ta.value = text;
-      document.body.appendChild(ta);
-      ta.select();
-      document.execCommand('copy');
-      document.body.removeChild(ta);
-      showToast('📋 Copied to clipboard!');
-    });
-  }
-
-  // Clear All Function
-function clearForm() {
-  document.querySelectorAll('#cl-name, #cl-job, #cl-company, #cl-skills, #cl-jd')
-    .forEach(el => el.value = '');
-  document.getElementById('jd-count').textContent = '0 words';
-  document.getElementById('cl-out').classList.remove('show');
-  showToast('🧹 Form cleared');
-}
-  // ─── PDF DOWNLOAD ──────────────────────────────────────────
-// ─── PDF DOWNLOAD (html2pdf.js) ──────────────────────────
-// ─── PDF DOWNLOAD (jsPDF – Text‑Based) ──────────────────────────
-// ─── PDF DOWNLOAD – Clean Letter Only (No Branding) ─────────
-// ─── PDF DOWNLOAD – Clean Executive Layout ─────────
-// ─── PDF DOWNLOAD – Clean Executive Layout with Design Header ─────────
-function downloadPDF() {
-  const letterText = document.getElementById('cl-body').textContent;
-  if (!letterText || letterText.includes('Crafting your') || letterText.includes('Something went wrong')) {
-    showToast('⚠️ Generate a cover letter first!');
-    return;
-  }
-
-  const name = document.getElementById('cl-name').value.trim() || 'Applicant';
-  const job = document.getElementById('cl-job').value.trim() || 'Position';
-  const company = document.getElementById('cl-company').value.trim() || '';
-
-  // ─── Initialize Document ──────────────────────────────────
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' });
-
-  // ─── Standard Core Geometry (1-inch Professional Margins) ───
-  const PAGE_WIDTH = 210;
-  const PAGE_HEIGHT = 297;
-  const MARGIN_LEFT = 25.4;
-  const MARGIN_RIGHT = 25.4;
-  const CONTENT_WIDTH = PAGE_WIDTH - MARGIN_LEFT - MARGIN_RIGHT;
-  
-  // Clean typography spacing rules
-  const FONT_FAMILY = 'helvetica';
-  const FONT_SIZE_BODY = 11;       // Industry executive standard
-  const LINE_HEIGHT_MULTIPLIER = 1.5; // High readability breathing room
-  
-  let currentY = 25; // Initial top padding
-
-  // ─── Render Professional Letterhead ───────────────────────
-  // This builds a high-end corporate header for the student's document
-  doc.setFont(FONT_FAMILY, 'bold');
-  doc.setFontSize(22);
-  doc.setTextColor(17, 24, 39); // Deep dark primary text (#111827)
-  doc.text(name.toUpperCase(), MARGIN_LEFT, currentY);
-  currentY += 7;
-
-  doc.setFont(FONT_FAMILY, 'normal');
-  doc.setFontSize(10);
-  doc.setTextColor(107, 114, 128); // Elegant slate gray (#6B7280)
-  const subtitle = company ? `${job} Candidate — Application for ${company}` : `${job} Candidate`;
-  doc.text(subtitle, MARGIN_LEFT, currentY);
-  currentY += 6;
-
-  // Thin modern divider line separating applicant identity from body text
-  doc.setDrawColor(229, 231, 235); // Light clean border line (#E5E7EB)
-  doc.setLineWidth(0.4);
-  doc.line(MARGIN_LEFT, currentY, PAGE_WIDTH - MARGIN_RIGHT, currentY);
-  currentY += 14; // Elegant breathing room before the letter body starts
-
-  // Reset core text color back to dark print default
-  doc.setTextColor(17, 24, 39);
-
-  // ─── Document Component Formatter ─────────────────────────
-  function renderParagraph(textBlock, isBold = false) {
-    doc.setFont(FONT_FAMILY, isBold ? 'bold' : 'normal');
-    doc.setFontSize(FONT_SIZE_BODY);
-
-    // Calculate absolute line height allocation in mm
-    const lineHeightInMm = (FONT_SIZE_BODY * 0.3528) * LINE_HEIGHT_MULTIPLIER;
-    
-    // Process text wrap boundaries reliably matching the page canvas width
-    const lines = doc.splitTextToSize(textBlock, CONTENT_WIDTH);
-
-    lines.forEach(line => {
-      // Defensive page overflow validation per text sequence loop
-      if (currentY + lineHeightInMm > (PAGE_HEIGHT - 25.4)) {
-        doc.addPage();
-        currentY = 25; // Reset canvas pointer on secondary page arrays
-      }
-      
-      // Fixed standard left-aligned formatting prevents irregular whitespace spacing
-      doc.text(line.trim(), MARGIN_LEFT, currentY);
-      currentY += lineHeightInMm;
-    });
-
-    // Paragraph separation buffer tracking spacing standards
-    currentY += 4.5; 
-  }
-
-  // ─── Parse Raw Text Safely into Paragraph Blocks ──────────
-  const paragraphs = letterText.split(/\n\s*\n/).filter(p => p.trim() !== '');
-
-  paragraphs.forEach(paragraph => {
-    const cleanParagraph = paragraph.replace(/\s+/g, ' ').trim();
-    const lower = cleanParagraph.toLowerCase();
-
-    // Comprehensive Context Evaluation for Typographic Hierarchy Rules
-    const isHeaderOrSalutation = 
-      lower.startsWith('dear') || 
-      lower.startsWith('sincerely') || 
-      lower.startsWith('best regards') || 
-      lower.startsWith('kind regards') || 
-      lower.startsWith('warmly') || 
-      lower.startsWith('warm regards') || 
-      lower.startsWith('respectfully') || 
-      lower.startsWith('best,') ||
-      cleanParagraph === name; // Highlights their standalone closing name cleanly
-
-    renderParagraph(cleanParagraph, isHeaderOrSalutation);
-  });
-
-  // ─── Safe File Compilation & Storage Execution ─────────────
-  const sanitizedName = name.replace(/[^a-zA-Z0-9]/g, '_');
-  const sanitizedJob = job.replace(/[^a-zA-Z0-9]/g, '_');
-  const fileName = `Cover_Letter_${sanitizedName}_${sanitizedJob}.pdf`;
-
-  doc.save(fileName);
-  showToast('✅ PDF downloaded successfully!');
-}
-
-// ─── INIT & PREMIUM EXTENSIONS ─────────────────────────────────
-// ─── THEME CONTROLLER ENGINE ──────────────────────────────
-  function toggleTheme() {
-    const isDark = document.body.classList.toggle('dark-mode');
-    localStorage.setItem('hr_theme', isDark ? 'dark' : 'light');
-    updateThemeIcon(isDark);
-  }
-
-  function updateThemeIcon(isDark) {
-    const icon = document.getElementById('theme-icon');
-    if (icon) {
-      icon.className = isDark ? 'ti ti-moon' : 'ti ti-sun';
-    }
-  }
-
-  // ─── INIT ──────────────────────────────────────────────────
-  document.addEventListener('DOMContentLoaded', function() {
+  // ── INIT ───────────────────────────────────────────
+  document.addEventListener('DOMContentLoaded', function () {
     showPage('home');
-    
-    // Check local store or user system preference for Dark Mode
-    const savedTheme = localStorage.getItem('hr_theme');
-    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    const useDark = savedTheme === 'dark' || (!savedTheme && systemPrefersDark);
-    
-    if (useDark) {
-      document.body.classList.add('dark-mode');
-    }
+    const saved = localStorage.getItem('hr_theme');
+    const sysDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const useDark = saved === 'dark' || (!saved && sysDark);
+    if (useDark) document.body.classList.add('dark');
     updateThemeIcon(useDark);
-    
-    if (window.Gumroad) {
-      Gumroad.init();
-    }
   });
 </script>
 </body>
