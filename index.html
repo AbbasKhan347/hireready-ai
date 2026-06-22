@@ -891,14 +891,17 @@
   </div>
 
 <div class="sw mt2" id="app">
-    <div class="tabs">
-      <button class="tab-btn active" onclick="switchTab('cl')" id="tab-cl">
-        <i class="ti ti-file-text"></i> Cover letter
-      </button>
-      <button class="tab-btn" onclick="switchTab('resume')" id="tab-resume">
-        <i class="ti ti-file-analytics"></i> Resume Analyzer <span style="background:#8B5CF6;color:#fff;font-size:10px;padding:2px 6px;border-radius:10px;margin-left:6px;">NEW</span>
-      </button>
-    </div>
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('cl')" id="tab-cl">
+    <i class="ti ti-file-text"></i> Cover letter
+  </button>
+  <button class="tab-btn" onclick="switchTab('rb')" id="tab-rb">
+    <i class="ti ti-id-badge"></i> Resume builder
+  </button>
+  <button class="tab-btn" onclick="switchTab('ats')" id="tab-ats">
+    <i class="ti ti-chart-bar"></i> ATS analyzer
+  </button>
+</div>
   
     <div class="app-card">
       <div class="tab-sec active" id="sec-cl">
@@ -980,7 +983,16 @@
             <div class="q-item"><i class="ti ti-check"></i> UK / US standard</div>
           </div>
         </div>
-
+<!-- UPSELL TO RESUME BUILDER -->
+<div class="upsell-card" id="cl-upsell">
+  <div class="upsell-text">
+    <strong>Your cover letter is ready!</strong> Now make sure your resume matches it.
+    Get a free ATS score and see exactly how to improve your resume in 30 seconds.
+  </div>
+  <button class="upsell-cta" onclick="switchTab('ats');document.getElementById('app').scrollIntoView({behavior:'smooth'})">
+    <i class="ti ti-chart-bar"></i> Analyze my resume free →
+  </button>
+</div>
         <div style="margin-top:1.5rem">
           <div class="ad">
             <span>Advertisement — LinkedIn Premium: Get noticed by top recruiters. First month free.</span>
@@ -993,36 +1005,232 @@
         </div>
       </div>
 
-      <div class="tab-sec" id="sec-resume">
-        <div class="form-info" style="border-left-color: #8B5CF6; background: rgba(139,92,246,0.1);">
-          <strong>🚀 Free Resume Audit:</strong> Paste your current resume and the job description. Our AI will give you an ATS score and 3 actionable improvements instantly.
-        </div>
-        
-        <div class="form-grid">
-          <div class="field full">
-            <label for="res-text">Paste Your Current Resume <span style="color:#ef4444">*</span></label>
-            <textarea id="res-text" placeholder="Copy and paste all the text from your current resume/CV here..."></textarea>
-          </div>
-          <div class="field full">
-            <label for="res-jd">Target Job Description</label>
-            <textarea id="res-jd" placeholder="Paste the job description you are applying for so we can match the ATS keywords..."></textarea>
-          </div>
-        </div>
+<!-- ===== RESUME BUILDER TAB ===== -->
+<div class="tab-sec" id="sec-rb">
+  <div class="form-info">
+    <strong>Resume Builder:</strong> Fill in your details below and we will generate a professional, ATS-optimised resume in seconds. Download as PDF for free.
+  </div>
 
-        <button class="gen-btn" id="res-btn" onclick="analyzeResume()" style="background: var(--purple);">
-          <i class="ti ti-scan"></i> Scan My Resume — Free
+  <!-- PHOTO UPLOAD -->
+  <div class="rb-section">
+    <div class="rb-section-title"><i class="ti ti-user-circle"></i> Profile photo (optional)</div>
+    <div class="rb-photo-wrap">
+      <div class="rb-photo-placeholder" id="rb-photo-placeholder" onclick="document.getElementById('rb-photo-input').click()">
+        <i class="ti ti-camera"></i>
+      </div>
+      <div id="rb-photo-preview" style="display:none" class="rb-photo-preview">
+        <img id="rb-photo-img" src="" alt="Profile" />
+      </div>
+      <div class="rb-photo-info">
+        <p>Upload a professional photo. Square images work best. Optional — many employers prefer no photo.</p>
+        <button class="rb-photo-btn" onclick="document.getElementById('rb-photo-input').click()">
+          <i class="ti ti-upload"></i> Upload photo
         </button>
+        <input type="file" id="rb-photo-input" accept="image/*" style="display:none" onchange="handlePhotoUpload(event)" />
+      </div>
+    </div>
+  </div>
 
-        <div class="out-card" id="res-out">
-          <div class="out-head" style="background: rgba(139,92,246,0.1); border-bottom-color: rgba(139,92,246,0.2);">
-            <div class="out-title" style="color: var(--purple);"><i class="ti ti-clipboard-check" style="color: var(--purple);"></i> Your Resume Analysis</div>
-            <div class="out-actions">
-              <button class="act-btn" onclick="openSupport()" style="border-color: var(--purple); color: var(--purple);"><i class="ti ti-lock-open"></i> Unlock PDF Export (Pro)</button>
-            </div>
-          </div>
-          <div class="out-body" id="res-body"></div>
+  <!-- PERSONAL INFORMATION -->
+  <div class="rb-section">
+    <div class="rb-section-title"><i class="ti ti-user"></i> Personal information</div>
+    <div class="rb-grid">
+      <div class="rb-field"><label>Full name *</label><input type="text" id="rb-name" placeholder="e.g. Ahmed Khan" /></div>
+      <div class="rb-field"><label>Professional title *</label><input type="text" id="rb-title" placeholder="e.g. Software Engineer" /></div>
+      <div class="rb-field"><label>Email address *</label><input type="email" id="rb-email" placeholder="e.g. ahmed@email.com" /></div>
+      <div class="rb-field"><label>Phone number</label><input type="text" id="rb-phone" placeholder="e.g. +44 7911 123456" /></div>
+      <div class="rb-field"><label>Location</label><input type="text" id="rb-location" placeholder="e.g. London, UK" /></div>
+      <div class="rb-field"><label>LinkedIn URL</label><input type="text" id="rb-linkedin" placeholder="e.g. linkedin.com/in/ahmedkhan" /></div>
+      <div class="rb-field"><label>Portfolio / Website</label><input type="text" id="rb-website" placeholder="e.g. ahmedkhan.dev" /></div>
+      <div class="rb-field"><label>GitHub</label><input type="text" id="rb-github" placeholder="e.g. github.com/ahmedkhan" /></div>
+    </div>
+  </div>
+
+  <hr class="rb-divider" />
+
+  <!-- PROFESSIONAL SUMMARY -->
+  <div class="rb-section">
+    <div class="rb-section-title"><i class="ti ti-align-left"></i> Professional summary</div>
+    <div class="rb-field">
+      <label>Summary (2-4 sentences about yourself)</label>
+      <textarea id="rb-summary" rows="4" placeholder="e.g. Results-driven Software Engineer with 2 years of experience in Python and cloud technologies. Passionate about building scalable solutions and improving user experiences. Strong background in Agile teams and cross-functional collaboration."></textarea>
+    </div>
+    <div class="rb-field" style="margin-top:10px">
+      <label>Target job title (for AI optimisation)</label>
+      <input type="text" id="rb-target-job" placeholder="e.g. Full Stack Developer at Google" />
+    </div>
+  </div>
+
+  <hr class="rb-divider" />
+
+  <!-- WORK EXPERIENCE -->
+  <div class="rb-section">
+    <div class="rb-section-title"><i class="ti ti-briefcase"></i> Work experience</div>
+    <div id="rb-experience-list"></div>
+    <button class="rb-add-btn" onclick="addExperience()">
+      <i class="ti ti-plus"></i> Add work experience
+    </button>
+  </div>
+
+  <hr class="rb-divider" />
+
+  <!-- EDUCATION -->
+  <div class="rb-section">
+    <div class="rb-section-title"><i class="ti ti-school"></i> Education</div>
+    <div id="rb-education-list"></div>
+    <button class="rb-add-btn" onclick="addEducation()">
+      <i class="ti ti-plus"></i> Add education
+    </button>
+  </div>
+
+  <hr class="rb-divider" />
+
+  <!-- SKILLS -->
+  <div class="rb-section">
+    <div class="rb-section-title"><i class="ti ti-tools"></i> Skills</div>
+    <div class="rb-grid">
+      <div class="rb-field rb-full">
+        <label>Technical skills (comma separated)</label>
+        <input type="text" id="rb-tech-skills" placeholder="e.g. Python, JavaScript, React, SQL, AWS, Git" />
+      </div>
+      <div class="rb-field rb-full">
+        <label>Soft skills (comma separated)</label>
+        <input type="text" id="rb-soft-skills" placeholder="e.g. Leadership, Communication, Problem solving, Teamwork" />
+      </div>
+      <div class="rb-field rb-full">
+        <label>Languages (comma separated)</label>
+        <input type="text" id="rb-languages" placeholder="e.g. English (Native), Urdu (Native), French (Basic)" />
+      </div>
+    </div>
+  </div>
+
+  <hr class="rb-divider" />
+
+  <!-- PROJECTS -->
+  <div class="rb-section">
+    <div class="rb-section-title"><i class="ti ti-code"></i> Projects (optional)</div>
+    <div id="rb-projects-list"></div>
+    <button class="rb-add-btn" onclick="addProject()">
+      <i class="ti ti-plus"></i> Add project
+    </button>
+  </div>
+
+  <hr class="rb-divider" />
+
+  <!-- CERTIFICATIONS -->
+  <div class="rb-section">
+    <div class="rb-section-title"><i class="ti ti-certificate"></i> Certifications (optional)</div>
+    <div id="rb-certs-list"></div>
+    <button class="rb-add-btn" onclick="addCert()">
+      <i class="ti ti-plus"></i> Add certification
+    </button>
+  </div>
+
+  <hr class="rb-divider" />
+
+  <!-- ACHIEVEMENTS -->
+  <div class="rb-section">
+    <div class="rb-section-title"><i class="ti ti-trophy"></i> Achievements & awards (optional)</div>
+    <div class="rb-field">
+      <label>List your achievements (one per line)</label>
+      <textarea id="rb-achievements" rows="4" placeholder="e.g. Dean's List 2024&#10;Winner — National Coding Competition 2023&#10;Published research paper in IEEE journal"></textarea>
+    </div>
+  </div>
+
+  <button class="rb-generate-btn" id="rb-btn" onclick="generateResume()">
+    <i class="ti ti-wand"></i> Generate my professional resume
+  </button>
+
+  <!-- RESUME PREVIEW -->
+  <div class="resume-preview-card" id="rb-preview">
+    <div class="resume-preview-head">
+      <div class="out-title"><i class="ti ti-circle-check"></i> Your resume is ready</div>
+      <div class="out-actions">
+        <button class="act-btn pdf" onclick="downloadResumePDF()"><i class="ti ti-file-type-pdf"></i> Download PDF</button>
+        <button class="act-btn" onclick="copyResumeText()"><i class="ti ti-copy"></i> Copy text</button>
+      </div>
+    </div>
+    <div class="resume-preview-body" id="rb-preview-body"></div>
+  </div>
+</div>
+
+<!-- ===== ATS ANALYZER TAB ===== -->
+<div class="tab-sec" id="sec-ats">
+  <div class="ats-info">
+    <strong>ATS Resume Analyzer:</strong> Paste your resume text below and get an instant ATS score, keyword analysis, and 5 specific improvements to help you pass automated screening.
+  </div>
+
+  <div class="ats-grid">
+    <div class="rb-field ats-full">
+      <label for="ats-resume">Your resume text * <span style="font-weight:400;text-transform:none;letter-spacing:0">(paste the full text)</span></label>
+      <textarea id="ats-resume" rows="10" placeholder="Paste your complete resume text here. Include all sections: contact info, summary, experience, education, skills..."></textarea>
+    </div>
+    <div class="rb-field ats-full">
+      <label for="ats-jd">Target job description <span style="font-weight:400;text-transform:none;letter-spacing:0">(optional but recommended)</span></label>
+      <textarea id="ats-jd" rows="6" placeholder="Paste the job description you are applying for. This helps our AI give you targeted keyword suggestions and specific improvements for that role."></textarea>
+    </div>
+  </div>
+
+  <button class="ats-analyze-btn" id="ats-btn" onclick="analyzeResume()">
+    <i class="ti ti-chart-bar"></i> Analyze my resume — free
+  </button>
+
+  <!-- ATS RESULTS -->
+  <div class="ats-result-card" id="ats-result">
+    <div class="ats-result-head">
+      <div class="ats-result-title"><i class="ti ti-chart-bar" style="color:var(--green)"></i> ATS Analysis Report</div>
+      <button class="act-btn" onclick="analyzeResume()"><i class="ti ti-refresh"></i> Re-analyze</button>
+    </div>
+
+    <!-- SCORE -->
+    <div class="ats-score-wrap">
+      <div class="ats-score-ring" id="ats-score-ring">
+        <div class="ats-score-num" id="ats-score-num">--</div>
+        <div class="ats-score-label">/ 100</div>
+      </div>
+      <div class="ats-grade" id="ats-grade">--</div>
+      <div class="ats-summary" id="ats-summary-text">Analyzing your resume...</div>
+    </div>
+
+    <div class="ats-body">
+
+      <!-- SECTION CHECKLIST -->
+      <div class="ats-sub-title"><i class="ti ti-list-check"></i> Resume sections found</div>
+      <div class="ats-sections" id="ats-sections"></div>
+
+      <!-- STRENGTHS -->
+      <div class="ats-sub-title"><i class="ti ti-star" style="color:#F59E0B"></i> Your strengths</div>
+      <div class="ats-strengths" id="ats-strengths"></div>
+
+      <!-- IMPROVEMENTS -->
+      <div class="ats-sub-title"><i class="ti ti-tool" style="color:#EF4444"></i> Improvements needed</div>
+      <div class="ats-improvements" id="ats-improvements"></div>
+
+      <!-- KEYWORDS -->
+      <div class="ats-keywords">
+        <div class="ats-sub-title"><i class="ti ti-tag" style="color:var(--blue)"></i> Keyword analysis</div>
+        <div style="margin-bottom:8px">
+          <div style="font-size:12px;font-weight:600;color:var(--green);margin-bottom:6px">✅ Keywords found in your resume:</div>
+          <div class="ats-kw-row" id="ats-kw-found"></div>
+        </div>
+        <div>
+          <div style="font-size:12px;font-weight:600;color:#EF4444;margin-bottom:6px">❌ Missing keywords to add:</div>
+          <div class="ats-kw-row" id="ats-kw-missing"></div>
         </div>
       </div>
+
+      <!-- CTA TO RESUME BUILDER -->
+      <div style="padding:16px;background:var(--blue-light);border-radius:var(--r-lg);text-align:center;border:1px solid rgba(26,86,219,.2)">
+        <div style="font-size:14px;font-weight:600;color:var(--blue-dark);margin-bottom:8px">Ready to fix your resume?</div>
+        <div style="font-size:13px;color:var(--text-3);margin-bottom:12px">Use our Resume Builder to create an improved version with all the fixes applied.</div>
+        <button onclick="switchTab('rb')" style="padding:10px 20px;background:var(--blue);color:#fff;border:none;border-radius:var(--r);font-size:13px;font-weight:600;cursor:pointer;font-family:inherit">
+          <i class="ti ti-id-badge"></i> Build my new resume
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
       </div>
   </div>
 
@@ -1526,6 +1734,7 @@ Write only the cover letter text. Nothing else.`;
 
       document.getElementById('cl-body').textContent = data.result;
       document.getElementById('email-collect').style.display = 'block';
+      document.getElementById('cl-upsell').classList.add('show');
       showToast('Cover letter generated successfully!');
 
       // ADD THE CROSS-SELL UPSELL
@@ -1604,6 +1813,698 @@ Write only the cover letter text. Nothing else.`;
       Gumroad.init();
     }
   });
+
+  // ── RESUME BUILDER STATE ──────────────────────────────
+let rbPhotoBase64 = null;
+let rbExpCount = 0;
+let rbEduCount = 0;
+let rbProjCount = 0;
+let rbCertCount = 0;
+
+// ── PHOTO UPLOAD ──────────────────────────────────────
+function handlePhotoUpload(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    rbPhotoBase64 = e.target.result;
+    document.getElementById('rb-photo-placeholder').style.display = 'none';
+    const preview = document.getElementById('rb-photo-preview');
+    preview.style.display = 'flex';
+    document.getElementById('rb-photo-img').src = rbPhotoBase64;
+  };
+  reader.readAsDataURL(file);
+}
+
+// ── ADD EXPERIENCE ENTRY ──────────────────────────────
+function addExperience() {
+  rbExpCount++;
+  const n = rbExpCount;
+  const container = document.getElementById('rb-experience-list');
+  const div = document.createElement('div');
+  div.className = 'rb-entry';
+  div.id = 'rb-exp-' + n;
+  div.innerHTML = `
+    <div class="rb-entry-header">
+      <span class="rb-entry-num">Experience ${n}</span>
+      <button class="rb-remove-btn" onclick="document.getElementById('rb-exp-${n}').remove()">
+        <i class="ti ti-trash"></i> Remove
+      </button>
+    </div>
+    <div class="rb-grid">
+      <div class="rb-field"><label>Job title *</label><input type="text" id="rb-exp-title-${n}" placeholder="e.g. Software Engineer" /></div>
+      <div class="rb-field"><label>Company *</label><input type="text" id="rb-exp-company-${n}" placeholder="e.g. Google" /></div>
+      <div class="rb-field"><label>Location</label><input type="text" id="rb-exp-location-${n}" placeholder="e.g. London, UK" /></div>
+      <div class="rb-field"><label>Employment type</label>
+        <select id="rb-exp-type-${n}">
+          <option value="Full-time">Full-time</option>
+          <option value="Part-time">Part-time</option>
+          <option value="Internship">Internship</option>
+          <option value="Contract">Contract</option>
+          <option value="Freelance">Freelance</option>
+        </select>
+      </div>
+      <div class="rb-field"><label>Start date</label><input type="text" id="rb-exp-start-${n}" placeholder="e.g. Jan 2023" /></div>
+      <div class="rb-field"><label>End date</label><input type="text" id="rb-exp-end-${n}" placeholder="e.g. Present" /></div>
+      <div class="rb-field rb-full">
+        <label>Key responsibilities & achievements (one per line)</label>
+        <textarea id="rb-exp-desc-${n}" rows="4" placeholder="e.g. Developed RESTful APIs using Python and Django serving 50,000+ daily users&#10;Reduced page load time by 40% through code optimisation&#10;Led a team of 3 junior developers on the mobile app project"></textarea>
+      </div>
+    </div>`;
+  container.appendChild(div);
+}
+
+// ── ADD EDUCATION ENTRY ───────────────────────────────
+function addEducation() {
+  rbEduCount++;
+  const n = rbEduCount;
+  const container = document.getElementById('rb-education-list');
+  const div = document.createElement('div');
+  div.className = 'rb-entry';
+  div.id = 'rb-edu-' + n;
+  div.innerHTML = `
+    <div class="rb-entry-header">
+      <span class="rb-entry-num">Education ${n}</span>
+      <button class="rb-remove-btn" onclick="document.getElementById('rb-edu-${n}').remove()">
+        <i class="ti ti-trash"></i> Remove
+      </button>
+    </div>
+    <div class="rb-grid">
+      <div class="rb-field"><label>Degree / Qualification *</label><input type="text" id="rb-edu-degree-${n}" placeholder="e.g. BSc Computer Science" /></div>
+      <div class="rb-field"><label>Institution *</label><input type="text" id="rb-edu-school-${n}" placeholder="e.g. University of Manchester" /></div>
+      <div class="rb-field"><label>Location</label><input type="text" id="rb-edu-location-${n}" placeholder="e.g. Manchester, UK" /></div>
+      <div class="rb-field"><label>Grade / GPA</label><input type="text" id="rb-edu-grade-${n}" placeholder="e.g. First Class Honours / 3.9 GPA" /></div>
+      <div class="rb-field"><label>Start year</label><input type="text" id="rb-edu-start-${n}" placeholder="e.g. 2020" /></div>
+      <div class="rb-field"><label>End year</label><input type="text" id="rb-edu-end-${n}" placeholder="e.g. 2024" /></div>
+      <div class="rb-field rb-full">
+        <label>Relevant coursework / activities (optional)</label>
+        <input type="text" id="rb-edu-details-${n}" placeholder="e.g. Data Structures, Machine Learning, Dissertation: AI in Healthcare" />
+      </div>
+    </div>`;
+  container.appendChild(div);
+}
+
+// ── ADD PROJECT ENTRY ─────────────────────────────────
+function addProject() {
+  rbProjCount++;
+  const n = rbProjCount;
+  const container = document.getElementById('rb-projects-list');
+  const div = document.createElement('div');
+  div.className = 'rb-entry';
+  div.id = 'rb-proj-' + n;
+  div.innerHTML = `
+    <div class="rb-entry-header">
+      <span class="rb-entry-num">Project ${n}</span>
+      <button class="rb-remove-btn" onclick="document.getElementById('rb-proj-${n}').remove()">
+        <i class="ti ti-trash"></i> Remove
+      </button>
+    </div>
+    <div class="rb-grid">
+      <div class="rb-field"><label>Project name *</label><input type="text" id="rb-proj-name-${n}" placeholder="e.g. E-commerce Platform" /></div>
+      <div class="rb-field"><label>Technologies used</label><input type="text" id="rb-proj-tech-${n}" placeholder="e.g. React, Node.js, MongoDB" /></div>
+      <div class="rb-field"><label>Project URL / GitHub</label><input type="text" id="rb-proj-url-${n}" placeholder="e.g. github.com/ahmed/ecommerce" /></div>
+      <div class="rb-field"><label>Year</label><input type="text" id="rb-proj-year-${n}" placeholder="e.g. 2024" /></div>
+      <div class="rb-field rb-full">
+        <label>Description & impact</label>
+        <textarea id="rb-proj-desc-${n}" rows="3" placeholder="e.g. Built a full-stack e-commerce platform with 500+ products, payment integration, and real-time inventory management. Achieved 98% uptime and processed $10K in test transactions."></textarea>
+      </div>
+    </div>`;
+  container.appendChild(div);
+}
+
+// ── ADD CERTIFICATION ENTRY ───────────────────────────
+function addCert() {
+  rbCertCount++;
+  const n = rbCertCount;
+  const container = document.getElementById('rb-certs-list');
+  const div = document.createElement('div');
+  div.className = 'rb-entry';
+  div.id = 'rb-cert-' + n;
+  div.innerHTML = `
+    <div class="rb-entry-header">
+      <span class="rb-entry-num">Certification ${n}</span>
+      <button class="rb-remove-btn" onclick="document.getElementById('rb-cert-${n}').remove()">
+        <i class="ti ti-trash"></i> Remove
+      </button>
+    </div>
+    <div class="rb-grid">
+      <div class="rb-field"><label>Certification name *</label><input type="text" id="rb-cert-name-${n}" placeholder="e.g. AWS Solutions Architect" /></div>
+      <div class="rb-field"><label>Issuing organisation</label><input type="text" id="rb-cert-org-${n}" placeholder="e.g. Amazon Web Services" /></div>
+      <div class="rb-field"><label>Date obtained</label><input type="text" id="rb-cert-date-${n}" placeholder="e.g. March 2024" /></div>
+      <div class="rb-field"><label>Credential ID</label><input type="text" id="rb-cert-id-${n}" placeholder="e.g. AWS-SAA-C03-12345" /></div>
+    </div>`;
+  container.appendChild(div);
+}
+
+// ── COLLECT RESUME DATA ───────────────────────────────
+function collectResumeData() {
+  const get = id => { const el = document.getElementById(id); return el ? el.value.trim() : ''; };
+
+  const experiences = [];
+  for (let i = 1; i <= rbExpCount; i++) {
+    if (!document.getElementById('rb-exp-' + i)) continue;
+    const title = get('rb-exp-title-' + i);
+    if (!title) continue;
+    experiences.push({
+      title, company: get('rb-exp-company-' + i),
+      location: get('rb-exp-location-' + i),
+      type: get('rb-exp-type-' + i),
+      start: get('rb-exp-start-' + i),
+      end: get('rb-exp-end-' + i),
+      description: get('rb-exp-desc-' + i)
+    });
+  }
+
+  const education = [];
+  for (let i = 1; i <= rbEduCount; i++) {
+    if (!document.getElementById('rb-edu-' + i)) continue;
+    const degree = get('rb-edu-degree-' + i);
+    if (!degree) continue;
+    education.push({
+      degree, school: get('rb-edu-school-' + i),
+      location: get('rb-edu-location-' + i),
+      grade: get('rb-edu-grade-' + i),
+      start: get('rb-edu-start-' + i),
+      end: get('rb-edu-end-' + i),
+      details: get('rb-edu-details-' + i)
+    });
+  }
+
+  const projects = [];
+  for (let i = 1; i <= rbProjCount; i++) {
+    if (!document.getElementById('rb-proj-' + i)) continue;
+    const name = get('rb-proj-name-' + i);
+    if (!name) continue;
+    projects.push({
+      name, tech: get('rb-proj-tech-' + i),
+      url: get('rb-proj-url-' + i),
+      year: get('rb-proj-year-' + i),
+      description: get('rb-proj-desc-' + i)
+    });
+  }
+
+  const certs = [];
+  for (let i = 1; i <= rbCertCount; i++) {
+    if (!document.getElementById('rb-cert-' + i)) continue;
+    const name = get('rb-cert-name-' + i);
+    if (!name) continue;
+    certs.push({
+      name, org: get('rb-cert-org-' + i),
+      date: get('rb-cert-date-' + i),
+      id: get('rb-cert-id-' + i)
+    });
+  }
+
+  return {
+    name: get('rb-name'), title: get('rb-title'),
+    email: get('rb-email'), phone: get('rb-phone'),
+    location: get('rb-location'), linkedin: get('rb-linkedin'),
+    website: get('rb-website'), github: get('rb-github'),
+    summary: get('rb-summary'), targetJob: get('rb-target-job'),
+    techSkills: get('rb-tech-skills'), softSkills: get('rb-soft-skills'),
+    languages: get('rb-languages'), achievements: get('rb-achievements'),
+    experiences, education, projects, certs, photo: rbPhotoBase64
+  };
+}
+
+// ── GENERATE RESUME ───────────────────────────────────
+async function generateResume() {
+  const data = collectResumeData();
+  if (!data.name || !data.title || !data.email) {
+    showToast('Please fill in your name, title, and email address.'); return;
+  }
+  if (data.education.length === 0 && data.experiences.length === 0) {
+    showToast('Please add at least one education or work experience entry.'); return;
+  }
+
+  const btn = document.getElementById('rb-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<i class="ti ti-loader spin"></i> Building your resume...';
+
+  // Build resume preview immediately from form data
+  renderResumePreview(data);
+
+  btn.disabled = false;
+  btn.innerHTML = '<i class="ti ti-wand"></i> Generate my professional resume';
+  showToast('Resume generated successfully!');
+}
+
+// ── RENDER RESUME PREVIEW ─────────────────────────────
+function renderResumePreview(data) {
+  const preview = document.getElementById('rb-preview');
+  const body = document.getElementById('rb-preview-body');
+
+  let html = '';
+
+  // Header
+  html += '<div class="rp-header">';
+  if (data.photo) {
+    html += `<img class="rp-photo" src="${data.photo}" alt="${data.name}" />`;
+  }
+  html += '<div style="flex:1">';
+  html += `<div class="rp-name">${data.name}</div>`;
+  html += `<div class="rp-title">${data.title}</div>`;
+  html += '<div class="rp-contact">';
+  if (data.email) html += `<span><i class="ti ti-mail" style="font-size:12px;color:#1A56DB"></i> ${data.email}</span>`;
+  if (data.phone) html += `<span><i class="ti ti-phone" style="font-size:12px;color:#1A56DB"></i> ${data.phone}</span>`;
+  if (data.location) html += `<span><i class="ti ti-map-pin" style="font-size:12px;color:#1A56DB"></i> ${data.location}</span>`;
+  if (data.linkedin) html += `<span><i class="ti ti-brand-linkedin" style="font-size:12px;color:#1A56DB"></i> ${data.linkedin}</span>`;
+  if (data.website) html += `<span><i class="ti ti-world" style="font-size:12px;color:#1A56DB"></i> ${data.website}</span>`;
+  if (data.github) html += `<span><i class="ti ti-brand-github" style="font-size:12px;color:#1A56DB"></i> ${data.github}</span>`;
+  html += '</div></div></div>';
+
+  // Summary
+  if (data.summary) {
+    html += '<div class="rp-section">';
+    html += '<div class="rp-section-title">Professional Summary</div>';
+    html += `<div class="rp-summary">${data.summary}</div>`;
+    html += '</div>';
+  }
+
+  // Experience
+  if (data.experiences.length > 0) {
+    html += '<div class="rp-section">';
+    html += '<div class="rp-section-title">Work Experience</div>';
+    data.experiences.forEach(exp => {
+      html += '<div class="rp-entry">';
+      html += `<div class="rp-entry-title">${exp.title} ${exp.type ? '· ' + exp.type : ''}</div>`;
+      html += `<div class="rp-entry-sub">${exp.company}${exp.location ? ' · ' + exp.location : ''}</div>`;
+      if (exp.start || exp.end) html += `<div class="rp-entry-date">${exp.start || ''}${exp.end ? ' – ' + exp.end : ''}</div>`;
+      if (exp.description) {
+        const bullets = exp.description.split('\n').filter(l => l.trim());
+        if (bullets.length > 0) {
+          html += '<ul style="margin-left:16px;margin-top:4px">';
+          bullets.forEach(b => { html += `<li style="font-size:13px;color:#374151;line-height:1.6;margin-bottom:3px">${b.trim()}</li>`; });
+          html += '</ul>';
+        }
+      }
+      html += '</div>';
+    });
+    html += '</div>';
+  }
+
+  // Education
+  if (data.education.length > 0) {
+    html += '<div class="rp-section">';
+    html += '<div class="rp-section-title">Education</div>';
+    data.education.forEach(edu => {
+      html += '<div class="rp-entry">';
+      html += `<div class="rp-entry-title">${edu.degree}${edu.grade ? ' · ' + edu.grade : ''}</div>`;
+      html += `<div class="rp-entry-sub">${edu.school}${edu.location ? ' · ' + edu.location : ''}</div>`;
+      if (edu.start || edu.end) html += `<div class="rp-entry-date">${edu.start || ''}${edu.end ? ' – ' + edu.end : ''}</div>`;
+      if (edu.details) html += `<div class="rp-entry-desc" style="margin-top:4px">${edu.details}</div>`;
+      html += '</div>';
+    });
+    html += '</div>';
+  }
+
+  // Skills
+  const allSkills = [];
+  if (data.techSkills) data.techSkills.split(',').forEach(s => { if (s.trim()) allSkills.push(s.trim()); });
+  if (data.softSkills) data.softSkills.split(',').forEach(s => { if (s.trim()) allSkills.push(s.trim()); });
+  if (allSkills.length > 0) {
+    html += '<div class="rp-section">';
+    html += '<div class="rp-section-title">Skills</div>';
+    html += '<div class="rp-skills-wrap">';
+    allSkills.forEach(s => { html += `<span class="rp-skill">${s}</span>`; });
+    html += '</div></div>';
+  }
+
+  // Languages
+  if (data.languages) {
+    const langs = data.languages.split(',').map(l => l.trim()).filter(Boolean);
+    if (langs.length > 0) {
+      html += '<div class="rp-section">';
+      html += '<div class="rp-section-title">Languages</div>';
+      html += '<div class="rp-skills-wrap">';
+      langs.forEach(l => { html += `<span class="rp-skill" style="background:#FEF3C7;color:#92400E">${l}</span>`; });
+      html += '</div></div>';
+    }
+  }
+
+  // Projects
+  if (data.projects.length > 0) {
+    html += '<div class="rp-section">';
+    html += '<div class="rp-section-title">Projects</div>';
+    data.projects.forEach(proj => {
+      html += '<div class="rp-entry">';
+      html += `<div class="rp-entry-title">${proj.name}${proj.year ? ' · ' + proj.year : ''}</div>`;
+      if (proj.tech) html += `<div class="rp-entry-sub">${proj.tech}</div>`;
+      if (proj.url) html += `<div class="rp-entry-date">${proj.url}</div>`;
+      if (proj.description) html += `<div class="rp-entry-desc" style="margin-top:4px">${proj.description}</div>`;
+      html += '</div>';
+    });
+    html += '</div>';
+  }
+
+  // Certifications
+  if (data.certs.length > 0) {
+    html += '<div class="rp-section">';
+    html += '<div class="rp-section-title">Certifications</div>';
+    data.certs.forEach(cert => {
+      html += '<div class="rp-entry">';
+      html += `<div class="rp-entry-title">${cert.name}</div>`;
+      if (cert.org) html += `<div class="rp-entry-sub">${cert.org}</div>`;
+      if (cert.date || cert.id) html += `<div class="rp-entry-date">${cert.date || ''}${cert.id ? ' · ID: ' + cert.id : ''}</div>`;
+      html += '</div>';
+    });
+    html += '</div>';
+  }
+
+  // Achievements
+  if (data.achievements) {
+    const items = data.achievements.split('\n').filter(l => l.trim());
+    if (items.length > 0) {
+      html += '<div class="rp-section">';
+      html += '<div class="rp-section-title">Achievements & Awards</div>';
+      html += '<ul style="margin-left:16px">';
+      items.forEach(item => { html += `<li style="font-size:13px;color:#374151;line-height:1.6;margin-bottom:3px">${item.trim()}</li>`; });
+      html += '</ul></div>';
+    }
+  }
+
+  body.innerHTML = html;
+  preview.classList.add('show');
+  preview.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ── DOWNLOAD RESUME PDF ───────────────────────────────
+function downloadResumePDF() {
+  const data = collectResumeData();
+  if (!data.name) { showToast('Please fill in your details first!'); return; }
+
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' });
+  const PW = 210, PH = 297, ML = 20, MR = 20, CW = PW - ML - MR;
+  let y = 20;
+
+  function checkPage(need = 8) {
+    if (y + need > PH - 15) { doc.addPage(); y = 20; }
+  }
+
+  // Name
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(20);
+  doc.setTextColor(17, 24, 39);
+  doc.text(data.name.toUpperCase(), ML, y); y += 7;
+
+  // Title
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(12);
+  doc.setTextColor(26, 86, 219);
+  doc.text(data.title, ML, y); y += 5;
+
+  // Contact line
+  const contactParts = [data.email, data.phone, data.location].filter(Boolean);
+  if (contactParts.length > 0) {
+    doc.setFontSize(9); doc.setTextColor(107, 114, 128);
+    doc.text(contactParts.join('  |  '), ML, y); y += 4;
+  }
+  if (data.linkedin || data.website) {
+    const links = [data.linkedin, data.website, data.github].filter(Boolean);
+    doc.text(links.join('  |  '), ML, y); y += 4;
+  }
+
+  // Line
+  doc.setDrawColor(229, 231, 235); doc.setLineWidth(0.5);
+  doc.line(ML, y + 2, PW - MR, y + 2); y += 8;
+
+  function sectionTitle(title) {
+    checkPage(10);
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(10);
+    doc.setTextColor(26, 86, 219);
+    doc.text(title.toUpperCase(), ML, y); y += 2;
+    doc.setDrawColor(26, 86, 219); doc.setLineWidth(0.3);
+    doc.line(ML, y, PW - MR, y); y += 5;
+    doc.setTextColor(17, 24, 39);
+  }
+
+  function bodyText(text, indent = 0) {
+    doc.setFont('helvetica', 'normal'); doc.setFontSize(9.5);
+    doc.setTextColor(55, 65, 81);
+    const lines = doc.splitTextToSize(text, CW - indent);
+    lines.forEach(line => { checkPage(); doc.text(line, ML + indent, y); y += 4.5; });
+  }
+
+  function boldText(text) {
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(10);
+    doc.setTextColor(17, 24, 39);
+    doc.text(text, ML, y); y += 4.5;
+  }
+
+  function mutedText(text) {
+    doc.setFont('helvetica', 'normal'); doc.setFontSize(9);
+    doc.setTextColor(107, 114, 128);
+    const lines = doc.splitTextToSize(text, CW);
+    lines.forEach(line => { checkPage(); doc.text(line, ML, y); y += 4; });
+  }
+
+  // Summary
+  if (data.summary) {
+    sectionTitle('Professional Summary');
+    bodyText(data.summary); y += 3;
+  }
+
+  // Experience
+  if (data.experiences.length > 0) {
+    sectionTitle('Work Experience');
+    data.experiences.forEach(exp => {
+      checkPage(16);
+      boldText(exp.title + (exp.type ? ' · ' + exp.type : ''));
+      doc.setFont('helvetica', 'normal'); doc.setFontSize(9.5);
+      doc.setTextColor(26, 86, 219);
+      doc.text(exp.company + (exp.location ? ' · ' + exp.location : ''), ML, y); y += 4;
+      if (exp.start || exp.end) mutedText((exp.start || '') + (exp.end ? ' – ' + exp.end : ''));
+      if (exp.description) {
+        exp.description.split('\n').filter(l => l.trim()).forEach(bullet => {
+          checkPage();
+          doc.setFont('helvetica', 'normal'); doc.setFontSize(9.5);
+          doc.setTextColor(55, 65, 81);
+          doc.text('•', ML + 2, y);
+          const lines = doc.splitTextToSize(bullet.trim(), CW - 8);
+          lines.forEach(line => { doc.text(line, ML + 6, y); y += 4.2; });
+        });
+      }
+      y += 3;
+    });
+  }
+
+  // Education
+  if (data.education.length > 0) {
+    sectionTitle('Education');
+    data.education.forEach(edu => {
+      checkPage(14);
+      boldText(edu.degree + (edu.grade ? ' · ' + edu.grade : ''));
+      doc.setFont('helvetica', 'normal'); doc.setFontSize(9.5);
+      doc.setTextColor(26, 86, 219);
+      doc.text(edu.school + (edu.location ? ' · ' + edu.location : ''), ML, y); y += 4;
+      if (edu.start || edu.end) mutedText((edu.start || '') + (edu.end ? ' – ' + edu.end : ''));
+      if (edu.details) bodyText(edu.details);
+      y += 3;
+    });
+  }
+
+  // Skills
+  const allSkills = [];
+  if (data.techSkills) data.techSkills.split(',').forEach(s => { if (s.trim()) allSkills.push(s.trim()); });
+  if (data.softSkills) data.softSkills.split(',').forEach(s => { if (s.trim()) allSkills.push(s.trim()); });
+  if (allSkills.length > 0) {
+    sectionTitle('Skills');
+    bodyText(allSkills.join(' · ')); y += 3;
+  }
+
+  // Languages
+  if (data.languages) {
+    sectionTitle('Languages');
+    bodyText(data.languages); y += 3;
+  }
+
+  // Projects
+  if (data.projects.length > 0) {
+    sectionTitle('Projects');
+    data.projects.forEach(proj => {
+      checkPage(12);
+      boldText(proj.name + (proj.year ? ' · ' + proj.year : ''));
+      if (proj.tech) { doc.setFont('helvetica', 'italic'); doc.setFontSize(9.5); doc.setTextColor(26,86,219); doc.text(proj.tech, ML, y); y += 4; }
+      if (proj.url) mutedText(proj.url);
+      if (proj.description) bodyText(proj.description);
+      y += 3;
+    });
+  }
+
+  // Certifications
+  if (data.certs.length > 0) {
+    sectionTitle('Certifications');
+    data.certs.forEach(cert => {
+      checkPage(10);
+      boldText(cert.name);
+      if (cert.org) mutedText(cert.org + (cert.date ? ' · ' + cert.date : '') + (cert.id ? ' · ' + cert.id : ''));
+      y += 2;
+    });
+  }
+
+  // Achievements
+  if (data.achievements) {
+    const items = data.achievements.split('\n').filter(l => l.trim());
+    if (items.length > 0) {
+      sectionTitle('Achievements & Awards');
+      items.forEach(item => {
+        checkPage();
+        doc.setFont('helvetica', 'normal'); doc.setFontSize(9.5);
+        doc.setTextColor(55, 65, 81);
+        doc.text('•', ML + 2, y);
+        const lines = doc.splitTextToSize(item.trim(), CW - 8);
+        lines.forEach(line => { doc.text(line, ML + 6, y); y += 4.2; });
+      });
+    }
+  }
+
+  const fn = 'Resume_' + (data.name || 'Resume').replace(/[^a-zA-Z0-9]/g,'_') + '.pdf';
+  doc.save(fn);
+  showToast('Resume PDF downloaded!');
+}
+
+// ── COPY RESUME TEXT ──────────────────────────────────
+function copyResumeText() {
+  const body = document.getElementById('rb-preview-body');
+  if (!body || !body.textContent.trim()) { showToast('Generate your resume first!'); return; }
+  navigator.clipboard.writeText(body.innerText)
+    .then(() => showToast('Resume text copied!'))
+    .catch(() => showToast('Please select and copy manually.'));
+}
+
+// ── ANALYZE RESUME ────────────────────────────────────
+async function analyzeResume() {
+  const resume = document.getElementById('ats-resume').value.trim();
+  const jd = document.getElementById('ats-jd').value.trim();
+
+  if (!resume || resume.length < 50) {
+    showToast('Please paste your resume text first (at least 50 characters).'); return;
+  }
+
+  const btn = document.getElementById('ats-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<i class="ti ti-loader spin"></i> Analyzing your resume...';
+
+  const resultCard = document.getElementById('ats-result');
+  resultCard.classList.add('show');
+  document.getElementById('ats-summary-text').textContent = 'Analyzing your resume with AI...';
+  document.getElementById('ats-score-num').textContent = '--';
+  document.getElementById('ats-grade').textContent = '--';
+  document.getElementById('ats-improvements').innerHTML = '<div style="padding:1rem;text-align:center;color:var(--text-3);font-size:13px"><i class="ti ti-loader spin" style="font-size:20px;display:block;margin-bottom:8px;color:var(--green)"></i>Analyzing...</div>';
+  document.getElementById('ats-strengths').innerHTML = '';
+  document.getElementById('ats-sections').innerHTML = '';
+  document.getElementById('ats-kw-found').innerHTML = '';
+  document.getElementById('ats-kw-missing').innerHTML = '';
+
+  resultCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  try {
+    const res = await fetch('/api/resume-analyze', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ resume, jobDescription: jd })
+    });
+
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.error || 'Server error ' + res.status);
+    }
+
+    const data = await res.json();
+    const r = data.result;
+
+    // Score
+    const score = r.score || 0;
+    const scoreEl = document.getElementById('ats-score-ring');
+    let ringColor = '#EF4444';
+    if (score >= 70) ringColor = '#10B981';
+    else if (score >= 50) ringColor = '#F59E0B';
+    scoreEl.style.borderColor = ringColor;
+    document.getElementById('ats-score-num').textContent = score;
+
+    // Grade
+    const gradeEl = document.getElementById('ats-grade');
+    gradeEl.textContent = r.grade || '--';
+    gradeEl.style.color = ringColor;
+
+    // Summary
+    document.getElementById('ats-summary-text').textContent = r.summary || '';
+
+    // Sections
+    const sectionsEl = document.getElementById('ats-sections');
+    sectionsEl.innerHTML = '';
+    if (r.sections) {
+      const sectionNames = { contact: 'Contact info', summary: 'Summary', experience: 'Experience', education: 'Education', skills: 'Skills', achievements: 'Achievements' };
+      Object.entries(r.sections).forEach(([key, val]) => {
+        const div = document.createElement('div');
+        div.className = 'ats-section-item ' + (val ? 'ok' : 'missing');
+        div.innerHTML = `<i class="ti ti-${val ? 'check' : 'x'}"></i> ${sectionNames[key] || key}`;
+        sectionsEl.appendChild(div);
+      });
+    }
+
+    // Strengths
+    const strengthsEl = document.getElementById('ats-strengths');
+    strengthsEl.innerHTML = '';
+    if (r.strengths && r.strengths.length > 0) {
+      r.strengths.forEach(s => {
+        const div = document.createElement('div');
+        div.className = 'ats-strength';
+        div.innerHTML = `<i class="ti ti-check"></i> ${s}`;
+        strengthsEl.appendChild(div);
+      });
+    }
+
+    // Improvements
+    const impEl = document.getElementById('ats-improvements');
+    impEl.innerHTML = '';
+    if (r.improvements && r.improvements.length > 0) {
+      r.improvements.forEach(imp => {
+        const div = document.createElement('div');
+        div.className = 'ats-improvement ' + (imp.priority || 'medium');
+        div.innerHTML = `
+          <div class="ats-priority ${imp.priority || 'medium'}">${(imp.priority || 'medium').toUpperCase()}</div>
+          <div class="ats-improvement-issue">⚠️ ${imp.issue}</div>
+          <div class="ats-improvement-fix">✅ Fix: ${imp.fix}</div>`;
+        impEl.appendChild(div);
+      });
+    }
+
+    // Keywords
+    if (r.keywords) {
+      const foundEl = document.getElementById('ats-kw-found');
+      const missingEl = document.getElementById('ats-kw-missing');
+      foundEl.innerHTML = '';
+      missingEl.innerHTML = '';
+      (r.keywords.found || []).forEach(kw => {
+        const span = document.createElement('span');
+        span.className = 'ats-kw found'; span.textContent = kw;
+        foundEl.appendChild(span);
+      });
+      (r.keywords.missing || []).forEach(kw => {
+        const span = document.createElement('span');
+        span.className = 'ats-kw missing'; span.textContent = kw;
+        missingEl.appendChild(span);
+      });
+    }
+
+    showToast('Analysis complete!');
+
+  } catch (e) {
+    document.getElementById('ats-improvements').innerHTML =
+      '<div style="padding:1rem;color:#991B1B;font-size:14px">Error: ' + (e.message || 'Please try again.') + '</div>';
+    showToast('Error: ' + (e.message || 'Please try again.'));
+  }
+
+  btn.disabled = false;
+  btn.innerHTML = '<i class="ti ti-chart-bar"></i> Analyze my resume — free';
+}
+
+// ── SHOW UPSELL AFTER COVER LETTER ───────────────────
+// Add this line inside your generateCoverLetter() function
+// after: document.getElementById('email-collect').style.display = 'block';
+// Add: document.getElementById('cl-upsell').classList.add('show');
 </script>
 </body>
 </html>
