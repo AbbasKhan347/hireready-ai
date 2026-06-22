@@ -591,9 +591,10 @@
   <div class="logo" onclick="showPage('home')">
     <i class="ti ti-briefcase"></i>Hire<span>Ready</span> AI
   </div>
-  <div class="nav-links">
+<div class="nav-links">
     <a onclick="showPage('home')">Home</a>
     <a onclick="showPage('home'); setTimeout(()=>document.getElementById('how').scrollIntoView({behavior:'smooth'}),100)">How it works</a>
+    <a onclick="showPage('home'); setTimeout(()=>{document.getElementById('app').scrollIntoView({behavior:'smooth'}); switchTab('resume');},100)">Resume Analyzer</a>
     <a onclick="showPage('about')">About</a>
     <a onclick="showPage('contact')">Contact</a>
   </div>
@@ -651,12 +652,16 @@
     </div>
   </div>
 
-  <div class="sw mt2" id="app">
+<div class="sw mt2" id="app">
     <div class="tabs">
       <button class="tab-btn active" onclick="switchTab('cl')" id="tab-cl">
-        <i class="ti ti-file-text"></i> Cover letter generator
+        <i class="ti ti-file-text"></i> Cover letter
+      </button>
+      <button class="tab-btn" onclick="switchTab('resume')" id="tab-resume">
+        <i class="ti ti-file-analytics"></i> Resume Analyzer <span style="background:#8B5CF6;color:#fff;font-size:10px;padding:2px 6px;border-radius:10px;margin-left:6px;">NEW</span>
       </button>
     </div>
+  
     <div class="app-card">
       <div class="tab-sec active" id="sec-cl">
         <div class="form-info">
@@ -744,12 +749,43 @@
             <span class="ad-tag">Ad</span>
           </div>
         </div>
-        <div class="tip-box">
+<div class="tip-box">
           <i class="ti ti-bulb"></i>
           <span>Tip: The more details you add in the job description field, the more tailored and accurate your cover letter will be.</span>
         </div>
       </div>
-    </div>
+
+      <div class="tab-sec" id="sec-resume">
+        <div class="form-info" style="border-left-color: #8B5CF6; background: rgba(139,92,246,0.1);">
+          <strong>🚀 Free Resume Audit:</strong> Paste your current resume and the job description. Our AI will give you an ATS score and 3 actionable improvements instantly.
+        </div>
+        
+        <div class="form-grid">
+          <div class="field full">
+            <label for="res-text">Paste Your Current Resume <span style="color:#ef4444">*</span></label>
+            <textarea id="res-text" placeholder="Copy and paste all the text from your current resume/CV here..."></textarea>
+          </div>
+          <div class="field full">
+            <label for="res-jd">Target Job Description</label>
+            <textarea id="res-jd" placeholder="Paste the job description you are applying for so we can match the ATS keywords..."></textarea>
+          </div>
+        </div>
+
+        <button class="gen-btn" id="res-btn" onclick="analyzeResume()" style="background: var(--purple);">
+          <i class="ti ti-scan"></i> Scan My Resume — Free
+        </button>
+
+        <div class="out-card" id="res-out">
+          <div class="out-head" style="background: rgba(139,92,246,0.1); border-bottom-color: rgba(139,92,246,0.2);">
+            <div class="out-title" style="color: var(--purple);"><i class="ti ti-clipboard-check" style="color: var(--purple);"></i> Your Resume Analysis</div>
+            <div class="out-actions">
+              <button class="act-btn" onclick="openSupport()" style="border-color: var(--purple); color: var(--purple);"><i class="ti ti-lock-open"></i> Unlock PDF Export (Pro)</button>
+            </div>
+          </div>
+          <div class="out-body" id="res-body"></div>
+        </div>
+      </div>
+      </div>
   </div>
 
   <div class="sw mt2">
@@ -1247,12 +1283,22 @@ Write only the cover letter text. Nothing else.`;
         throw new Error(errData.error || 'Server error ' + res.status);
       }
 
-      const data = await res.json();
+  const data = await res.json();
       if (data.error) throw new Error(data.error);
 
       document.getElementById('cl-body').textContent = data.result;
       document.getElementById('email-collect').style.display = 'block';
       showToast('Cover letter generated successfully!');
+
+      // ADD THE CROSS-SELL UPSELL
+      const upsellHtml = `
+        <div style="margin-top: 20px; padding: 15px; background: rgba(139,92,246,0.1); border: 1px solid var(--purple); border-radius: var(--r); text-align: center;">
+          <h4 style="color: var(--purple); margin-bottom: 5px;">Want a matching resume?</h4>
+          <p style="font-size: 13px; color: var(--text-3); margin-bottom: 10px;">Your cover letter is great, but does your resume pass the ATS filters?</p>
+          <button onclick="switchTab('resume'); document.getElementById('res-jd').value = document.getElementById('cl-jd').value;" style="padding: 8px 16px; background: var(--purple); color: #fff; border: none; border-radius: var(--r); cursor: pointer; font-size: 13px; font-weight: 600;">Get a Free Resume Score</button>
+        </div>
+      `;
+      document.getElementById('cl-body').insertAdjacentHTML('beforeend', upsellHtml);
 
     } catch (e) {
       document.getElementById('cl-body').innerHTML =
@@ -1263,7 +1309,49 @@ Write only the cover letter text. Nothing else.`;
     btn.disabled = false;
     btn.innerHTML = '<i class="ti ti-wand"></i> Generate my cover letter — free';
   }
+// ── ANALYZE RESUME ─────────────────────────────────
+  async function analyzeResume() {
+    const resume = document.getElementById('res-text').value.trim();
+    const jd = document.getElementById('res-jd').value.trim();
 
+    if (!resume) {
+      showToast('Please paste your current resume text.');
+      return;
+    }
+
+    const btn = document.getElementById('res-btn');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="ti ti-loader spin"></i> Analyzing ATS compatibility...';
+
+    const out = document.getElementById('res-out');
+    out.classList.add('show');
+    document.getElementById('res-body').innerHTML = 
+      '<div style="padding:2.5rem;text-align:center;color:#6B7280;font-size:14px"><i class="ti ti-loader spin" style="font-size:24px;display:block;margin-bottom:12px;color:#8B5CF6"></i>Scanning keywords and formatting...</div>';
+
+    try {
+      const res = await fetch('/api/resume-analyze', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ resume, jd })
+      });
+
+      const data = await res.json();
+      if (data.error) throw new Error(data.error);
+
+      // Using innerHTML here because the API will return formatted HTML (bolding, etc)
+      document.getElementById('res-body').innerHTML = data.result;
+      showToast('Resume analysis complete!');
+
+    } catch (e) {
+      document.getElementById('res-body').innerHTML = 
+        '<div style="padding:1rem;color:#991B1B;font-size:14px">Something went wrong: ' + (e.message || 'Please try again.') + '</div>';
+      showToast('Error: ' + (e.message || 'Please try again.'));
+    }
+
+    btn.disabled = false;
+    btn.innerHTML = '<i class="ti ti-scan"></i> Scan My Resume — Free';
+  }
+  
 // ── INIT ───────────────────────────────────────────
   document.addEventListener('DOMContentLoaded', function () {
     showPage('home');
