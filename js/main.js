@@ -1,24 +1,28 @@
-
 /* ========================================
    HireReady AI - Main Shared Functions
    js/main.js
    ======================================== */
 
 /* ===== PAGE NAVIGATION ===== */
+// FIX: HTML page IDs are "page-home", "page-about" etc.
+// Nav calls showPage('home'), so we add the "page-" prefix here.
 
 function showPage(pageId) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  const page = document.getElementById(pageId);
-  if (page) page.classList.add('active');
+  const page = document.getElementById('page-' + pageId);
+  if (page) {
+    page.classList.add('active');
+    window.scrollTo(0, 0);
+  }
 }
 
 function switchTab(tabId) {
   document.querySelectorAll('.tab-sec').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  
-  const tab = document.getElementById(`sec-${tabId}`);
-  const btn = document.getElementById(`tab-${tabId}`);
-  
+
+  const tab = document.getElementById('sec-' + tabId);
+  const btn = document.getElementById('tab-' + tabId);
+
   if (tab) tab.classList.add('active');
   if (btn) btn.classList.add('active');
 }
@@ -32,7 +36,8 @@ function toggleTheme() {
 }
 
 function updateThemeIcon(isDark) {
-  const icon = document.querySelector('.theme-toggle i');
+  // FIX: HTML uses id="theme-icon", not class ".theme-toggle i"
+  const icon = document.getElementById('theme-icon');
   if (icon) {
     icon.className = isDark ? 'ti ti-sun' : 'ti ti-moon';
   }
@@ -43,10 +48,10 @@ function updateThemeIcon(isDark) {
 function showToast(msg) {
   const toast = document.getElementById('toast');
   if (!toast) return;
-  
+
   toast.textContent = msg;
   toast.classList.add('show');
-  
+
   setTimeout(() => {
     toast.classList.remove('show');
   }, 3000);
@@ -66,22 +71,15 @@ function closeSupport() {
 
 function selectTip(el, amount) {
   if (!el) return;
-  document.querySelectorAll('.tip-option').forEach(opt => opt.classList.remove('active'));
-  el.classList.add('active');
-  document.getElementById('tip-amount').value = amount;
+  document.querySelectorAll('.tip-amount').forEach(opt => opt.classList.remove('selected'));
+  el.classList.add('selected');
   window.selectedTipAmount = amount;
-}
 
-function goToPayment() {
-  const amount = document.getElementById('tip-amount').value || '3';
-  if (window.Gumroad && window.Gumroad.open) {
-    window.Gumroad.open({
-      'product_id': 'ylirid',
-      'wanted': true,
-      'custom_price': parseInt(amount)
-    });
-  } else {
-    showToast('Payment system loading...');
+  // Update Gumroad link price
+  const link = document.getElementById('gumroad-pay-link');
+  if (link) {
+    link.setAttribute('data-gumroad-price', amount);
+    link.href = `https://husnain555.gumroad.com/l/ylirid?wanted=true&price=${amount}`;
   }
 }
 
@@ -91,85 +89,95 @@ function toggleFaq(el) {
   if (!el) return;
   const answer = el.nextElementSibling;
   if (!answer) return;
-  
+
+  // Toggle icon
+  const icon = el.querySelector('i');
+
   // Close all other FAQs
   document.querySelectorAll('.faq-a.show').forEach(a => {
-    if (a !== answer) a.classList.remove('show');
+    if (a !== answer) {
+      a.classList.remove('show');
+      const prevIcon = a.previousElementSibling?.querySelector('i');
+      if (prevIcon) prevIcon.className = 'ti ti-plus';
+    }
   });
-  
-  // Toggle current answer
+
   answer.classList.toggle('show');
+  if (icon) {
+    icon.className = answer.classList.contains('show') ? 'ti ti-minus' : 'ti ti-plus';
+  }
 }
 
-/* ===== COPY TEXT ===== */
+/* ===== COPY TEXT (cover letter) ===== */
+// FIX: This is the shared copy function. cover-letter.js no longer redefines it.
 
-function copyText(type) {
-  const bodyId = type === 'cl' ? 'cl-body' : 'rs-body';
-  const body = document.getElementById(bodyId);
-  
-  if (!body) {
-    showToast('Nothing to copy');
+function copyCoverLetter() {
+  const body = document.getElementById('cl-body');
+  if (!body) { showToast('Nothing to copy'); return; }
+
+  const text = body.textContent || body.innerText;
+  if (!text || text.includes('Writing')) {
+    showToast('Generate a cover letter first!');
     return;
   }
-  
+
+  navigator.clipboard.writeText(text).then(() => {
+    showToast('Cover letter copied! ✓');
+  }).catch(() => {
+    showToast('Copy failed. Try selecting and copying manually.');
+  });
+}
+
+function copyResumeText() {
+  const body = document.getElementById('rb-preview-body');
+  if (!body) { showToast('Nothing to copy'); return; }
+
   const text = body.textContent || body.innerText;
   if (!text || text.includes('Crafting')) {
-    showToast('Generate a document first!');
+    showToast('Generate a resume first!');
     return;
   }
-  
+
   navigator.clipboard.writeText(text).then(() => {
-    showToast('Copied to clipboard! ✓');
-  }).catch(err => {
-    console.error('Copy failed:', err);
-    showToast('Copy failed. Try again.');
+    showToast('Resume copied! ✓');
+  }).catch(() => {
+    showToast('Copy failed. Try selecting manually.');
   });
 }
 
 /* ===== INITIALIZATION ===== */
 
-document.addEventListener('DOMContentLoaded', function() {
-  // Initialize theme from localStorage or system preference
+document.addEventListener('DOMContentLoaded', function () {
+  // Theme
   const saved = localStorage.getItem('hr_theme');
   const sysDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
   const useDark = saved === 'dark' || (!saved && sysDark);
-  
-  if (useDark) {
-    document.body.classList.add('dark');
-  }
-  
+  if (useDark) document.body.classList.add('dark');
   updateThemeIcon(useDark);
-  
-  // Show home page by default
-  showPage('page-home');
-  
-  // Initialize Gumroad if available
-  if (window.Gumroad) {
-    window.Gumroad.init();
+
+  // Default page — HTML already has page-home active, but call to be safe
+  // showPage('home') — already marked active in HTML
+
+  // Word count for JD field
+  const jdInput = document.getElementById('cl-jd');
+  if (jdInput) {
+    jdInput.addEventListener('input', function () {
+      const counter = document.getElementById('jd-count');
+      if (counter) {
+        const words = this.value.trim() ? this.value.trim().split(/\s+/).length : 0;
+        counter.textContent = words + ' words';
+      }
+    });
   }
-  
-  // Initialize tip selection
-  window.selectedTipAmount = '3';
 });
 
-/* ===== UTILITY FUNCTIONS ===== */
+/* ===== UTILITY ===== */
 
-// Word count helper
 function countWords(text) {
+  if (!text || !text.trim()) return 0;
   return text.trim().split(/\s+/).length;
 }
 
-// Validate email
 function isValidEmail(email) {
-  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return re.test(email);
-}
-
-// Format date
-function formatDate(date) {
-  return new Date(date).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-  });
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
