@@ -571,7 +571,6 @@ body.dark .out-body {
 /* ===== UPSELL CARD ===== */
 
 .upsell-card {
-  display: none;
   margin-top: 16px;
   padding: 16px 20px;
   background: var(--blue-light);
@@ -582,7 +581,9 @@ body.dark .out-body {
   gap: 16px;
   flex-wrap: wrap;
 }
-
+.upsell-card.show {
+  display: flex;
+}
 .upsell-text {
   flex: 1;
   font-size: 14px;
