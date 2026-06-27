@@ -23,6 +23,7 @@
 
   <link rel="stylesheet" href="css/styles.css" />
   <link rel="stylesheet" href="css/templates.css" />
+  <link rel="stylesheet" href="css/app.css" />
   
 </head>
 <body>
@@ -384,7 +385,7 @@
   </button>
 
   <!-- RESUME PREVIEW -->
-  <div class="resume-preview-card" id="rb-preview">
+  <div class="resume-preview-card" id="rb-preview" style="display:none">
     <div class="resume-preview-head">
       <div class="out-title"><i class="ti ti-circle-check"></i> Your resume is ready</div>
       <div class="out-actions">
@@ -418,7 +419,7 @@
   </button>
 
   <!-- ATS RESULTS -->
-  <div class="ats-result-card" id="ats-result">
+  <div class="ats-result-card" id="ats-result" style="display:none">
     <div class="ats-result-head">
       <div class="ats-result-title"><i class="ti ti-chart-bar" style="color:var(--green)"></i> ATS Analysis Report</div>
       <button class="act-btn" onclick="analyzeResume()"><i class="ti ti-refresh"></i> Re-analyze</button>
