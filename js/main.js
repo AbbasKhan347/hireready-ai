@@ -82,7 +82,16 @@ function selectTip(el, amount) {
     link.href = `https://husnain555.gumroad.com/l/ylirid?wanted=true&price=${amount}`;
   }
 }
+function updateTipAmount(amount) {
+  const safeAmount = Math.max(1, Number(amount) || 1).toString();
+  window.selectedTipAmount = safeAmount;
 
+  const link = document.getElementById('gumroad-pay-link');
+  if (link) {
+    link.setAttribute('data-gumroad-price', safeAmount);
+    link.href = `https://husnain555.gumroad.com/l/ylirid?wanted=true&price=${safeAmount}`;
+  }
+}
 /* ===== FAQ ACCORDION ===== */
 
 function toggleFaq(el) {
