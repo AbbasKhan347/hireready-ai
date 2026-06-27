@@ -178,6 +178,13 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     });
   }
+    const customAmount = document.getElementById('custom-amount');
+  if (customAmount) {
+    customAmount.addEventListener('input', function () {
+      document.querySelectorAll('.tip-amount').forEach(opt => opt.classList.remove('selected'));
+      updateTipAmount(this.value);
+    });
+  }
 });
 
 /* ===== UTILITY ===== */
