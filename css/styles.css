@@ -3,7 +3,7 @@
    HireReady AI - Base Styles
    css/styles.css
    ======================================== */
-
+<style>
 :root {
   --blue: #1A56DB;
   --blue-dark: #0E3FA0;
@@ -707,3 +707,4 @@ body.dark input:focus,
 body.dark textarea:focus {
   box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1);
 }
+</style>
