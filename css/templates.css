@@ -1,1 +1,489 @@
 
+/* ========================================
+   HireReady AI - Resume Templates
+   css/templates.css
+   ======================================== */
+
+/* ===== TEMPLATE SELECTOR ===== */
+
+.template-selector {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.template-btn {
+  padding: 8px 16px;
+  border: 2px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.template-btn:hover {
+  border-color: var(--blue);
+  color: var(--blue);
+}
+
+.template-btn.active {
+  background: var(--blue);
+  color: white;
+  border-color: var(--blue);
+}
+
+/* ===== TEMPLATE 1: MODERN ===== */
+
+.resume-modern {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #2c3e50;
+  line-height: 1.6;
+  background: white;
+  padding: 40px;
+}
+
+.resume-modern .header {
+  text-align: center;
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 3px solid #3498db;
+}
+
+.resume-modern .header-name {
+  font-size: 32px;
+  font-weight: 700;
+  color: #2c3e50;
+  margin: 0 0 5px 0;
+}
+
+.resume-modern .header-title {
+  font-size: 16px;
+  color: #3498db;
+  font-weight: 600;
+  margin: 0 0 10px 0;
+}
+
+.resume-modern .header-contact {
+  font-size: 12px;
+  color: #7f8c8d;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.resume-modern .header-photo {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  margin: 0 auto 15px;
+  border: 3px solid #3498db;
+  display: block;
+  object-fit: cover;
+}
+
+.resume-modern .section-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #2c3e50;
+  text-transform: uppercase;
+  margin: 25px 0 15px 0;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #3498db;
+}
+
+.resume-modern .entry {
+  margin-bottom: 15px;
+}
+
+.resume-modern .entry-title {
+  font-weight: 700;
+  font-size: 13px;
+  color: #2c3e50;
+}
+
+.resume-modern .entry-subtitle {
+  font-size: 12px;
+  color: #3498db;
+  font-style: italic;
+}
+
+.resume-modern .entry-date {
+  font-size: 11px;
+  color: #95a5a6;
+}
+
+.resume-modern .skills-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.resume-modern .skill-tag {
+  background: #ecf0f1;
+  color: #3498db;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+/* ===== TEMPLATE 2: EXECUTIVE ===== */
+
+.resume-executive {
+  font-family: 'Georgia', serif;
+  color: #1a1a1a;
+  line-height: 1.8;
+  background: white;
+  padding: 40px;
+}
+
+.resume-executive .header {
+  display: flex;
+  gap: 30px;
+  margin-bottom: 40px;
+  padding-bottom: 30px;
+  border-bottom: 2px solid #000;
+}
+
+.resume-executive .header-photo {
+  width: 120px;
+  height: 120px;
+  border-radius: 8px;
+  border: 2px solid #000;
+  flex-shrink: 0;
+  object-fit: cover;
+}
+
+.resume-executive .header-info {
+  flex: 1;
+}
+
+.resume-executive .header-name {
+  font-size: 28px;
+  font-weight: 700;
+  color: #000;
+  margin: 0;
+  letter-spacing: 1px;
+}
+
+.resume-executive .header-title {
+  font-size: 14px;
+  color: #333;
+  font-weight: 600;
+  margin: 8px 0;
+}
+
+.resume-executive .header-contact {
+  font-size: 11px;
+  color: #666;
+}
+
+.resume-executive .header-contact span {
+  display: block;
+  margin: 3px 0;
+}
+
+.resume-executive .section-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #000;
+  text-transform: uppercase;
+  margin: 30px 0 15px 0;
+  letter-spacing: 2px;
+}
+
+.resume-executive .entry {
+  margin-bottom: 18px;
+}
+
+.resume-executive .entry-title {
+  font-weight: 700;
+  font-size: 12px;
+  color: #000;
+}
+
+.resume-executive .entry-subtitle {
+  font-size: 11px;
+  color: #666;
+  font-style: italic;
+}
+
+.resume-executive .entry-date {
+  font-size: 10px;
+  color: #999;
+}
+
+/* ===== TEMPLATE 3: CREATIVE ===== */
+
+.resume-creative {
+  font-family: 'Inter', 'Helvetica Neue', sans-serif;
+  color: #333;
+  line-height: 1.7;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 0;
+  min-height: 100%;
+}
+
+.resume-creative .wrapper {
+  background: white;
+  margin: 20px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+}
+
+.resume-creative .header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 40px;
+  text-align: center;
+}
+
+.resume-creative .header-photo {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  margin: 0 auto 20px;
+  border: 4px solid white;
+  display: block;
+  object-fit: cover;
+}
+
+.resume-creative .header-name {
+  font-size: 30px;
+  font-weight: 700;
+  margin: 0 0 8px 0;
+}
+
+.resume-creative .header-title {
+  font-size: 14px;
+  opacity: 0.9;
+  margin: 0 0 15px 0;
+}
+
+.resume-creative .header-contact {
+  font-size: 12px;
+  opacity: 0.8;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.resume-creative .content {
+  padding: 35px 40px;
+}
+
+.resume-creative .section-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #667eea;
+  text-transform: uppercase;
+  margin: 25px 0 15px 0;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #667eea;
+}
+
+.resume-creative .entry {
+  margin-bottom: 15px;
+}
+
+.resume-creative .entry-title {
+  font-weight: 700;
+  font-size: 13px;
+  color: #333;
+}
+
+.resume-creative .entry-subtitle {
+  font-size: 12px;
+  color: #667eea;
+  font-weight: 600;
+}
+
+.resume-creative .entry-date {
+  font-size: 11px;
+  color: #999;
+}
+
+/* ===== TEMPLATE 4: ATS-FRIENDLY ===== */
+
+.resume-ats {
+  font-family: 'Courier New', monospace;
+  color: #000;
+  line-height: 1.5;
+  background: white;
+  padding: 40px;
+}
+
+.resume-ats .header {
+  text-align: center;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #000;
+  padding-bottom: 15px;
+}
+
+.resume-ats .header-name {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0 0 5px 0;
+}
+
+.resume-ats .header-title {
+  font-size: 12px;
+  margin: 0 0 8px 0;
+}
+
+.resume-ats .header-contact {
+  font-size: 11px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.resume-ats .header-photo {
+  display: none;
+}
+
+.resume-ats .section-title {
+  font-size: 12px;
+  font-weight: 700;
+  margin: 15px 0 10px 0;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #000;
+}
+
+.resume-ats .entry {
+  margin-bottom: 10px;
+  font-size: 11px;
+}
+
+.resume-ats .entry-title {
+  font-weight: 700;
+}
+
+.resume-ats .entry-subtitle {
+  margin-top: 2px;
+}
+
+.resume-ats .entry-date {
+  font-size: 10px;
+}
+
+.resume-ats .skill-tag {
+  display: inline;
+  margin-right: 8px;
+}
+
+/* ===== CONTAINER FOR ALL TEMPLATES ===== */
+
+#rs-body {
+  background: var(--bg);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.resume-modern,
+.resume-executive,
+.resume-creative,
+.resume-ats {
+  margin: 0;
+  font-size: 14px;
+}
+
+.resume-creative .wrapper {
+  margin: 0;
+  border-radius: 0;
+}
+
+/* ===== RESPONSIVE ===== */
+
+@media (max-width: 768px) {
+  .template-selector {
+    gap: 8px;
+  }
+
+  .template-btn {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+
+  .resume-modern {
+    padding: 25px;
+  }
+
+  .resume-modern .header-name {
+    font-size: 24px;
+  }
+
+  .resume-executive {
+    padding: 25px;
+  }
+
+  .resume-executive .header {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .resume-executive .header-photo {
+    width: 80px;
+    height: 80px;
+  }
+
+  .resume-creative .content {
+    padding: 20px;
+  }
+
+  .resume-ats {
+    padding: 25px;
+  }
+}
+
+@media (max-width: 480px) {
+  .template-selector {
+    gap: 6px;
+  }
+
+  .template-btn {
+    padding: 5px 10px;
+    font-size: 11px;
+  }
+
+  .template-btn span {
+    display: none;
+  }
+
+  .template-btn::before {
+    content: attr(data-label);
+  }
+
+  .resume-modern,
+  .resume-executive,
+  .resume-creative,
+  .resume-ats {
+    padding: 15px;
+    font-size: 12px;
+  }
+
+  .resume-modern .header-name {
+    font-size: 18px;
+  }
+
+  .resume-modern .section-title {
+    font-size: 12px;
+    margin-top: 15px;
+  }
+
+  .resume-executive .header-name {
+    font-size: 18px;
+  }
+
+  .resume-creative .header-name {
+    font-size: 20px;
+  }
+}
