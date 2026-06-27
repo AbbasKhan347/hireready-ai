@@ -115,7 +115,10 @@ INSTRUCTIONS:
     showToast('Cover letter generated! ✓');
 
     // Show upsell after generation
-    if (upsell) upsell.style.display = '';
+    if (upsell) {
+  upsell.style.display = '';
+  upsell.classList.add('show');
+}
 
     // Show email box after short delay
     setTimeout(() => {
