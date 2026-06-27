@@ -76,8 +76,11 @@ async function generateCoverLetter() {
     'Writing your cover letter...</div>';
 
   // Hide upsell while generating
-  const upsell = document.getElementById('cl-upsell');
-  if (upsell) upsell.style.display = 'none';
+const upsell = document.getElementById('cl-upsell');
+if (upsell) {
+  upsell.classList.remove('show');
+  upsell.style.display = 'none';
+}
 
   let prompt = 'You are a professional cover letter writer. Write a compelling, personalized cover letter.\n\n';
   prompt += `Candidate: ${name}\n`;
