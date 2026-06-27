@@ -1,4 +1,3 @@
-
 /* ========================================
    HireReady AI - Resume Builder Functions
    js/resume-builder.js
@@ -7,400 +6,274 @@
 /* ===== STATE ===== */
 
 let currentTemplate = 'modern';
+let rbPhotoData = '';
 
-/* ===== TEMPLATE SELECTOR ===== */
+/* ===== PHOTO UPLOAD ===== */
+// FIX: HTML calls handlePhotoUpload(event) — original was previewPhoto()
 
-function selectTemplate(template) {
-  currentTemplate = template;
-  
-  // Update active button
-  document.querySelectorAll('.template-btn').forEach(btn => {
-    btn.classList.remove('active');
-  });
-  event.target.closest('.template-btn').classList.add('active');
-  
-  // Regenerate if resume already shown
-  const output = document.getElementById('rs-out');
-  if (output && output.classList.contains('show')) {
-    generateResume();
-  }
-  
-  showToast(`Template changed to ${template.charAt(0).toUpperCase() + template.slice(1)}`);
-}
-
-/* ===== RESUME HTML BUILDER ===== */
-
-function buildResumeHTML(name, title, email, phone, location, photo, text) {
-  const photo64 = photo || '';
-  
-  // Parse sections from AI-generated text
-  let summary = '';
-  let workExperience = '';
-  let education = '';
-  let skills = '';
-  let certifications = '';
-  
-  const sections = text.split(/(?=PROFESSIONAL SUMMARY|WORK EXPERIENCE|EDUCATION|SKILLS|CERTIFICATIONS|LANGUAGES)/i);
-  
-  sections.forEach(section => {
-    if (section.includes('PROFESSIONAL SUMMARY') || section.includes('SUMMARY')) {
-      summary = section.replace(/PROFESSIONAL SUMMARY|SUMMARY/i, '').trim();
-    } else if (section.includes('WORK EXPERIENCE') || section.includes('EXPERIENCE')) {
-      workExperience = section.replace(/WORK EXPERIENCE|EXPERIENCE/i, '').trim();
-    } else if (section.includes('EDUCATION')) {
-      education = section.replace(/EDUCATION/i, '').trim();
-    } else if (section.includes('SKILLS')) {
-      skills = section.replace(/SKILLS/i, '').trim();
-    } else if (section.includes('CERTIFICATIONS') || section.includes('AWARDS')) {
-      certifications = section.replace(/CERTIFICATIONS|AWARDS/i, '').trim();
-    }
-  });
-  
-  let html = '';
-  
-  // MODERN TEMPLATE
-  if (currentTemplate === 'modern') {
-    html = `
-      <div class="resume-modern">
-        <div class="header">
-          ${photo64 ? `<img src="${photo64}" class="header-photo" alt="Profile Photo">` : ''}
-          <div class="header-name">${name}</div>
-          ${title ? `<div class="header-title">${title}</div>` : ''}
-          <div class="header-contact">
-            ${email ? `<span>📧 ${email}</span>` : ''}
-            ${phone ? `<span>📞 ${phone}</span>` : ''}
-            ${location ? `<span>📍 ${location}</span>` : ''}
-          </div>
-        </div>
-        
-        ${summary ? `
-          <div>
-            <div class="section-title">Professional Summary</div>
-            <p style="font-size: 13px; color: #555; margin: 0 0 20px 0;">${summary}</p>
-          </div>
-        ` : ''}
-        
-        ${workExperience ? `
-          <div>
-            <div class="section-title">Work Experience</div>
-            <div style="white-space: pre-wrap; font-size: 12px; color: #333;">${workExperience}</div>
-          </div>
-        ` : ''}
-        
-        ${education ? `
-          <div>
-            <div class="section-title">Education</div>
-            <div style="white-space: pre-wrap; font-size: 12px; color: #333;">${education}</div>
-          </div>
-        ` : ''}
-        
-        ${skills ? `
-          <div>
-            <div class="section-title">Skills</div>
-            <div class="skills-container">
-              ${skills.split(',').map(s => `<span class="skill-tag">${s.trim()}</span>`).join('')}
-            </div>
-          </div>
-        ` : ''}
-        
-        ${certifications ? `
-          <div>
-            <div class="section-title">Certifications</div>
-            <div style="white-space: pre-wrap; font-size: 12px; color: #333;">${certifications}</div>
-          </div>
-        ` : ''}
-      </div>
-    `;
-  }
-  // EXECUTIVE TEMPLATE
-  else if (currentTemplate === 'executive') {
-    html = `
-      <div class="resume-executive">
-        <div class="header">
-          ${photo64 ? `<img src="${photo64}" class="header-photo" alt="Profile Photo">` : ''}
-          <div class="header-info">
-            <div class="header-name">${name}</div>
-            ${title ? `<div class="header-title">${title}</div>` : ''}
-            <div class="header-contact">
-              ${email ? `<span>📧 ${email}</span>` : ''}
-              ${phone ? `<span>📞 ${phone}</span>` : ''}
-              ${location ? `<span>📍 ${location}</span>` : ''}
-            </div>
-          </div>
-        </div>
-        
-        ${summary ? `
-          <div class="section-title">Summary</div>
-          <p style="font-size: 12px; color: #333; margin: 0 0 20px 0; line-height: 1.8;">${summary}</p>
-        ` : ''}
-        
-        ${workExperience ? `
-          <div class="section-title">Professional Experience</div>
-          <div style="white-space: pre-wrap; font-size: 11px; color: #333; line-height: 1.8;">${workExperience}</div>
-        ` : ''}
-        
-        ${education ? `
-          <div class="section-title">Education</div>
-          <div style="white-space: pre-wrap; font-size: 11px; color: #333;">${education}</div>
-        ` : ''}
-        
-        ${skills ? `
-          <div class="section-title">Core Competencies</div>
-          <p style="font-size: 11px; color: #333;">${skills}</p>
-        ` : ''}
-      </div>
-    `;
-  }
-  // CREATIVE TEMPLATE
-  else if (currentTemplate === 'creative') {
-    html = `
-      <div class="resume-creative">
-        <div class="wrapper">
-          <div class="header">
-            ${photo64 ? `<img src="${photo64}" class="header-photo" alt="Profile Photo">` : ''}
-            <div class="header-name">${name}</div>
-            ${title ? `<div class="header-title">${title}</div>` : ''}
-            <div class="header-contact">
-              ${email ? `<span>${email}</span>` : ''}
-              ${phone ? `<span>${phone}</span>` : ''}
-              ${location ? `<span>${location}</span>` : ''}
-            </div>
-          </div>
-          
-          <div class="content">
-            ${summary ? `
-              <div class="section-title">About</div>
-              <p style="font-size: 13px; color: #555; margin: 0 0 15px 0;">${summary}</p>
-            ` : ''}
-            
-            ${workExperience ? `
-              <div class="section-title">Experience</div>
-              <div style="white-space: pre-wrap; font-size: 12px; color: #333; margin-bottom: 15px;">${workExperience}</div>
-            ` : ''}
-            
-            ${education ? `
-              <div class="section-title">Education</div>
-              <div style="white-space: pre-wrap; font-size: 12px; color: #333; margin-bottom: 15px;">${education}</div>
-            ` : ''}
-            
-            ${skills ? `
-              <div class="section-title">Skills</div>
-              <p style="font-size: 12px; color: #333;">${skills}</p>
-            ` : ''}
-          </div>
-        </div>
-      </div>
-    `;
-  }
-  // ATS-FRIENDLY TEMPLATE
-  else if (currentTemplate === 'ats') {
-    html = `
-      <div class="resume-ats">
-        <div class="header">
-          <div class="header-name">${name}</div>
-          ${title ? `<div class="header-title">${title}</div>` : ''}
-          <div class="header-contact">
-            ${email ? `${email} | ` : ''}
-            ${phone ? `${phone} | ` : ''}
-            ${location ? `${location}` : ''}
-          </div>
-        </div>
-        
-        ${summary ? `
-          <div class="section-title">PROFESSIONAL SUMMARY</div>
-          <div style="font-size: 11px; margin-bottom: 10px;">${summary}</div>
-        ` : ''}
-        
-        ${workExperience ? `
-          <div class="section-title">WORK EXPERIENCE</div>
-          <div style="white-space: pre-wrap; font-size: 11px; margin-bottom: 10px;">${workExperience}</div>
-        ` : ''}
-        
-        ${education ? `
-          <div class="section-title">EDUCATION</div>
-          <div style="white-space: pre-wrap; font-size: 11px; margin-bottom: 10px;">${education}</div>
-        ` : ''}
-        
-        ${skills ? `
-          <div class="section-title">SKILLS</div>
-          <div style="font-size: 11px;">${skills}</div>
-        ` : ''}
-      </div>
-    `;
-  }
-  
-  return html;
-}
-
-/* ===== ENTRY MANAGEMENT (Add/Remove Rows) ===== */
-
-function addEntry(type) {
-  const container = document.getElementById(
-    type === 'education' ? 'education-entries' : 'experience-entries'
-  );
-  
-  if (!container) return;
-  
-  const template = container.querySelector(`.${type}-entry`);
-  if (!template) return;
-  
-  const clone = template.cloneNode(true);
-  
-  // Clear input values
-  clone.querySelectorAll('input').forEach(inp => inp.value = '');
-  
-  // Update remove button
-  const removeBtn = clone.querySelector('.remove-btn');
-  if (removeBtn) {
-    removeBtn.onclick = function() { removeEntry(this, type); };
-  }
-  
-  container.appendChild(clone);
-  showToast(`${type === 'education' ? 'Education' : 'Experience'} entry added`);
-}
-
-function removeEntry(btn, type) {
-  const entry = btn.closest(`.${type}-entry`);
-  const container = document.getElementById(
-    type === 'education' ? 'education-entries' : 'experience-entries'
-  );
-  
-  if (!entry || !container) return;
-  
-  const entries = container.querySelectorAll(`.${type}-entry`);
-  
-  if (entries.length > 1) {
-    entry.remove();
-    showToast('Entry removed');
-  } else {
-    showToast('Keep at least one entry');
-  }
-}
-
-/* ===== PHOTO PREVIEW ===== */
-
-function previewPhoto(event) {
+function handlePhotoUpload(event) {
   const file = event.target.files[0];
   if (!file) return;
-  
-  // Check file size (max 2MB)
+
   if (file.size > 2 * 1024 * 1024) {
     showToast('Photo must be smaller than 2MB');
     return;
   }
-  
+
   const reader = new FileReader();
-  reader.onload = function(e) {
-    const img = document.getElementById('rs-photo-preview');
-    if (img) {
-      img.src = e.target.result;
-      img.style.display = 'block';
-    }
+  reader.onload = function (e) {
+    rbPhotoData = e.target.result;
+
+    // Show preview
+    const placeholder = document.getElementById('rb-photo-placeholder');
+    const preview     = document.getElementById('rb-photo-preview');
+    const img         = document.getElementById('rb-photo-img');
+
+    if (placeholder) placeholder.style.display = 'none';
+    if (preview)     preview.style.display = 'block';
+    if (img)         img.src = rbPhotoData;
   };
   reader.readAsDataURL(file);
 }
 
-/* ===== GENERATE RESUME (Main Function) ===== */
+/* ===== DYNAMIC ENTRY MANAGEMENT ===== */
+// FIX: HTML calls addExperience(), addEducation(), addProject(), addCert()
+// Original only had generic addEntry(type) which these must map to.
+
+function addExperience() {
+  const list = document.getElementById('rb-experience-list');
+  if (!list) return;
+
+  const count = list.querySelectorAll('.rb-exp-entry').length + 1;
+  const entry = document.createElement('div');
+  entry.className = 'rb-exp-entry rb-dyn-entry';
+  entry.innerHTML = `
+    <div class="rb-entry-header">
+      <span class="rb-entry-label">Experience ${count}</span>
+      <button class="rb-remove-btn" onclick="removeDynEntry(this)"><i class="ti ti-trash"></i> Remove</button>
+    </div>
+    <div class="rb-grid">
+      <div class="rb-field"><label>Company / Organisation</label><input type="text" class="exp-company" placeholder="e.g. Google" /></div>
+      <div class="rb-field"><label>Job title / Role</label><input type="text" class="exp-role" placeholder="e.g. Software Engineer" /></div>
+      <div class="rb-field"><label>Start date</label><input type="text" class="exp-start" placeholder="e.g. Jan 2022" /></div>
+      <div class="rb-field"><label>End date</label><input type="text" class="exp-end" placeholder="e.g. Dec 2023 or Present" /></div>
+      <div class="rb-field rb-full"><label>Key responsibilities & achievements</label><textarea class="exp-desc" rows="3" placeholder="e.g. Led a team of 5 engineers, built REST APIs serving 100k users/day, reduced latency by 30%..."></textarea></div>
+    </div>
+  `;
+  list.appendChild(entry);
+  showToast('Work experience entry added');
+}
+
+function addEducation() {
+  const list = document.getElementById('rb-education-list');
+  if (!list) return;
+
+  const count = list.querySelectorAll('.rb-edu-entry').length + 1;
+  const entry = document.createElement('div');
+  entry.className = 'rb-edu-entry rb-dyn-entry';
+  entry.innerHTML = `
+    <div class="rb-entry-header">
+      <span class="rb-entry-label">Education ${count}</span>
+      <button class="rb-remove-btn" onclick="removeDynEntry(this)"><i class="ti ti-trash"></i> Remove</button>
+    </div>
+    <div class="rb-grid">
+      <div class="rb-field"><label>Institution</label><input type="text" class="edu-institution" placeholder="e.g. University of Manchester" /></div>
+      <div class="rb-field"><label>Degree / Qualification</label><input type="text" class="edu-degree" placeholder="e.g. BSc Computer Science" /></div>
+      <div class="rb-field"><label>Field of study</label><input type="text" class="edu-field" placeholder="e.g. Computer Science" /></div>
+      <div class="rb-field"><label>Graduation year</label><input type="text" class="edu-year" placeholder="e.g. 2024" /></div>
+    </div>
+  `;
+  list.appendChild(entry);
+  showToast('Education entry added');
+}
+
+function addProject() {
+  const list = document.getElementById('rb-projects-list');
+  if (!list) return;
+
+  const count = list.querySelectorAll('.rb-proj-entry').length + 1;
+  const entry = document.createElement('div');
+  entry.className = 'rb-proj-entry rb-dyn-entry';
+  entry.innerHTML = `
+    <div class="rb-entry-header">
+      <span class="rb-entry-label">Project ${count}</span>
+      <button class="rb-remove-btn" onclick="removeDynEntry(this)"><i class="ti ti-trash"></i> Remove</button>
+    </div>
+    <div class="rb-grid">
+      <div class="rb-field"><label>Project name</label><input type="text" class="proj-name" placeholder="e.g. AI Resume Screener" /></div>
+      <div class="rb-field"><label>Technologies used</label><input type="text" class="proj-tech" placeholder="e.g. Python, React, AWS" /></div>
+      <div class="rb-field rb-full"><label>Description</label><textarea class="proj-desc" rows="2" placeholder="What did you build and what was the impact?"></textarea></div>
+      <div class="rb-field"><label>Link (optional)</label><input type="text" class="proj-link" placeholder="e.g. github.com/you/project" /></div>
+    </div>
+  `;
+  list.appendChild(entry);
+  showToast('Project added');
+}
+
+function addCert() {
+  const list = document.getElementById('rb-certs-list');
+  if (!list) return;
+
+  const count = list.querySelectorAll('.rb-cert-entry').length + 1;
+  const entry = document.createElement('div');
+  entry.className = 'rb-cert-entry rb-dyn-entry';
+  entry.innerHTML = `
+    <div class="rb-entry-header">
+      <span class="rb-entry-label">Certification ${count}</span>
+      <button class="rb-remove-btn" onclick="removeDynEntry(this)"><i class="ti ti-trash"></i> Remove</button>
+    </div>
+    <div class="rb-grid">
+      <div class="rb-field"><label>Certification name</label><input type="text" class="cert-name" placeholder="e.g. AWS Solutions Architect" /></div>
+      <div class="rb-field"><label>Issuing organisation</label><input type="text" class="cert-org" placeholder="e.g. Amazon Web Services" /></div>
+      <div class="rb-field"><label>Year</label><input type="text" class="cert-year" placeholder="e.g. 2024" /></div>
+    </div>
+  `;
+  list.appendChild(entry);
+  showToast('Certification added');
+}
+
+function removeDynEntry(btn) {
+  const entry = btn.closest('.rb-dyn-entry');
+  if (entry) {
+    entry.remove();
+    showToast('Entry removed');
+  }
+}
+
+/* ===== COLLECT FORM DATA ===== */
+
+function collectResumeFormData() {
+  // FIX: HTML uses rb- prefix for all IDs
+  const name     = (document.getElementById('rb-name')?.value || '').trim();
+  const title    = (document.getElementById('rb-title')?.value || '').trim();
+  const email    = (document.getElementById('rb-email')?.value || '').trim();
+  const phone    = (document.getElementById('rb-phone')?.value || '').trim();
+  const location = (document.getElementById('rb-location')?.value || '').trim();
+  const linkedin = (document.getElementById('rb-linkedin')?.value || '').trim();
+  const website  = (document.getElementById('rb-website')?.value || '').trim();
+  const github   = (document.getElementById('rb-github')?.value || '').trim();
+  const summary  = (document.getElementById('rb-summary')?.value || '').trim();
+  const targetJob= (document.getElementById('rb-target-job')?.value || '').trim();
+  const techSkills  = (document.getElementById('rb-tech-skills')?.value || '').trim();
+  const softSkills  = (document.getElementById('rb-soft-skills')?.value || '').trim();
+  const languages   = (document.getElementById('rb-languages')?.value || '').trim();
+  const achievements= (document.getElementById('rb-achievements')?.value || '').trim();
+
+  const experience = [];
+  document.querySelectorAll('.rb-exp-entry').forEach(entry => {
+    const company = (entry.querySelector('.exp-company')?.value || '').trim();
+    const role    = (entry.querySelector('.exp-role')?.value || '').trim();
+    const start   = (entry.querySelector('.exp-start')?.value || '').trim();
+    const end     = (entry.querySelector('.exp-end')?.value || '').trim();
+    const desc    = (entry.querySelector('.exp-desc')?.value || '').trim();
+    if (company || role) experience.push({ company, role, start, end, desc });
+  });
+
+  const education = [];
+  document.querySelectorAll('.rb-edu-entry').forEach(entry => {
+    const institution = (entry.querySelector('.edu-institution')?.value || '').trim();
+    const degree      = (entry.querySelector('.edu-degree')?.value || '').trim();
+    const field       = (entry.querySelector('.edu-field')?.value || '').trim();
+    const year        = (entry.querySelector('.edu-year')?.value || '').trim();
+    if (institution || degree) education.push({ institution, degree, field, year });
+  });
+
+  const projects = [];
+  document.querySelectorAll('.rb-proj-entry').forEach(entry => {
+    const projName = (entry.querySelector('.proj-name')?.value || '').trim();
+    const tech     = (entry.querySelector('.proj-tech')?.value || '').trim();
+    const desc     = (entry.querySelector('.proj-desc')?.value || '').trim();
+    const link     = (entry.querySelector('.proj-link')?.value || '').trim();
+    if (projName) projects.push({ projName, tech, desc, link });
+  });
+
+  const certs = [];
+  document.querySelectorAll('.rb-cert-entry').forEach(entry => {
+    const certName = (entry.querySelector('.cert-name')?.value || '').trim();
+    const org      = (entry.querySelector('.cert-org')?.value || '').trim();
+    const year     = (entry.querySelector('.cert-year')?.value || '').trim();
+    if (certName) certs.push({ certName, org, year });
+  });
+
+  return { name, title, email, phone, location, linkedin, website, github,
+           summary, targetJob, techSkills, softSkills, languages, achievements,
+           experience, education, projects, certs };
+}
+
+/* ===== GENERATE RESUME ===== */
 
 async function generateResume() {
-  // Gather form data
-  const name = document.getElementById('rs-name').value.trim();
-  const phone = document.getElementById('rs-phone').value.trim();
-  const email = document.getElementById('rs-email').value.trim();
-  const location = document.getElementById('rs-location').value.trim();
-  const summary = document.getElementById('rs-summary').value.trim();
-  const skills = document.getElementById('rs-skills').value.trim();
-  const certs = document.getElementById('rs-certs').value.trim();
-  const languages = document.getElementById('rs-languages').value.trim();
-  const jd = document.getElementById('rs-jd').value.trim();
+  const d = collectResumeFormData();
 
-  // Collect education
-  const education = [];
-  document.querySelectorAll('.education-entry').forEach(entry => {
-    const institution = entry.querySelector('.edu-institution').value.trim();
-    const degree = entry.querySelector('.edu-degree').value.trim();
-    const field = entry.querySelector('.edu-field').value.trim();
-    const year = entry.querySelector('.edu-year').value.trim();
-    if (institution || degree || field || year) {
-      education.push({ institution, degree, field, year });
-    }
-  });
-
-  // Collect experience
-  const experience = [];
-  document.querySelectorAll('.experience-entry').forEach(entry => {
-    const company = entry.querySelector('.exp-company').value.trim();
-    const role = entry.querySelector('.exp-role').value.trim();
-    const start = entry.querySelector('.exp-start').value.trim();
-    const end = entry.querySelector('.exp-end').value.trim();
-    const desc = entry.querySelector('.exp-desc').value.trim();
-    if (company || role || start || end || desc) {
-      experience.push({ company, role, start, end, desc });
-    }
-  });
-
-  // Get photo
-  let photoData = '';
-  const photoFile = document.getElementById('rs-photo').files[0];
-  if (photoFile) {
-    photoData = await new Promise((resolve) => {
-      const reader = new FileReader();
-      reader.onload = (e) => resolve(e.target.result);
-      reader.readAsDataURL(photoFile);
-    });
-  }
-
-  // Validate
-  if (!name) {
+  if (!d.name) {
     showToast('Please enter your full name');
     return;
   }
 
-  // Show loading state
-  const btn = document.getElementById('rs-btn');
+  // FIX: button is rb-btn, output is rb-preview / rb-preview-body
+  const btn = document.getElementById('rb-btn');
+  const preview = document.getElementById('rb-preview');
+  const previewBody = document.getElementById('rb-preview-body');
+
   btn.disabled = true;
   btn.innerHTML = '<i class="ti ti-loader spin"></i> Crafting your resume...';
 
-  const out = document.getElementById('rs-out');
-  out.classList.add('show');
-  document.getElementById('rs-body').innerHTML =
-    '<div style="padding:2.5rem;text-align:center;color:#6B7280;font-size:14px"><i class="ti ti-loader spin" style="font-size:24px;display:block;margin-bottom:12px;color:#1A56DB"></i>Crafting your professional resume...</div>';
-  document.getElementById('rs-analyze').style.display = 'none';
+  preview.style.display = 'block';
+  previewBody.innerHTML =
+    '<div style="padding:2.5rem;text-align:center;color:#6B7280;font-size:14px">' +
+    '<i class="ti ti-loader spin" style="font-size:24px;display:block;margin-bottom:12px;color:#1A56DB"></i>' +
+    'Crafting your professional resume...</div>';
 
-  // Build prompt
-  let prompt = `You are a professional resume writer. Create a polished, ATS-optimised resume.\n\n`;
-  prompt += `Name: ${name}\n`;
-  if (phone) prompt += `Phone: ${phone}\n`;
-  if (email) prompt += `Email: ${email}\n`;
-  if (location) prompt += `Location: ${location}\n`;
-  if (summary) prompt += `Professional Summary: ${summary}\n`;
-  if (skills) prompt += `Skills: ${skills}\n`;
-  if (certs) prompt += `Certifications/Awards: ${certs}\n`;
-  if (languages) prompt += `Languages: ${languages}\n`;
-  if (jd) prompt += `Job Description (for tailoring): ${jd}\n`;
+  // Build AI prompt
+  let prompt = 'You are a professional resume writer. Create a polished, ATS-optimised resume.\n\n';
+  prompt += `Name: ${d.name}\n`;
+  if (d.title)    prompt += `Professional Title: ${d.title}\n`;
+  if (d.email)    prompt += `Email: ${d.email}\n`;
+  if (d.phone)    prompt += `Phone: ${d.phone}\n`;
+  if (d.location) prompt += `Location: ${d.location}\n`;
+  if (d.linkedin) prompt += `LinkedIn: ${d.linkedin}\n`;
+  if (d.website)  prompt += `Portfolio: ${d.website}\n`;
+  if (d.github)   prompt += `GitHub: ${d.github}\n`;
+  if (d.summary)  prompt += `Professional Summary: ${d.summary}\n`;
+  if (d.techSkills)  prompt += `Technical Skills: ${d.techSkills}\n`;
+  if (d.softSkills)  prompt += `Soft Skills: ${d.softSkills}\n`;
+  if (d.languages)   prompt += `Languages: ${d.languages}\n`;
+  if (d.achievements)prompt += `Achievements: ${d.achievements}\n`;
+  if (d.targetJob)   prompt += `Target Job (for keyword tailoring): ${d.targetJob}\n`;
 
-  if (education.length) {
-    prompt += `\nEducation:\n`;
-    education.forEach((edu, i) => {
-      prompt += `  ${i+1}. ${edu.institution}, ${edu.degree}, ${edu.field}, ${edu.year}\n`;
+  if (d.experience.length) {
+    prompt += `\nWork Experience:\n`;
+    d.experience.forEach((exp, i) => {
+      prompt += `  ${i+1}. ${exp.company} — ${exp.role} (${exp.start} to ${exp.end})\n     ${exp.desc}\n`;
     });
   }
-  if (experience.length) {
-    prompt += `\nWork Experience:\n`;
-    experience.forEach((exp, i) => {
-      prompt += `  ${i+1}. ${exp.company} - ${exp.role} (${exp.start} to ${exp.end}): ${exp.desc}\n`;
+  if (d.education.length) {
+    prompt += `\nEducation:\n`;
+    d.education.forEach((edu, i) => {
+      prompt += `  ${i+1}. ${edu.institution}, ${edu.degree} in ${edu.field}, ${edu.year}\n`;
+    });
+  }
+  if (d.projects.length) {
+    prompt += `\nProjects:\n`;
+    d.projects.forEach((p, i) => {
+      prompt += `  ${i+1}. ${p.projName} (${p.tech}): ${p.desc}\n`;
+    });
+  }
+  if (d.certs.length) {
+    prompt += `\nCertifications:\n`;
+    d.certs.forEach((c, i) => {
+      prompt += `  ${i+1}. ${c.certName} — ${c.org} (${c.year})\n`;
     });
   }
 
   prompt += `
 INSTRUCTIONS:
-- Write a professional resume with sections: Professional Summary, Work Experience, Education, Skills, Certifications, Languages
-- For each work experience, create achievement-oriented bullet points with numbers and percentages
-- Use ATS-friendly keywords from the job description if provided
+- Write a clean, ATS-optimised resume with clear section headers
+- Use these exact section headers: PROFESSIONAL SUMMARY, WORK EXPERIENCE, EDUCATION, SKILLS, PROJECTS, CERTIFICATIONS
+- For work experience, write achievement-oriented bullet points with metrics where possible
+- Use dash (—) for bullets
 - Keep tone professional and confident
-- Use clear formatting with headers and bullet points (use dashes for bullets)
-- Limit to about 1 page (400-600 words)
-- Write only the resume content - no extra commentary`;
+- Write ONLY the resume content — no extra commentary or preamble`;
 
   try {
     const res = await fetch('/api/generate', {
@@ -411,81 +284,177 @@ INSTRUCTIONS:
     const data = await res.json();
     if (data.error) throw new Error(data.error);
 
-    // Build styled HTML and display
-    const styledHTML = buildResumeHTML(name, name, email, phone, location, photoData, data.result);
-    document.getElementById('rs-body').innerHTML = styledHTML;
-    document.getElementById('rs-body').classList.add('show');
+    // Render styled HTML into preview
+    const styledHTML = buildResumeHTML(d, data.result);
+    previewBody.innerHTML = styledHTML;
+    showToast('Resume generated! ✓');
 
-    // Calculate ATS score
-    const text = data.result;
-    let score = 60;
-    if (skills) score += 10;
-    if (jd) score += 10;
-    if (summary) score += 5;
-    if (education.length) score += 10;
-    if (experience.length) score += 10;
-    if (text.split(' ').length > 200) score += 5;
-    if (/\d+%/.test(text) || /\d+/.test(text)) score += 5;
-    score = Math.min(100, score);
-
-    document.getElementById('rs-score').textContent = score + '/100';
-    
-    const suggestions = [];
-    if (!skills) suggestions.push('Add skills for higher score.');
-    if (!jd) suggestions.push('Add job description to tailor keywords.');
-    if (text.split(' ').length < 150) suggestions.push('Add more detail to experience.');
-    if (!/\d+/.test(text)) suggestions.push('Quantify your achievements (e.g., "increased sales by 20%").');
-    if (suggestions.length === 0) suggestions.push('Excellent! Your resume is ATS-optimised.');
-    
-    document.getElementById('rs-suggestions').textContent = suggestions.join(' ');
-    document.getElementById('rs-analyze').style.display = 'block';
-
-    showToast('Resume generated successfully! ✓');
   } catch (e) {
-    document.getElementById('rs-body').innerHTML =
-      '<div style="padding:1rem;color:#991B1B;font-size:14px">⚠️ Error: ' + (e.message || 'Please try again.') + '</div>';
+    previewBody.innerHTML =
+      '<div style="padding:1rem;color:#991B1B;font-size:14px">⚠️ Error: ' +
+      (e.message || 'Please try again.') + '</div>';
     showToast('Error: ' + (e.message || 'Please try again.'));
   }
 
   btn.disabled = false;
-  btn.innerHTML = '<i class="ti ti-wand"></i> Generate my resume — free';
+  btn.innerHTML = '<i class="ti ti-wand"></i> Generate my professional resume';
 }
 
-/* ===== PDF DOWNLOAD ===== */
+/* ===== BUILD STYLED RESUME HTML ===== */
 
-function downloadPDF(type) {
-  const bodyId = type === 'cl' ? 'cl-body' : 'rs-body';
-  const body = document.getElementById(bodyId);
+function buildResumeHTML(d, aiText) {
+  // Parse sections from AI output
+  const sections = {};
+  const sectionHeaders = ['PROFESSIONAL SUMMARY', 'WORK EXPERIENCE', 'EDUCATION', 'SKILLS', 'PROJECTS', 'CERTIFICATIONS', 'LANGUAGES'];
   
-  if (!body) {
-    showToast('Generate a resume first!');
-    return;
+  let currentSection = '';
+  const lines = aiText.split('\n');
+  lines.forEach(line => {
+    const upper = line.trim().toUpperCase();
+    const matched = sectionHeaders.find(h => upper === h || upper.startsWith(h));
+    if (matched) {
+      currentSection = matched;
+      sections[currentSection] = '';
+    } else if (currentSection) {
+      sections[currentSection] = (sections[currentSection] || '') + line + '\n';
+    }
+  });
+
+  const photo = rbPhotoData;
+  const name  = d.name || '';
+  const title = d.title || '';
+  const email = d.email || '';
+  const phone = d.phone || '';
+  const loc   = d.location || '';
+  const li    = d.linkedin || '';
+  const web   = d.website || '';
+
+  const contactLine = [
+    email    ? `📧 ${email}` : '',
+    phone    ? `📞 ${phone}` : '',
+    loc      ? `📍 ${loc}`   : '',
+    li       ? `🔗 ${li}`    : '',
+    web      ? `🌐 ${web}`   : ''
+  ].filter(Boolean).join('  •  ');
+
+  function sec(label, content, cls = '') {
+    if (!content || !content.trim()) return '';
+    return `<div class="section-title">${label}</div><div class="section-body ${cls}" style="white-space:pre-wrap;font-size:13px;color:#333;margin-bottom:16px;line-height:1.7">${content.trim()}</div>`;
   }
-  
-  const text = body.textContent;
+
+  if (currentTemplate === 'modern') {
+    return `<div class="resume-modern">
+      <div class="header">
+        ${photo ? `<img src="${photo}" class="header-photo" alt="Profile">` : ''}
+        <div class="header-name">${name}</div>
+        ${title ? `<div class="header-title">${title}</div>` : ''}
+        <div class="header-contact">${contactLine}</div>
+      </div>
+      ${sec('Professional Summary', sections['PROFESSIONAL SUMMARY'])}
+      ${sec('Work Experience', sections['WORK EXPERIENCE'])}
+      ${sec('Education', sections['EDUCATION'])}
+      ${sections['SKILLS'] ? `<div class="section-title">Skills</div><div class="skills-container">${sections['SKILLS'].split(/[,\n—–-]+/).map(s=>s.trim()).filter(Boolean).map(s=>`<span class="skill-tag">${s}</span>`).join('')}</div>` : ''}
+      ${sec('Projects', sections['PROJECTS'])}
+      ${sec('Certifications', sections['CERTIFICATIONS'])}
+    </div>`;
+  }
+
+  if (currentTemplate === 'executive') {
+    return `<div class="resume-executive">
+      <div class="header">
+        ${photo ? `<img src="${photo}" class="header-photo" alt="Profile">` : ''}
+        <div class="header-info">
+          <div class="header-name">${name}</div>
+          ${title ? `<div class="header-title">${title}</div>` : ''}
+          <div class="header-contact"><span>${contactLine}</span></div>
+        </div>
+      </div>
+      ${sec('Summary', sections['PROFESSIONAL SUMMARY'])}
+      ${sec('Professional Experience', sections['WORK EXPERIENCE'])}
+      ${sec('Education', sections['EDUCATION'])}
+      ${sec('Core Competencies', sections['SKILLS'])}
+      ${sec('Projects', sections['PROJECTS'])}
+      ${sec('Certifications', sections['CERTIFICATIONS'])}
+    </div>`;
+  }
+
+  if (currentTemplate === 'creative') {
+    return `<div class="resume-creative"><div class="wrapper">
+      <div class="header">
+        ${photo ? `<img src="${photo}" class="header-photo" alt="Profile">` : ''}
+        <div class="header-name">${name}</div>
+        ${title ? `<div class="header-title">${title}</div>` : ''}
+        <div class="header-contact">${contactLine}</div>
+      </div>
+      <div class="content">
+        ${sec('About', sections['PROFESSIONAL SUMMARY'])}
+        ${sec('Experience', sections['WORK EXPERIENCE'])}
+        ${sec('Education', sections['EDUCATION'])}
+        ${sec('Skills', sections['SKILLS'])}
+        ${sec('Projects', sections['PROJECTS'])}
+        ${sec('Certifications', sections['CERTIFICATIONS'])}
+      </div>
+    </div></div>`;
+  }
+
+  // ATS template
+  return `<div class="resume-ats">
+    <div class="header">
+      <div class="header-name">${name}</div>
+      ${title ? `<div class="header-title">${title}</div>` : ''}
+      <div class="header-contact">${[email,phone,loc].filter(Boolean).join(' | ')}</div>
+    </div>
+    ${sec('PROFESSIONAL SUMMARY', sections['PROFESSIONAL SUMMARY'])}
+    ${sec('WORK EXPERIENCE', sections['WORK EXPERIENCE'])}
+    ${sec('EDUCATION', sections['EDUCATION'])}
+    ${sec('SKILLS', sections['SKILLS'])}
+    ${sec('PROJECTS', sections['PROJECTS'])}
+    ${sec('CERTIFICATIONS', sections['CERTIFICATIONS'])}
+  </div>`;
+}
+
+/* ===== PDF DOWNLOAD FOR RESUME ===== */
+// FIX: HTML calls downloadResumePDF() — original was downloadPDF('rs') which conflicted
+
+function downloadResumePDF() {
+  const previewBody = document.getElementById('rb-preview-body');
+  if (!previewBody) { showToast('Generate a resume first!'); return; }
+
+  const text = previewBody.textContent;
   if (!text || text.includes('Crafting')) {
     showToast('Generate a resume first!');
     return;
   }
 
-  const name = document.getElementById('rs-name').value.trim() || 'Resume';
+  const name  = (document.getElementById('rb-name')?.value || 'Resume').trim();
+  const title = (document.getElementById('rb-title')?.value || '').trim();
+
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' });
-  
+
   const PW = 210, PH = 297, ML = 25.4, MR = 25.4, CW = PW - ML - MR;
-  const FS = 11, LH = 5;
+  const FS = 11, LH = 5.5;
   let y = 25;
 
+  // Name header
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(18);
   doc.setTextColor(26, 86, 219);
   doc.text(name.toUpperCase(), ML, y);
-  y += 10;
-  
+  y += 7;
+
+  if (title) {
+    doc.setFontSize(12);
+    doc.setFont('helvetica', 'normal');
+    doc.setTextColor(60, 60, 60);
+    doc.text(title, ML, y);
+    y += 6;
+  }
+
   doc.setLineWidth(0.5);
   doc.setDrawColor(229, 231, 235);
   doc.line(ML, y, PW - MR, y);
-  y += 10;
+  y += 8;
 
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(FS);
@@ -494,61 +463,142 @@ function downloadPDF(type) {
   const paras = text.split(/\n\s*\n/).filter(p => p.trim());
   paras.forEach(p => {
     const clean = p.replace(/\s+/g, ' ').trim();
+    const isHeader = clean === clean.toUpperCase() && clean.length < 60;
+
+    if (isHeader) {
+      y += 3;
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(11);
+    } else {
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(FS);
+    }
+
     const lines = doc.splitTextToSize(clean, CW);
-    
     lines.forEach(line => {
-      if (y + LH > PH - 25) {
-        doc.addPage();
-        y = 25;
-      }
+      if (y + LH > PH - 20) { doc.addPage(); y = 25; }
       doc.text(line, ML, y);
       y += LH;
     });
-    y += 5;
+    if (isHeader) y += 2; else y += 4;
   });
 
-  const filename = `Resume_${name.replace(/[^a-zA-Z0-9]/g, '_')}.pdf`;
+  const filename = 'Resume_' + name.replace(/[^a-zA-Z0-9]/g, '_') + '.pdf';
   doc.save(filename);
   showToast('PDF downloaded! ✓');
 }
 
-/* ===== CLEAR FORM ===== */
+/* ===== ATS ANALYZER ===== */
 
-function clearForm(type) {
-  if (type !== 'rs') return;
-  
-  const fields = ['rs-name', 'rs-phone', 'rs-email', 'rs-location', 'rs-summary', 'rs-skills', 'rs-certs', 'rs-languages', 'rs-jd'];
-  fields.forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.value = '';
-  });
+async function analyzeResume() {
+  const resumeText = (document.getElementById('ats-resume')?.value || '').trim();
+  const jdText     = (document.getElementById('ats-jd')?.value || '').trim();
 
-  // Clear education/experience
-  ['education', 'experience'].forEach(type => {
-    const container = document.getElementById(type + '-entries');
-    if (container) {
-      const entries = container.querySelectorAll(`.${type}-entry`);
-      if (entries.length > 1) {
-        entries.forEach((entry, idx) => {
-          if (idx > 0) entry.remove();
-        });
-      }
-      const first = container.querySelector(`.${type}-entry`);
-      if (first) {
-        first.querySelectorAll('input').forEach(inp => inp.value = '');
-      }
-    }
-  });
-
-  // Clear photo
-  const photoInput = document.getElementById('rs-photo');
-  const photoPreview = document.getElementById('rs-photo-preview');
-  if (photoInput) photoInput.value = '';
-  if (photoPreview) {
-    photoPreview.style.display = 'none';
-    photoPreview.src = '';
+  if (!resumeText) {
+    showToast('Please paste your resume text first');
+    return;
   }
 
-  document.getElementById('rs-out').classList.remove('show');
-  showToast('Form cleared');
+  const btn = document.getElementById('ats-btn');
+  const result = document.getElementById('ats-result');
+
+  btn.disabled = true;
+  btn.innerHTML = '<i class="ti ti-loader spin"></i> Analyzing...';
+  result.style.display = 'block';
+
+  document.getElementById('ats-score-num').textContent = '--';
+  document.getElementById('ats-grade').textContent = '--';
+  document.getElementById('ats-summary-text').textContent = 'Analyzing your resume...';
+  document.getElementById('ats-sections').innerHTML = '';
+  document.getElementById('ats-strengths').innerHTML = '';
+  document.getElementById('ats-improvements').innerHTML = '';
+  document.getElementById('ats-kw-found').innerHTML = '';
+  document.getElementById('ats-kw-missing').innerHTML = '';
+
+  const prompt = `You are an expert ATS resume analyzer. Analyze the resume below and return ONLY a JSON object (no markdown, no explanation) with this exact structure:
+{
+  "score": <number 0-100>,
+  "grade": "<A/B/C/D/F>",
+  "summary": "<2 sentence overall assessment>",
+  "sections_found": ["Contact Info","Summary","Experience","Education","Skills"],
+  "sections_missing": ["Certifications"],
+  "strengths": ["strength 1","strength 2","strength 3"],
+  "improvements": ["improvement 1","improvement 2","improvement 3","improvement 4","improvement 5"],
+  "keywords_found": ["keyword1","keyword2"],
+  "keywords_missing": ["keyword3","keyword4"]
+}
+
+RESUME:
+${resumeText}
+
+${jdText ? `JOB DESCRIPTION:\n${jdText}` : ''}`;
+
+  try {
+    const res = await fetch('/api/generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt })
+    });
+    const data = await res.json();
+    if (data.error) throw new Error(data.error);
+
+    let parsed;
+    try {
+      const clean = data.result.replace(/```json|```/g, '').trim();
+      parsed = JSON.parse(clean);
+    } catch {
+      throw new Error('Could not parse AI response. Please try again.');
+    }
+
+    // Score ring color
+    const score = parseInt(parsed.score) || 0;
+    const ring = document.getElementById('ats-score-ring');
+    const color = score >= 80 ? '#10B981' : score >= 60 ? '#F59E0B' : '#EF4444';
+    ring.style.borderColor = color;
+
+    document.getElementById('ats-score-num').textContent = score;
+    document.getElementById('ats-grade').textContent = parsed.grade || '';
+    document.getElementById('ats-grade').style.color = color;
+    document.getElementById('ats-summary-text').textContent = parsed.summary || '';
+
+    // Sections
+    const secEl = document.getElementById('ats-sections');
+    (parsed.sections_found || []).forEach(s => {
+      secEl.innerHTML += `<div class="ats-section-item found"><i class="ti ti-circle-check"></i> ${s}</div>`;
+    });
+    (parsed.sections_missing || []).forEach(s => {
+      secEl.innerHTML += `<div class="ats-section-item missing"><i class="ti ti-circle-x"></i> ${s} <span style="font-size:11px;color:#EF4444">(missing)</span></div>`;
+    });
+
+    // Strengths
+    const strEl = document.getElementById('ats-strengths');
+    (parsed.strengths || []).forEach(s => {
+      strEl.innerHTML += `<div class="ats-point"><i class="ti ti-star" style="color:#F59E0B"></i> ${s}</div>`;
+    });
+
+    // Improvements
+    const impEl = document.getElementById('ats-improvements');
+    (parsed.improvements || []).forEach((s, i) => {
+      impEl.innerHTML += `<div class="ats-point"><span class="ats-num">${i+1}</span> ${s}</div>`;
+    });
+
+    // Keywords
+    const kwFound   = document.getElementById('ats-kw-found');
+    const kwMissing = document.getElementById('ats-kw-missing');
+    (parsed.keywords_found || []).forEach(k => {
+      kwFound.innerHTML += `<span class="ats-kw found">${k}</span>`;
+    });
+    (parsed.keywords_missing || []).forEach(k => {
+      kwMissing.innerHTML += `<span class="ats-kw missing">${k}</span>`;
+    });
+
+    showToast('ATS analysis complete! ✓');
+
+  } catch (e) {
+    document.getElementById('ats-summary-text').textContent = '⚠️ Error: ' + (e.message || 'Please try again.');
+    showToast('Error: ' + (e.message || 'Please try again.'));
+  }
+
+  btn.disabled = false;
+  btn.innerHTML = '<i class="ti ti-chart-bar"></i> Analyze my resume — free';
 }
