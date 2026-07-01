@@ -674,11 +674,13 @@
         <div class="ft-brand"><i class="ti ti-briefcase"></i> HireReady AI</div>
         <div class="ft-desc">Helping students and fresh graduates land their dream jobs with AI-powered cover letters. 100% free. No account needed.</div>
       </div>
-      <div class="ft-col">
-        <h4>Product</h4>
-        <a onclick="showPage('home')">Cover letter</a>
-        <a onclick="openSupport()">Support us</a>
-      </div>
+   <div class="ft-col">
+  <h4>Product</h4>
+  <a onclick="showPage('home'); setTimeout(()=>switchTab('cl'),100)">Cover letter</a>
+  <a onclick="showPage('home'); setTimeout(()=>{document.getElementById('app').scrollIntoView({behavior:'smooth'}); switchTab('rb');},100)">Resume Builder</a>
+  <a onclick="showPage('home'); setTimeout(()=>{document.getElementById('app').scrollIntoView({behavior:'smooth'}); switchTab('ats');},100)">ATS Analyzer</a>
+  <a onclick="openSupport()">Support us</a>
+</div>
       <div class="ft-col">
         <h4>Company</h4>
         <a onclick="showPage('about')">About us</a>
