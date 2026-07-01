@@ -1393,8 +1393,7 @@ body.dark .resume-preview-body {
 }
 
 .ct-t { font-weight: 700; font-size: 13px; color: var(--text); margin-bottom: 4px; }
-.ct-v { font-size: 13px; color: var(--text-2); }
-
+.ct-v { font-size: 13px; color: var(--text-2); word-break: break-all; overflow-wrap: anywhere; }
 /* ===== LEGAL PAGES ===== */
 
 .legal h3 {
