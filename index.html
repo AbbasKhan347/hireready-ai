@@ -94,16 +94,19 @@
 
   <section class="hero">
     <div class="hero-badge"><i class="ti ti-sparkles"></i> 100% Free — No Credit Card Needed</div>
-    <h1>Land your dream job with a <span>perfect cover letter</span></h1>
-    <p>Generate a professional, ATS-optimised cover letter in 30 seconds. Tailored to your job, your skills, your story. Completely free — unlimited letters.</p>
-    <div class="hero-cta">
-      <button class="h-btn pri" onclick="document.getElementById('app').scrollIntoView({behavior:'smooth'})">
-        <i class="ti ti-wand"></i> Generate cover letter
-      </button>
-      <button class="h-btn sec" onclick="showPage('about')">
-        <i class="ti ti-info-circle"></i> Learn more
-      </button>
-    </div>
+    <h1>Land your dream job with <span>AI-powered tools</span></h1>
+    <p>Generate professional cover letters, build ATS-optimised resumes, and analyse your resume score — all in seconds. 100% free, no account needed.</p>    
+<div class="hero-cta">
+  <button class="h-btn pri" onclick="document.getElementById('app').scrollIntoView({behavior:'smooth'}); setTimeout(()=>switchTab('cl'),100)">
+    <i class="ti ti-file-text"></i> Cover letter
+  </button>
+  <button class="h-btn pri" onclick="document.getElementById('app').scrollIntoView({behavior:'smooth'}); setTimeout(()=>switchTab('rb'),100)" style="background:var(--purple);">
+    <i class="ti ti-id-badge"></i> Resume builder
+  </button>
+  <button class="h-btn sec" onclick="document.getElementById('app').scrollIntoView({behavior:'smooth'}); setTimeout(()=>switchTab('ats'),100)">
+    <i class="ti ti-chart-bar"></i> ATS analyzer
+  </button>
+</div>
     <div class="hero-stats">
       <div><div class="stat-num">50+</div><div class="stat-label">Letters made</div></div>
       <div><div class="stat-num">100%</div><div class="stat-label">ATS friendly</div></div>
@@ -123,10 +126,9 @@
     <div class="card">
       <div class="kicker">Simple process</div>
       <div class="sec-title">How HireReady AI works</div>
-      <div class="sec-sub">Four simple steps to your perfect cover letter. No experience needed.</div>
-      <div class="steps">
-        <div class="step"><div class="step-n">1</div><div class="step-t">Fill your details</div><div class="step-d">Enter your name, job title, company, skills, and paste the job description.</div></div>
-        <div class="step"><div class="step-n">2</div><div class="step-t">AI generates</div><div class="step-d">Our AI writes a professional, tailored, ATS-optimised cover letter in seconds.</div></div>
+      <div class="sec-sub">Four simple steps to your perfect cover letter, resume, or ATS score. No experience needed.</div>      <div class="steps">
+        <div class="step"><div class="step-n">1</div><div class="step-t">Fill your details</div><div class="step-d">Enter your details — name, job title, skills, experience, and optionally paste a job description.</div></div>
+        <div class="step"><div class="step-n">2</div><div class="step-t">AI generates</div><div class="step-d">Our AI writes a professional, tailored cover letter or resume in seconds — ATS-optimised.</div></div>
         <div class="step"><div class="step-n">3</div><div class="step-t">Copy or download</div><div class="step-d">Copy your letter or download it as a clean PDF — ready to send.</div></div>
         <div class="step"><div class="step-n">4</div><div class="step-t">Get the interview</div><div class="step-d">Your ATS-optimised letter gets past filters and reaches real hiring managers.</div></div>
       </div>
