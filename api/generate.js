@@ -25,10 +25,17 @@ export default async function handler(req, res) {
   }
 
   // ─── 2. Validate Input ──────────────────────────────────────
-  const { prompt } = req.body;
+  const { prompt, max_tokens } = req.body;
   if (!prompt || typeof prompt !== 'string' || prompt.trim().length === 0) {
     return res.status(400).json({ error: 'Prompt is required and must be a non-empty string.' });
   }
+
+  // Let the frontend request more tokens for longer content (like full
+  // resumes), but always clamp it server-side so nobody can abuse it.
+  const requestedTokens = parseInt(max_tokens);
+  const safeRequestedTokens = Number.isFinite(requestedTokens)
+    ? Math.min(Math.max(requestedTokens, 256), 3000)
+    : null;
 
   // ─── 3. Environment & Configuration ─────────────────────────
   const apiKey = process.env.GROQ_API_KEY;
@@ -42,7 +49,8 @@ export default async function handler(req, res) {
   // or "mixtral-8x7b-32768", "gemma2-9b-it", etc.
   const model = process.env.GROQ_MODEL || 'llama-3.3-70b-versatile';
   const temperature = parseFloat(process.env.GROQ_TEMPERATURE) || 0.8;
-  const maxTokens = parseInt(process.env.GROQ_MAX_TOKENS) || 1000;
+  const envMaxTokens = parseInt(process.env.GROQ_MAX_TOKENS) || 1000;
+  const maxTokens = safeRequestedTokens || envMaxTokens;
   const timeoutMs = parseInt(process.env.GROQ_TIMEOUT) || 10000; // 10 seconds
 
   // ─── 4. Build Request Options ──────────────────────────────
