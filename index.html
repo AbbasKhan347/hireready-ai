@@ -75,7 +75,7 @@
 <div class="nav-links">
     <a onclick="showPage('home')">Home</a>
     <a onclick="showPage('home'); setTimeout(()=>document.getElementById('how').scrollIntoView({behavior:'smooth'}),100)">How it works</a>
-    <a onclick="showPage('home'); setTimeout(()=>{document.getElementById('app').scrollIntoView({behavior:'smooth'}); switchTab('resume');},100)">Resume Analyzer</a>
+    <a onclick="showPage('home'); setTimeout(()=>{document.getElementById('app').scrollIntoView({behavior:'smooth'}); switchTab('ats');},100)">ATS Analyzer</a>
     <a onclick="showPage('about')">About</a>
     <a onclick="showPage('contact')">Contact</a>
   </div>
@@ -252,6 +252,17 @@
 <div class="tab-sec" id="sec-rb">
   <div class="form-info">
     <strong>Resume Builder:</strong> Fill in your details below and we will generate a professional, ATS-optimised resume in seconds. Download as PDF for free.
+  </div>
+
+  <!-- TEMPLATE SELECTOR -->
+  <div class="rb-section">
+    <div class="rb-section-title"><i class="ti ti-palette"></i> Choose a resume style</div>
+    <div class="template-selector" id="template-selector">
+      <button type="button" class="template-btn active" data-template="modern" onclick="selectTemplate('modern', this)">🎨 Modern</button>
+      <button type="button" class="template-btn" data-template="executive" onclick="selectTemplate('executive', this)">💼 Executive</button>
+      <button type="button" class="template-btn" data-template="creative" onclick="selectTemplate('creative', this)">✨ Creative</button>
+      <button type="button" class="template-btn" data-template="ats" onclick="selectTemplate('ats', this)">⚙️ ATS-Friendly</button>
+    </div>
   </div>
 
   <!-- PHOTO UPLOAD -->
