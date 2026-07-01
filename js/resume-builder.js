@@ -7,6 +7,28 @@
 
 let currentTemplate = 'modern';
 let rbPhotoData = '';
+let lastAiText = '';      // caches the last AI-generated resume text
+let lastFormData = null;  // caches the last collected form data (d)
+
+/* ===== TEMPLATE SELECTOR ===== */
+
+function selectTemplate(template, btnEl) {
+  currentTemplate = template;
+
+  document.querySelectorAll('.template-btn').forEach(btn => btn.classList.remove('active'));
+  if (btnEl) btnEl.classList.add('active');
+
+  // If a resume was already generated, re-render instantly in the new
+  // style without calling the AI again (saves an API call, feels instant)
+  if (lastAiText && lastFormData) {
+    const previewBody = document.getElementById('rb-preview-body');
+    if (previewBody) {
+      previewBody.innerHTML = buildResumeHTML(lastFormData, lastAiText);
+    }
+  }
+
+  showToast(`Style: ${template.charAt(0).toUpperCase() + template.slice(1)}`);
+}
 
 /* ===== PHOTO UPLOAD ===== */
 // FIX: HTML calls handlePhotoUpload(event) — original was previewPhoto()
@@ -279,10 +301,20 @@ INSTRUCTIONS:
     const res = await fetch('/api/generate', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ prompt })
+      // FIX: resumes need far more tokens than cover letters (summary +
+      // multiple jobs + education + skills + projects + certs easily
+      // exceeds the default 1000-token limit, which was silently cutting
+      // the AI response off mid-resume — that's why only the top
+      // sections ever showed up). max_tokens is capped server-side too.
+      body: JSON.stringify({ prompt, max_tokens: 2200 })
     });
     const data = await res.json();
     if (data.error) throw new Error(data.error);
+
+    // Cache the raw result + form data so template switching and PDF
+    // download can reuse it without another API call
+    lastAiText = data.result;
+    lastFormData = d;
 
     // Render styled HTML into preview
     const styledHTML = buildResumeHTML(d, data.result);
@@ -300,17 +332,20 @@ INSTRUCTIONS:
   btn.innerHTML = '<i class="ti ti-wand"></i> Generate my professional resume';
 }
 
-/* ===== BUILD STYLED RESUME HTML ===== */
+/* ===== PARSE AI TEXT INTO SECTIONS (shared by screen preview + PDF) ===== */
 
-function buildResumeHTML(d, aiText) {
-  // Parse sections from AI output
+function parseResumeSections(aiText) {
   const sections = {};
   const sectionHeaders = ['PROFESSIONAL SUMMARY', 'WORK EXPERIENCE', 'EDUCATION', 'SKILLS', 'PROJECTS', 'CERTIFICATIONS', 'LANGUAGES'];
-  
+
   let currentSection = '';
-  const lines = aiText.split('\n');
+  const lines = (aiText || '').split('\n');
   lines.forEach(line => {
-    const upper = line.trim().toUpperCase();
+    // Strip common AI formatting noise (markdown bold, leading #/numbers)
+    // before checking whether the line is a section header, so headers
+    // like "**EDUCATION**" or "## Education" are still recognised.
+    const cleanedLine = line.replace(/^[#*\s]+|[#*\s]+$/g, '');
+    const upper = cleanedLine.trim().toUpperCase();
     const matched = sectionHeaders.find(h => upper === h || upper.startsWith(h));
     if (matched) {
       currentSection = matched;
@@ -320,6 +355,13 @@ function buildResumeHTML(d, aiText) {
     }
   });
 
+  return sections;
+}
+
+/* ===== BUILD STYLED RESUME HTML ===== */
+
+function buildResumeHTML(d, aiText) {
+  const sections = parseResumeSections(aiText);
   const photo = rbPhotoData;
   const name  = d.name || '';
   const title = d.title || '';
@@ -414,74 +456,133 @@ function buildResumeHTML(d, aiText) {
 }
 
 /* ===== PDF DOWNLOAD FOR RESUME ===== */
-// FIX: HTML calls downloadResumePDF() — original was downloadPDF('rs') which conflicted
+// FIX: The old version scraped `.textContent` from the preview div and
+// guessed at paragraph breaks. Sibling <div>s (name/title/contact line)
+// have no real separator in .textContent, so lines ran together, and if
+// the AI response had been truncated (see max_tokens fix above) whatever
+// was missing on screen was also missing here. This version builds the
+// PDF straight from the same structured data + parsed sections used for
+// the on-screen preview, so what you see is what you download — always
+// complete, always separated correctly.
 
 function downloadResumePDF() {
-  const previewBody = document.getElementById('rb-preview-body');
-  if (!previewBody) { showToast('Generate a resume first!'); return; }
-
-  const text = previewBody.textContent;
-  if (!text || text.includes('Crafting')) {
+  if (!lastAiText || !lastFormData) {
     showToast('Generate a resume first!');
     return;
   }
 
-  const name  = (document.getElementById('rb-name')?.value || 'Resume').trim();
-  const title = (document.getElementById('rb-title')?.value || '').trim();
+  const d = lastFormData;
+  const sections = parseResumeSections(lastAiText);
+  const name = d.name || 'Resume';
 
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' });
 
   const PW = 210, PH = 297, ML = 25.4, MR = 25.4, CW = PW - ML - MR;
-  const FS = 11, LH = 5.5;
-  let y = 25;
+  const FS = 10.5, LH = 5.2;
+  let y = 22;
 
-  // Name header
+  function ensureSpace(needed) {
+    if (y + needed > PH - 20) {
+      doc.addPage();
+      y = 22;
+    }
+  }
+
+  // ── Photo (skip for ATS-style download — recruiters' ATS software
+  //    generally strips/mishandles images, so we keep the PDF text-safe) ──
+  const includePhoto = currentTemplate !== 'ats' && !!rbPhotoData;
+  let textStartX = ML;
+  if (includePhoto) {
+    try {
+      const imgSize = 24;
+      doc.addImage(rbPhotoData, 'JPEG', PW - MR - imgSize, y, imgSize, imgSize);
+    } catch (e) {
+      console.warn('Could not embed photo in PDF:', e);
+    }
+  }
+
+  // ── Header: name, title, contact line ──
   doc.setFont('helvetica', 'bold');
-  doc.setFontSize(18);
+  doc.setFontSize(20);
   doc.setTextColor(26, 86, 219);
-  doc.text(name.toUpperCase(), ML, y);
-  y += 7;
+  doc.text(name.toUpperCase(), textStartX, y + 6);
+  y += 12;
 
-  if (title) {
-    doc.setFontSize(12);
+  if (d.title) {
     doc.setFont('helvetica', 'normal');
+    doc.setFontSize(12);
     doc.setTextColor(60, 60, 60);
-    doc.text(title, ML, y);
+    doc.text(d.title, textStartX, y);
     y += 6;
   }
 
-  doc.setLineWidth(0.5);
-  doc.setDrawColor(229, 231, 235);
+  const contactParts = [
+    d.email ? d.email : '',
+    d.phone ? d.phone : '',
+    d.location ? d.location : '',
+    d.linkedin ? d.linkedin : '',
+    d.website ? d.website : '',
+    d.github ? d.github : ''
+  ].filter(Boolean);
+  if (contactParts.length) {
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(9.5);
+    doc.setTextColor(100, 100, 100);
+    const contactLines = doc.splitTextToSize(contactParts.join('   |   '), CW);
+    contactLines.forEach(line => { doc.text(line, textStartX, y); y += 4.5; });
+  }
+
+  y += 2;
+  doc.setDrawColor(26, 86, 219);
+  doc.setLineWidth(0.6);
   doc.line(ML, y, PW - MR, y);
   y += 8;
 
-  doc.setFont('helvetica', 'normal');
-  doc.setFontSize(FS);
-  doc.setTextColor(17, 24, 39);
+  // ── Section renderer: bold blue header + bullet-aware body ──
+  function renderSection(label, content) {
+    if (!content || !content.trim()) return;
 
-  const paras = text.split(/\n\s*\n/).filter(p => p.trim());
-  paras.forEach(p => {
-    const clean = p.replace(/\s+/g, ' ').trim();
-    const isHeader = clean === clean.toUpperCase() && clean.length < 60;
+    ensureSpace(12);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(12);
+    doc.setTextColor(26, 86, 219);
+    doc.text(label.toUpperCase(), ML, y);
+    y += 1.5;
+    doc.setDrawColor(210, 220, 240);
+    doc.setLineWidth(0.3);
+    doc.line(ML, y, PW - MR, y);
+    y += 5;
 
-    if (isHeader) {
-      y += 3;
-      doc.setFont('helvetica', 'bold');
-      doc.setFontSize(11);
-    } else {
-      doc.setFont('helvetica', 'normal');
-      doc.setFontSize(FS);
-    }
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(FS);
+    doc.setTextColor(30, 30, 30);
 
-    const lines = doc.splitTextToSize(clean, CW);
-    lines.forEach(line => {
-      if (y + LH > PH - 20) { doc.addPage(); y = 25; }
-      doc.text(line, ML, y);
-      y += LH;
+    const rawLines = content.split('\n').map(l => l.trim()).filter(Boolean);
+    rawLines.forEach(rawLine => {
+      const isBullet = /^[-—•*]\s*/.test(rawLine);
+      const cleanLine = rawLine.replace(/^[-—•*]\s*/, '');
+      const indent = isBullet ? ML + 4 : ML;
+      const width = isBullet ? CW - 4 : CW;
+      const prefix = isBullet ? '•  ' : '';
+
+      const wrapped = doc.splitTextToSize(prefix + cleanLine, width);
+      wrapped.forEach(line => {
+        ensureSpace(LH);
+        doc.text(line, indent, y);
+        y += LH;
+      });
     });
-    if (isHeader) y += 2; else y += 4;
-  });
+    y += 4;
+  }
+
+  renderSection('Professional Summary', sections['PROFESSIONAL SUMMARY']);
+  renderSection('Work Experience', sections['WORK EXPERIENCE']);
+  renderSection('Education', sections['EDUCATION']);
+  renderSection('Skills', sections['SKILLS']);
+  renderSection('Projects', sections['PROJECTS']);
+  renderSection('Certifications', sections['CERTIFICATIONS']);
+  renderSection('Languages', sections['LANGUAGES']);
 
   const filename = 'Resume_' + name.replace(/[^a-zA-Z0-9]/g, '_') + '.pdf';
   doc.save(filename);
