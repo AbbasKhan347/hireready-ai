@@ -519,73 +519,72 @@ function buildResumeHTML(d, aiText) {
 // the on-screen preview, so what you see is what you download — always
 // complete, always separated correctly.
 
-function downloadResumePDF() {
+async function downloadResumePDF() {
   if (!lastAiText || !lastFormData) {
     showToast('Generate a resume first!');
     return;
   }
 
-  const d = lastFormData;
-  const sections = parseResumeSections(lastAiText);
-  const name = d.name || 'Resume';
+  const previewBody = document.getElementById('rb-preview-body');
+  if (!previewBody) { showToast('Generate a resume first!'); return; }
 
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' });
+  const name = lastFormData.name || 'Resume';
+  const btn = document.querySelector('[onclick="downloadResumePDF()"]');
+  if (btn) { btn.disabled = true; btn.innerHTML = '<i class="ti ti-loader spin"></i> Preparing PDF...'; }
+  showToast('Preparing your PDF...');
 
-  const PW = 210, PH = 297, ML = 25.4, MR = 25.4, CW = PW - ML - MR;
-  const FS = 10.5, LH = 5.2;
-  let y = 22;
+  try {
+    const originalMaxHeight = previewBody.style.maxHeight;
+    const originalOverflow  = previewBody.style.overflow;
+    previewBody.style.maxHeight = 'none';
+    previewBody.style.overflow  = 'visible';
 
-  function ensureSpace(needed) {
-    if (y + needed > PH - 20) {
-      doc.addPage();
-      y = 22;
+    const canvas = await html2canvas(previewBody, {
+      scale: 2,
+      useCORS: true,
+      allowTaint: true,
+      backgroundColor: '#ffffff',
+      logging: false,
+      windowWidth: previewBody.scrollWidth,
+      windowHeight: previewBody.scrollHeight
+    });
+
+    previewBody.style.maxHeight = originalMaxHeight;
+    previewBody.style.overflow  = originalOverflow;
+
+    const imgData = canvas.toDataURL('image/jpeg', 0.97);
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' });
+
+    const pageW = 210;
+    const pageH = 297;
+    const imgW  = pageW;
+    const imgH  = (canvas.height * pageW) / canvas.width;
+
+    if (imgH <= pageH) {
+      pdf.addImage(imgData, 'JPEG', 0, 0, imgW, imgH);
+    } else {
+      let yOffset = 0;
+      let remaining = imgH;
+      let first = true;
+      while (remaining > 0) {
+        if (!first) pdf.addPage();
+        pdf.addImage(imgData, 'JPEG', 0, -yOffset, imgW, imgH);
+        yOffset += pageH;
+        remaining -= pageH;
+        first = false;
+      }
     }
+
+    pdf.save('Resume_' + name.replace(/[^a-zA-Z0-9]/g, '_') + '.pdf');
+    showToast('PDF downloaded! ✓');
+
+  } catch (e) {
+    showToast('PDF failed: ' + e.message);
   }
 
-  // ── Photo (skip for ATS-style download — recruiters' ATS software
-  //    generally strips/mishandles images, so we keep the PDF text-safe) ──
-  const includePhoto = currentTemplate !== 'ats' && !!rbPhotoData;
-  let textStartX = ML;
-  if (includePhoto) {
-    try {
-      const imgSize = 24;
-      doc.addImage(rbPhotoData, 'JPEG', PW - MR - imgSize, y, imgSize, imgSize);
-    } catch (e) {
-      console.warn('Could not embed photo in PDF:', e);
-    }
-  }
-
-  // ── Header: name, title, contact line ──
-  doc.setFont('helvetica', 'bold');
-  doc.setFontSize(20);
-  doc.setTextColor(26, 86, 219);
-  doc.text(name.toUpperCase(), textStartX, y + 6);
-  y += 12;
-
-  if (d.title) {
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(12);
-    doc.setTextColor(60, 60, 60);
-    doc.text(d.title, textStartX, y);
-    y += 6;
-  }
-
-  const contactParts = [
-    d.email ? d.email : '',
-    d.phone ? d.phone : '',
-    d.location ? d.location : '',
-    d.linkedin ? d.linkedin : '',
-    d.website ? d.website : '',
-    d.github ? d.github : ''
-  ].filter(Boolean);
-  if (contactParts.length) {
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(9.5);
-    doc.setTextColor(100, 100, 100);
-    const contactLines = doc.splitTextToSize(contactParts.join('   |   '), CW);
-    contactLines.forEach(line => { doc.text(line, textStartX, y); y += 4.5; });
-  }
+  if (btn) { btn.disabled = false; btn.innerHTML = '<i class="ti ti-download"></i> Download PDF'; }
+}
 
   y += 2;
   doc.setDrawColor(26, 86, 219);
