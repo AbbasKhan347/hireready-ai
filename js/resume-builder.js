@@ -561,7 +561,7 @@ function downloadResumePDF() {
     const rawLines = content.split('\n').map(l => l.trim()).filter(Boolean);
     rawLines.forEach(rawLine => {
       const isBullet = /^[-—•*]\s*/.test(rawLine);
-      const cleanLine = rawLine.replace(/^[-—•*]\s*/, '');
+      const cleanLine = rawLine.replace(/^[-—•*]\s*/, '').replace(/\*\*(.*?)\*\*/g, '$1');
       const indent = isBullet ? ML + 4 : ML;
       const width = isBullet ? CW - 4 : CW;
       const prefix = isBullet ? '•  ' : '';
