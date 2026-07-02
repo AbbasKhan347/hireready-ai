@@ -372,22 +372,49 @@ function buildResumeHTML(d, aiText) {
   const web   = d.website || '';
 
   const contactLine = [
-    email    ? `📧 ${email}` : '',
-    phone    ? `📞 ${phone}` : '',
-    loc      ? `📍 ${loc}`   : '',
-    li       ? `🔗 ${li}`    : '',
-    web      ? `🌐 ${web}`   : ''
-  ].filter(Boolean).join('  •  ');
+    email ? `✉ ${email}` : '',
+    phone ? `✆ ${phone}` : '',
+    loc   ? `⌖ ${loc}`   : '',
+    li    ? `in ${li}`   : '',
+    web   ? `⊕ ${web}`   : ''
+  ].filter(Boolean).join('  ·  ');
 
-  function sec(label, content, cls = '') {
-    if (!content || !content.trim()) return '';
-    return `<div class="section-title">${label}</div><div class="section-body ${cls}" style="white-space:pre-wrap;font-size:13px;color:#333;margin-bottom:16px;line-height:1.7">${content.trim()}</div>`;
+  // ── formatAiContent ──────────────────────────────────────
+  // Converts raw AI text into clean HTML:
+  //   **bold** → <strong>
+  //   Lines starting with — • - → styled bullet rows
+  //   Everything else → plain <div>
+  function fmt(raw) {
+    if (!raw || !raw.trim()) return '';
+    return raw.trim().split('\n').map(line => {
+      const t = line.trim();
+      if (!t) return '<div style="height:4px"></div>';
+      const bolded = t.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+      if (/^[-—•]\s*/.test(t)) {
+        const text = bolded.replace(/^[-—•]\s*/, '');
+        return `<div class="bullet-row"><span class="bullet-dot">•</span><span>${text}</span></div>`;
+      }
+      return `<div style="margin:2px 0">${bolded}</div>`;
+    }).join('');
   }
 
+  // ── sec() helper ─────────────────────────────────────────
+  function sec(label, content) {
+    if (!content || !content.trim()) return '';
+    return `<div class="section-title">${label}</div><div class="section-body">${fmt(content)}</div>`;
+  }
+
+  // ════════════════════════════════════
+  //  MODERN
+  // ════════════════════════════════════
   if (currentTemplate === 'modern') {
+    const skillPills = sections['SKILLS']
+      ? sections['SKILLS'].split(/[,\n]+/).map(s => s.replace(/^[-—•*]\s*/,'').trim()).filter(Boolean)
+          .map(s => `<span class="skill-tag">${s}</span>`).join('')
+      : '';
     return `<div class="resume-modern">
       <div class="header">
-        ${photo ? `<img src="${photo}" class="header-photo" alt="Profile">` : ''}
+        ${photo ? `<img src="${photo}" class="header-photo" alt="${name}">` : ''}
         <div class="header-name">${name}</div>
         ${title ? `<div class="header-title">${title}</div>` : ''}
         <div class="header-contact">${contactLine}</div>
@@ -395,56 +422,83 @@ function buildResumeHTML(d, aiText) {
       ${sec('Professional Summary', sections['PROFESSIONAL SUMMARY'])}
       ${sec('Work Experience', sections['WORK EXPERIENCE'])}
       ${sec('Education', sections['EDUCATION'])}
-      ${sections['SKILLS'] ? `<div class="section-title">Skills</div><div class="skills-container">${sections['SKILLS'].split(/[,\n—–-]+/).map(s=>s.trim()).filter(Boolean).map(s=>`<span class="skill-tag">${s}</span>`).join('')}</div>` : ''}
+      ${skillPills ? `<div class="section-title">Skills</div><div class="skills-container" style="margin-bottom:16px">${skillPills}</div>` : ''}
       ${sec('Projects', sections['PROJECTS'])}
       ${sec('Certifications', sections['CERTIFICATIONS'])}
     </div>`;
   }
 
+  // ════════════════════════════════════
+  //  EXECUTIVE
+  // ════════════════════════════════════
   if (currentTemplate === 'executive') {
     return `<div class="resume-executive">
-      <div class="header">
-        ${photo ? `<img src="${photo}" class="header-photo" alt="Profile">` : ''}
-        <div class="header-info">
-          <div class="header-name">${name}</div>
-          ${title ? `<div class="header-title">${title}</div>` : ''}
-          <div class="header-contact"><span>${contactLine}</span></div>
+      <div class="exec-topbar"></div>
+      <div class="exec-inner">
+        <div class="header">
+          ${photo ? `<img src="${photo}" class="header-photo" alt="${name}">` : ''}
+          <div class="header-info">
+            <div class="header-name">${name}</div>
+            ${title ? `<div class="header-title">${title}</div>` : ''}
+            <div class="header-contact">${contactLine.replace(/  ·  /g, '<br>')}</div>
+          </div>
         </div>
-      </div>
-      ${sec('Summary', sections['PROFESSIONAL SUMMARY'])}
-      ${sec('Professional Experience', sections['WORK EXPERIENCE'])}
-      ${sec('Education', sections['EDUCATION'])}
-      ${sec('Core Competencies', sections['SKILLS'])}
-      ${sec('Projects', sections['PROJECTS'])}
-      ${sec('Certifications', sections['CERTIFICATIONS'])}
-    </div>`;
-  }
-
-  if (currentTemplate === 'creative') {
-    return `<div class="resume-creative"><div class="wrapper">
-      <div class="header">
-        ${photo ? `<img src="${photo}" class="header-photo" alt="Profile">` : ''}
-        <div class="header-name">${name}</div>
-        ${title ? `<div class="header-title">${title}</div>` : ''}
-        <div class="header-contact">${contactLine}</div>
-      </div>
-      <div class="content">
-        ${sec('About', sections['PROFESSIONAL SUMMARY'])}
-        ${sec('Experience', sections['WORK EXPERIENCE'])}
+        ${sec('Professional Summary', sections['PROFESSIONAL SUMMARY'])}
+        ${sec('Professional Experience', sections['WORK EXPERIENCE'])}
         ${sec('Education', sections['EDUCATION'])}
-        ${sec('Skills', sections['SKILLS'])}
+        ${sec('Core Competencies', sections['SKILLS'])}
         ${sec('Projects', sections['PROJECTS'])}
         ${sec('Certifications', sections['CERTIFICATIONS'])}
       </div>
-    </div></div>`;
+    </div>`;
   }
 
-  // ATS template
+  // ════════════════════════════════════
+  //  CREATIVE  (two-column sidebar layout)
+  // ════════════════════════════════════
+  if (currentTemplate === 'creative') {
+    // Skills go in sidebar as pills; rest goes in main content
+    const sidebarSkills = sections['SKILLS']
+      ? sections['SKILLS'].split(/[,\n]+/).map(s => s.replace(/^[-—•*]\s*/,'').trim()).filter(Boolean)
+          .map(s => `<span class="sidebar-skill">${s}</span>`).join('')
+      : '';
+
+    const contactItems = [
+      email ? `✉ ${email}` : '',
+      phone ? `✆ ${phone}` : '',
+      loc   ? `⌖ ${loc}`   : '',
+      li    ? li            : '',
+      web   ? web           : ''
+    ].filter(Boolean).map(c => `<div>${c}</div>`).join('');
+
+    return `<div class="resume-creative">
+      <div class="sidebar">
+        ${photo ? `<img src="${photo}" class="header-photo" alt="${name}">` : ''}
+        <div class="header-name">${name}</div>
+        ${title ? `<div class="header-title">${title}</div>` : ''}
+        <div class="sidebar-divider"></div>
+        <div class="sidebar-section-title">Contact</div>
+        <div class="sidebar-contact">${contactItems}</div>
+        ${sidebarSkills ? `<div class="sidebar-divider"></div><div class="sidebar-section-title">Skills</div><div class="sidebar-skills">${sidebarSkills}</div>` : ''}
+      </div>
+      <div class="main">
+        ${sec('About Me', sections['PROFESSIONAL SUMMARY'])}
+        ${sec('Experience', sections['WORK EXPERIENCE'])}
+        ${sec('Education', sections['EDUCATION'])}
+        ${sec('Projects', sections['PROJECTS'])}
+        ${sec('Certifications', sections['CERTIFICATIONS'])}
+      </div>
+    </div>`;
+  }
+
+  // ════════════════════════════════════
+  //  ATS-FRIENDLY
+  // ════════════════════════════════════
   return `<div class="resume-ats">
     <div class="header">
       <div class="header-name">${name}</div>
       ${title ? `<div class="header-title">${title}</div>` : ''}
-      <div class="header-contact">${[email,phone,loc].filter(Boolean).join(' | ')}</div>
+      <div class="header-contact">${[email,phone,loc,li,web].filter(Boolean).join('  |  ')}</div>
     </div>
     ${sec('PROFESSIONAL SUMMARY', sections['PROFESSIONAL SUMMARY'])}
     ${sec('WORK EXPERIENCE', sections['WORK EXPERIENCE'])}
@@ -561,7 +615,7 @@ function downloadResumePDF() {
     const rawLines = content.split('\n').map(l => l.trim()).filter(Boolean);
     rawLines.forEach(rawLine => {
       const isBullet = /^[-—•*]\s*/.test(rawLine);
-      const cleanLine = rawLine.replace(/^[-—•*]\s*/, '').replace(/\*\*(.*?)\*\*/g, '$1');
+      const cleanLine = rawLine.replace(/^[-—•*]\s*/, '');
       const indent = isBullet ? ML + 4 : ML;
       const width = isBullet ? CW - 4 : CW;
       const prefix = isBullet ? '•  ' : '';
