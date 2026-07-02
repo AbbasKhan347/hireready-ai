@@ -372,49 +372,22 @@ function buildResumeHTML(d, aiText) {
   const web   = d.website || '';
 
   const contactLine = [
-    email ? `✉ ${email}` : '',
-    phone ? `✆ ${phone}` : '',
-    loc   ? `⌖ ${loc}`   : '',
-    li    ? `in ${li}`   : '',
-    web   ? `⊕ ${web}`   : ''
-  ].filter(Boolean).join('  ·  ');
+    email    ? `📧 ${email}` : '',
+    phone    ? `📞 ${phone}` : '',
+    loc      ? `📍 ${loc}`   : '',
+    li       ? `🔗 ${li}`    : '',
+    web      ? `🌐 ${web}`   : ''
+  ].filter(Boolean).join('  •  ');
 
-  // ── formatAiContent ──────────────────────────────────────
-  // Converts raw AI text into clean HTML:
-  //   **bold** → <strong>
-  //   Lines starting with — • - → styled bullet rows
-  //   Everything else → plain <div>
-  function fmt(raw) {
-    if (!raw || !raw.trim()) return '';
-    return raw.trim().split('\n').map(line => {
-      const t = line.trim();
-      if (!t) return '<div style="height:4px"></div>';
-      const bolded = t.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-      if (/^[-—•]\s*/.test(t)) {
-        const text = bolded.replace(/^[-—•]\s*/, '');
-        return `<div class="bullet-row"><span class="bullet-dot">•</span><span>${text}</span></div>`;
-      }
-      return `<div style="margin:2px 0">${bolded}</div>`;
-    }).join('');
-  }
-
-  // ── sec() helper ─────────────────────────────────────────
-  function sec(label, content) {
+  function sec(label, content, cls = '') {
     if (!content || !content.trim()) return '';
-    return `<div class="section-title">${label}</div><div class="section-body">${fmt(content)}</div>`;
+    return `<div class="section-title">${label}</div><div class="section-body ${cls}" style="white-space:pre-wrap;font-size:13px;color:#333;margin-bottom:16px;line-height:1.7">${content.trim()}</div>`;
   }
 
-  // ════════════════════════════════════
-  //  MODERN
-  // ════════════════════════════════════
   if (currentTemplate === 'modern') {
-    const skillPills = sections['SKILLS']
-      ? sections['SKILLS'].split(/[,\n]+/).map(s => s.replace(/^[-—•*]\s*/,'').trim()).filter(Boolean)
-          .map(s => `<span class="skill-tag">${s}</span>`).join('')
-      : '';
     return `<div class="resume-modern">
       <div class="header">
-        ${photo ? `<img src="${photo}" class="header-photo" alt="${name}">` : ''}
+        ${photo ? `<img src="${photo}" class="header-photo" alt="Profile">` : ''}
         <div class="header-name">${name}</div>
         ${title ? `<div class="header-title">${title}</div>` : ''}
         <div class="header-contact">${contactLine}</div>
@@ -422,83 +395,56 @@ function buildResumeHTML(d, aiText) {
       ${sec('Professional Summary', sections['PROFESSIONAL SUMMARY'])}
       ${sec('Work Experience', sections['WORK EXPERIENCE'])}
       ${sec('Education', sections['EDUCATION'])}
-      ${skillPills ? `<div class="section-title">Skills</div><div class="skills-container" style="margin-bottom:16px">${skillPills}</div>` : ''}
+      ${sections['SKILLS'] ? `<div class="section-title">Skills</div><div class="skills-container">${sections['SKILLS'].split(/[,\n—–-]+/).map(s=>s.trim()).filter(Boolean).map(s=>`<span class="skill-tag">${s}</span>`).join('')}</div>` : ''}
       ${sec('Projects', sections['PROJECTS'])}
       ${sec('Certifications', sections['CERTIFICATIONS'])}
     </div>`;
   }
 
-  // ════════════════════════════════════
-  //  EXECUTIVE
-  // ════════════════════════════════════
   if (currentTemplate === 'executive') {
     return `<div class="resume-executive">
-      <div class="exec-topbar"></div>
-      <div class="exec-inner">
-        <div class="header">
-          ${photo ? `<img src="${photo}" class="header-photo" alt="${name}">` : ''}
-          <div class="header-info">
-            <div class="header-name">${name}</div>
-            ${title ? `<div class="header-title">${title}</div>` : ''}
-            <div class="header-contact">${contactLine.replace(/  ·  /g, '<br>')}</div>
-          </div>
+      <div class="header">
+        ${photo ? `<img src="${photo}" class="header-photo" alt="Profile">` : ''}
+        <div class="header-info">
+          <div class="header-name">${name}</div>
+          ${title ? `<div class="header-title">${title}</div>` : ''}
+          <div class="header-contact"><span>${contactLine}</span></div>
         </div>
-        ${sec('Professional Summary', sections['PROFESSIONAL SUMMARY'])}
-        ${sec('Professional Experience', sections['WORK EXPERIENCE'])}
-        ${sec('Education', sections['EDUCATION'])}
-        ${sec('Core Competencies', sections['SKILLS'])}
-        ${sec('Projects', sections['PROJECTS'])}
-        ${sec('Certifications', sections['CERTIFICATIONS'])}
       </div>
+      ${sec('Summary', sections['PROFESSIONAL SUMMARY'])}
+      ${sec('Professional Experience', sections['WORK EXPERIENCE'])}
+      ${sec('Education', sections['EDUCATION'])}
+      ${sec('Core Competencies', sections['SKILLS'])}
+      ${sec('Projects', sections['PROJECTS'])}
+      ${sec('Certifications', sections['CERTIFICATIONS'])}
     </div>`;
   }
 
-  // ════════════════════════════════════
-  //  CREATIVE  (two-column sidebar layout)
-  // ════════════════════════════════════
   if (currentTemplate === 'creative') {
-    // Skills go in sidebar as pills; rest goes in main content
-    const sidebarSkills = sections['SKILLS']
-      ? sections['SKILLS'].split(/[,\n]+/).map(s => s.replace(/^[-—•*]\s*/,'').trim()).filter(Boolean)
-          .map(s => `<span class="sidebar-skill">${s}</span>`).join('')
-      : '';
-
-    const contactItems = [
-      email ? `✉ ${email}` : '',
-      phone ? `✆ ${phone}` : '',
-      loc   ? `⌖ ${loc}`   : '',
-      li    ? li            : '',
-      web   ? web           : ''
-    ].filter(Boolean).map(c => `<div>${c}</div>`).join('');
-
-    return `<div class="resume-creative">
-      <div class="sidebar">
-        ${photo ? `<img src="${photo}" class="header-photo" alt="${name}">` : ''}
+    return `<div class="resume-creative"><div class="wrapper">
+      <div class="header">
+        ${photo ? `<img src="${photo}" class="header-photo" alt="Profile">` : ''}
         <div class="header-name">${name}</div>
         ${title ? `<div class="header-title">${title}</div>` : ''}
-        <div class="sidebar-divider"></div>
-        <div class="sidebar-section-title">Contact</div>
-        <div class="sidebar-contact">${contactItems}</div>
-        ${sidebarSkills ? `<div class="sidebar-divider"></div><div class="sidebar-section-title">Skills</div><div class="sidebar-skills">${sidebarSkills}</div>` : ''}
+        <div class="header-contact">${contactLine}</div>
       </div>
-      <div class="main">
-        ${sec('About Me', sections['PROFESSIONAL SUMMARY'])}
+      <div class="content">
+        ${sec('About', sections['PROFESSIONAL SUMMARY'])}
         ${sec('Experience', sections['WORK EXPERIENCE'])}
         ${sec('Education', sections['EDUCATION'])}
+        ${sec('Skills', sections['SKILLS'])}
         ${sec('Projects', sections['PROJECTS'])}
         ${sec('Certifications', sections['CERTIFICATIONS'])}
       </div>
-    </div>`;
+    </div></div>`;
   }
 
-  // ════════════════════════════════════
-  //  ATS-FRIENDLY
-  // ════════════════════════════════════
+  // ATS template
   return `<div class="resume-ats">
     <div class="header">
       <div class="header-name">${name}</div>
       ${title ? `<div class="header-title">${title}</div>` : ''}
-      <div class="header-contact">${[email,phone,loc,li,web].filter(Boolean).join('  |  ')}</div>
+      <div class="header-contact">${[email,phone,loc].filter(Boolean).join(' | ')}</div>
     </div>
     ${sec('PROFESSIONAL SUMMARY', sections['PROFESSIONAL SUMMARY'])}
     ${sec('WORK EXPERIENCE', sections['WORK EXPERIENCE'])}
@@ -519,72 +465,73 @@ function buildResumeHTML(d, aiText) {
 // the on-screen preview, so what you see is what you download — always
 // complete, always separated correctly.
 
-async function downloadResumePDF() {
+function downloadResumePDF() {
   if (!lastAiText || !lastFormData) {
     showToast('Generate a resume first!');
     return;
   }
 
-  const previewBody = document.getElementById('rb-preview-body');
-  if (!previewBody) { showToast('Generate a resume first!'); return; }
+  const d = lastFormData;
+  const sections = parseResumeSections(lastAiText);
+  const name = d.name || 'Resume';
 
-  const name = lastFormData.name || 'Resume';
-  const btn = document.querySelector('[onclick="downloadResumePDF()"]');
-  if (btn) { btn.disabled = true; btn.innerHTML = '<i class="ti ti-loader spin"></i> Preparing PDF...'; }
-  showToast('Preparing your PDF...');
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' });
 
-  try {
-    const originalMaxHeight = previewBody.style.maxHeight;
-    const originalOverflow  = previewBody.style.overflow;
-    previewBody.style.maxHeight = 'none';
-    previewBody.style.overflow  = 'visible';
+  const PW = 210, PH = 297, ML = 25.4, MR = 25.4, CW = PW - ML - MR;
+  const FS = 10.5, LH = 5.2;
+  let y = 22;
 
-    const canvas = await html2canvas(previewBody, {
-      scale: 2,
-      useCORS: true,
-      allowTaint: true,
-      backgroundColor: '#ffffff',
-      logging: false,
-      windowWidth: previewBody.scrollWidth,
-      windowHeight: previewBody.scrollHeight
-    });
-
-    previewBody.style.maxHeight = originalMaxHeight;
-    previewBody.style.overflow  = originalOverflow;
-
-    const imgData = canvas.toDataURL('image/jpeg', 0.97);
-    const { jsPDF } = window.jspdf;
-    const pdf = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' });
-
-    const pageW = 210;
-    const pageH = 297;
-    const imgW  = pageW;
-    const imgH  = (canvas.height * pageW) / canvas.width;
-
-    if (imgH <= pageH) {
-      pdf.addImage(imgData, 'JPEG', 0, 0, imgW, imgH);
-    } else {
-      let yOffset = 0;
-      let remaining = imgH;
-      let first = true;
-      while (remaining > 0) {
-        if (!first) pdf.addPage();
-        pdf.addImage(imgData, 'JPEG', 0, -yOffset, imgW, imgH);
-        yOffset += pageH;
-        remaining -= pageH;
-        first = false;
-      }
+  function ensureSpace(needed) {
+    if (y + needed > PH - 20) {
+      doc.addPage();
+      y = 22;
     }
-
-    pdf.save('Resume_' + name.replace(/[^a-zA-Z0-9]/g, '_') + '.pdf');
-    showToast('PDF downloaded! ✓');
-
-  } catch (e) {
-    showToast('PDF failed: ' + e.message);
   }
 
-  if (btn) { btn.disabled = false; btn.innerHTML = '<i class="ti ti-download"></i> Download PDF'; }
-}
+  // ── Photo (skip for ATS-style download — recruiters' ATS software
+  //    generally strips/mishandles images, so we keep the PDF text-safe) ──
+  const includePhoto = currentTemplate !== 'ats' && !!rbPhotoData;
+  let textStartX = ML;
+  if (includePhoto) {
+    try {
+      const imgSize = 24;
+      doc.addImage(rbPhotoData, 'JPEG', PW - MR - imgSize, y, imgSize, imgSize);
+    } catch (e) {
+      console.warn('Could not embed photo in PDF:', e);
+    }
+  }
+
+  // ── Header: name, title, contact line ──
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(20);
+  doc.setTextColor(26, 86, 219);
+  doc.text(name.toUpperCase(), textStartX, y + 6);
+  y += 12;
+
+  if (d.title) {
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(12);
+    doc.setTextColor(60, 60, 60);
+    doc.text(d.title, textStartX, y);
+    y += 6;
+  }
+
+  const contactParts = [
+    d.email ? d.email : '',
+    d.phone ? d.phone : '',
+    d.location ? d.location : '',
+    d.linkedin ? d.linkedin : '',
+    d.website ? d.website : '',
+    d.github ? d.github : ''
+  ].filter(Boolean);
+  if (contactParts.length) {
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(9.5);
+    doc.setTextColor(100, 100, 100);
+    const contactLines = doc.splitTextToSize(contactParts.join('   |   '), CW);
+    contactLines.forEach(line => { doc.text(line, textStartX, y); y += 4.5; });
+  }
 
   y += 2;
   doc.setDrawColor(26, 86, 219);
